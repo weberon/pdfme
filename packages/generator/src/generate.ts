@@ -35,7 +35,8 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
 
   const { pdfDoc, renderObj } = await preprocessing({ template, userPlugins });
 
-  // PDF/VT setup
+  // PDF/VT-1 setup — only activates when template.pdfvtOptions is present.
+  // Templates without pdfvtOptions produce normal PDFs with no DPart/XMP/OutputIntent.
   let dpartRoot: pdfLib.PDFDPart | undefined;
   const pdfvtOptions = (template as any).pdfvtOptions;
 
@@ -43,7 +44,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
   const vtTitle = (options as Record<string, unknown>).title as string | undefined
     || 'PDF/VT Document';
 
-  if (pdfvtOptions?.enabled) {
+  if (pdfvtOptions) {
     dpartRoot = pdfDoc.catalog.getOrCreateDPart();
 
     // Stable document identity — required by PDF/X-4 XMP spec
@@ -216,7 +217,12 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
       }
     }
 
-    // PDF/VT: Create DPart node for this input
+    // PDF/VT: Create a DPart node for this input record.
+    // Each node carries per-record XMP metadata derived from pdfvtOptions.mapping.
+    // Mapping keys = DPart metadata names (print production spec: record identity,
+    // presort grouping, finishing instructions). Mapping values = field names in the
+    // input record. The generator looks up each value in the current input and writes
+    // it into the DPart node's XMP under the corresponding key.
     if (dpartRoot && pdfvtOptions) {
       const dpartNode = pdfLib.PDFDPart.withContext(pdfDoc.context);
 
@@ -258,7 +264,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
 
   postProcessing({ pdfDoc, options });
 
-  if (pdfvtOptions?.enabled) {
+  if (pdfvtOptions) {
     // Re-apply PDF/X-4 required Info dict fields after postProcessing
     pdfDoc.setTitle(vtTitle);
     // /Trapped /False — PDF/X-4 §4.2.1

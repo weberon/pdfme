@@ -289,13 +289,12 @@ Check this document: https://pdfme.com/docs/custom-fonts`
       basePdf: BLANK_PDF,
       schemas: [[textSchema('name')]],
       pdfvtOptions: {
-        enabled: true,
         version: 'PDF/VT-1',
         mapping: { RecordID: 'id' },
       },
     } as Template;
 
-    test('generates PDF with DPartRoot when pdfvtOptions is enabled', async () => {
+    test('generates PDF with DPartRoot when pdfvtOptions is present', async () => {
       const inputs = [{ id: 'rec-1', name: 'Alice' }, { id: 'rec-2', name: 'Bob' }];
       const pdf = await generate({ inputs, template: pdfvtTemplate, options: { font: getFont() } });
 
@@ -307,7 +306,7 @@ Check this document: https://pdfme.com/docs/custom-fonts`
       expect(dpartRoot).toBeDefined();
     });
 
-    test('generates PDF with XMP metadata when pdfvtOptions is enabled', async () => {
+    test('generates PDF with XMP metadata when pdfvtOptions is present', async () => {
       const inputs = [{ id: 'rec-1', name: 'Alice' }];
       const pdf = await generate({ inputs, template: pdfvtTemplate, options: { font: getFont() } });
 
@@ -319,7 +318,7 @@ Check this document: https://pdfme.com/docs/custom-fonts`
       expect(metadataRef).toBeDefined();
     });
 
-    test('generates PDF with OutputIntent when pdfvtOptions is enabled', async () => {
+    test('generates PDF with OutputIntent when pdfvtOptions is present', async () => {
       const inputs = [{ id: 'rec-1', name: 'Alice' }];
       const pdf = await generate({ inputs, template: pdfvtTemplate, options: { font: getFont() } });
 
@@ -374,16 +373,13 @@ Check this document: https://pdfme.com/docs/custom-fonts`
       expect(catalog.lookupMaybe(PDFName.of('OutputIntents'), PDFArray)).toBeUndefined();
     });
 
-    test('generates normal PDF when pdfvtOptions.enabled is false', async () => {
-      const disabledTemplate: Template = {
-        ...pdfvtTemplate,
-        pdfvtOptions: {
-          ...((pdfvtTemplate as any).pdfvtOptions),
-          enabled: false,
-        },
+    test('generates normal PDF when pdfvtOptions is absent', async () => {
+      const normalTemplate: Template = {
+        basePdf: BLANK_PDF,
+        schemas: [[textSchema('name')]],
       } as Template;
       const inputs = [{ id: 'rec-1', name: 'Alice' }];
-      const pdf = await generate({ inputs, template: disabledTemplate, options: { font: getFont() } });
+      const pdf = await generate({ inputs, template: normalTemplate, options: { font: getFont() } });
 
       const pdfDoc = await PDFDocument.load(pdf);
       const catalog = pdfDoc.catalog;

@@ -138,8 +138,24 @@ export const BasePdf = z.union([CustomPdf, BlankPdf]);
 export const LegacySchemaPageArray = z.array(z.record(z.string(), Schema));
 export const SchemaPageArray = z.array(z.array(Schema));
 
+/**
+ * PDF/VT-1 compliance options.
+ *
+ * When present on a template, the generator produces a PDF/VT-1 compliant
+ * document with DPart tree, XMP metadata, and OutputIntent.
+ * Templates without pdfvtOptions produce normal PDFs.
+ *
+ * @property version - PDF/VT version string (e.g. "PDF/VT-1").
+ * @property mapping - Maps DPart metadata field names to input record field names.
+ *   Keys are DPart metadata names that appear in per-record XMP (e.g. "ContactName",
+ *   "RecordID"). These define the print production spec — what metadata the PDF carries
+ *   for downstream automation (selective reprints, presort grouping, finishing instructions).
+ *   Values are the corresponding field names in the input records (e.g. "name", "id").
+ *   The generator looks up each value in the current input record and writes it into the
+ *   DPart node under the corresponding key.
+ * @property outputIntent - ICC color profile declaration for PDF/X-4 conformance.
+ */
 export const PdfvtOptions = z.object({
-  enabled: z.boolean(),
   version: z.string(),
   mapping: z.record(z.string(), z.string()),
   outputIntent: z.object({
