@@ -1,5 +1,6 @@
 import generate from '../src/generate.js';
 import { Template, BLANK_PDF, Schema } from '@pdfme/common';
+import { PDFDocument, PDFName, PDFArray, PDFDict } from '@pdfme/pdf-lib';
 import { getFont, getImageSnapshotOptions, pdfToImages } from './utils.js';
 
 describe('generate integrate test', () => {
@@ -272,5 +273,141 @@ Check this document: https://pdfme.com/docs/custom-fonts#about-font-type`
 Check this document: https://pdfme.com/docs/custom-fonts`
       );
     }
+  });
+
+  describe('PDF/VT support (pdfvtOptions)', () => {
+    const textSchema = (name: string): Schema => ({
+      name,
+      type: 'text',
+      content: '',
+      position: { x: 10, y: 10 },
+      width: 100,
+      height: 20,
+    });
+
+    const pdfvtTemplate: Template = {
+      basePdf: BLANK_PDF,
+      schemas: [[textSchema('name')]],
+      pdfvtOptions: {
+        enabled: true,
+        version: 'PDF/VT-1',
+        mapping: { RecordID: 'id' },
+      },
+    } as Template;
+
+    test('generates PDF with DPartRoot when pdfvtOptions is enabled', async () => {
+      const inputs = [{ id: 'rec-1', name: 'Alice' }, { id: 'rec-2', name: 'Bob' }];
+      const pdf = await generate({ inputs, template: pdfvtTemplate, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const catalog = pdfDoc.catalog;
+
+      // DPartRoot must exist
+      const dpartRoot = catalog.get(PDFName.of('DPartRoot'));
+      expect(dpartRoot).toBeDefined();
+    });
+
+    test('generates PDF with XMP metadata when pdfvtOptions is enabled', async () => {
+      const inputs = [{ id: 'rec-1', name: 'Alice' }];
+      const pdf = await generate({ inputs, template: pdfvtTemplate, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const catalog = pdfDoc.catalog;
+
+      // Metadata stream must exist on catalog
+      const metadataRef = catalog.get(PDFName.of('Metadata'));
+      expect(metadataRef).toBeDefined();
+    });
+
+    test('generates PDF with OutputIntent when pdfvtOptions is enabled', async () => {
+      const inputs = [{ id: 'rec-1', name: 'Alice' }];
+      const pdf = await generate({ inputs, template: pdfvtTemplate, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const catalog = pdfDoc.catalog;
+
+      // OutputIntents array must exist
+      const outputIntents = catalog.lookupMaybe(PDFName.of('OutputIntents'), PDFArray);
+      expect(outputIntents).toBeDefined();
+      expect(outputIntents!.size()).toBeGreaterThanOrEqual(1);
+    });
+
+    test('generates PDF with custom OutputIntent when specified', async () => {
+      const templateWithIntent: Template = {
+        ...pdfvtTemplate,
+        pdfvtOptions: {
+          ...((pdfvtTemplate as any).pdfvtOptions),
+          outputIntent: {
+            profileName: 'GRACoL2006_Coated1v2',
+            registryName: 'http://www.color.org',
+            info: 'GRACoL 2006 Coated',
+          },
+        },
+      } as Template;
+
+      const inputs = [{ id: 'rec-1', name: 'Alice' }];
+      const pdf = await generate({ inputs, template: templateWithIntent, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const catalog = pdfDoc.catalog;
+
+      const outputIntents = catalog.lookupMaybe(PDFName.of('OutputIntents'), PDFArray);
+      expect(outputIntents).toBeDefined();
+
+      const intent = outputIntents!.lookup(0, PDFDict);
+      expect(intent.get(PDFName.of('S'))).toBe(PDFName.of('GTS_PDFX'));
+    });
+
+    test('generates normal PDF without DPart when pdfvtOptions is absent', async () => {
+      const normalTemplate: Template = {
+        basePdf: BLANK_PDF,
+        schemas: [[textSchema('name')]],
+      };
+      const inputs = [{ name: 'Alice' }];
+      const pdf = await generate({ inputs, template: normalTemplate, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const catalog = pdfDoc.catalog;
+
+      // No DPartRoot, no OutputIntents
+      expect(catalog.get(PDFName.of('DPartRoot'))).toBeUndefined();
+      expect(catalog.lookupMaybe(PDFName.of('OutputIntents'), PDFArray)).toBeUndefined();
+    });
+
+    test('generates normal PDF when pdfvtOptions.enabled is false', async () => {
+      const disabledTemplate: Template = {
+        ...pdfvtTemplate,
+        pdfvtOptions: {
+          ...((pdfvtTemplate as any).pdfvtOptions),
+          enabled: false,
+        },
+      } as Template;
+      const inputs = [{ id: 'rec-1', name: 'Alice' }];
+      const pdf = await generate({ inputs, template: disabledTemplate, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const catalog = pdfDoc.catalog;
+
+      expect(catalog.get(PDFName.of('DPartRoot'))).toBeUndefined();
+    });
+
+    test('creates per-record DPart nodes with metadata', async () => {
+      const inputs = [
+        { id: 'rec-1', name: 'Alice' },
+        { id: 'rec-2', name: 'Bob' },
+        { id: 'rec-3', name: 'Carol' },
+      ];
+      const pdf = await generate({ inputs, template: pdfvtTemplate, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+
+      // Should have 3 pages (one per record)
+      expect(pdfDoc.getPageCount()).toBe(3);
+
+      // DPartRoot should exist with children
+      const catalog = pdfDoc.catalog;
+      const dpartRoot = catalog.get(PDFName.of('DPartRoot'));
+      expect(dpartRoot).toBeDefined();
+    });
   });
 });

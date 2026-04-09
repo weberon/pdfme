@@ -61,3 +61,5 @@ export { decodePDFRawStream } from './streams/decode';
 
 export * from './annotation';
 export * from './acroform';
+
+export { default as PDFDPart } from './structures/PDFDPart';

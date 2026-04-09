@@ -1,4 +1,5 @@
 import * as pdfLib from '@pdfme/pdf-lib';
+const randomUUID = () => globalThis.crypto.randomUUID();
 import type { GenerateProps, Schema, PDFRenderProps, Template } from '@pdfme/common';
 import {
   checkGenerateProps,
@@ -34,10 +35,71 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
 
   const { pdfDoc, renderObj } = await preprocessing({ template, userPlugins });
 
+  // PDF/VT setup
+  let dpartRoot: pdfLib.PDFDPart | undefined;
+  const pdfvtOptions = (template as any).pdfvtOptions;
+
+  // Convert pdfvtOptions.colorSpace to options.colorType for rendering
+  if (pdfvtOptions?.colorSpace) {
+    options.colorType = pdfvtOptions.colorSpace.toLowerCase() as 'rgb' | 'cmyk';
+  }
+  // Computed once; used in XMP and re-applied to Info dict after postProcessing.
+  const vtTitle = (options as Record<string, unknown>).title as string | undefined
+    || 'PDF/VT Document';
+
+  if (pdfvtOptions?.enabled) {
+    dpartRoot = pdfDoc.catalog.getOrCreateDPart();
+
+    // Stable document identity — required by PDF/X-4 XMP spec
+    const docId = `uuid:${randomUUID()}`;
+    const instanceId = `uuid:${randomUUID()}`;
+    const title = vtTitle;
+
+    const xmp = `<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about=""
+      xmlns:pdfvmeta="http://www.npes.org/pdfvt/ns/id/"
+      xmlns:pdfvt="http://www.gts-1.com/namespace/pdfvt/"
+      xmlns:pdfx="http://ns.adobe.com/pdfx/1.3/"
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/">
+      <pdfvt:version>${pdfvtOptions.version}</pdfvt:version>
+      <pdfx:GTS_PDFXVersion>PDF/X-4</pdfx:GTS_PDFXVersion>
+      <pdfx:GTS_PDFVTVersion>${pdfvtOptions.version}</pdfx:GTS_PDFVTVersion>
+      <pdfvmeta:GTS_PDFVT>true</pdfvmeta:GTS_PDFVT>
+      <dc:title><rdf:Alt><rdf:li xml:lang="x-default">${title}</rdf:li></rdf:Alt></dc:title>
+      <xmpMM:DocumentID>${docId}</xmpMM:DocumentID>
+      <xmpMM:InstanceID>${instanceId}</xmpMM:InstanceID>
+    </rdf:Description>
+  </rdf:RDF>
+</x:xmpmeta>
+<?xpacket end="w"?>`;
+    pdfDoc.setXMP(xmp);
+
+    // Set Output Intent with standardized identifier
+    const outputIntentConfig = pdfvtOptions.outputIntent || {
+      profileName: 'FOGRA39',
+      registryName: 'http://www.color.org',
+      info: 'Coated FOGRA39 (ISO 12647-2:2004)',
+    };
+
+    pdfDoc.setOutputIntent({
+      subtype: 'GTS_PDFX',
+      outputCondition: outputIntentConfig.profileName,
+      outputConditionIdentifier: outputIntentConfig.profileName.includes(' ')
+        ? outputIntentConfig.profileName.replace(/\s+/g, '')
+        : outputIntentConfig.profileName,
+      registryName: outputIntentConfig.registryName,
+      info: outputIntentConfig.info,
+    });
+  }
+
   const _cache = new Map<string, unknown>();
 
   for (let i = 0; i < inputs.length; i += 1) {
     const input = inputs[i];
+    const pagesForInput: pdfLib.PDFPage[] = [];
 
     // Get the dynamic template with proper typing
     const dynamicTemplate: Template = await getDynamicTemplate({
@@ -81,6 +143,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
         basePage instanceof pdfLib.PDFEmbeddedPage ? pt2mm(embedPdfBox.mediaBox.y) : 0;
 
       const page = insertPage({ basePage, embedPdfBox, pdfDoc });
+      pagesForInput.push(page);
 
       if (isBlankPdf(basePdf) && basePdf.staticSchema) {
         for (let k = 0; k < basePdf.staticSchema.length; k += 1) {
@@ -156,9 +219,61 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
         await render(renderProps);
       }
     }
+
+    // PDF/VT: Create DPart node for this input
+    if (dpartRoot && pdfvtOptions) {
+      const dpartNode = pdfLib.PDFDPart.withContext(pdfDoc.context);
+
+      const recordIdField = pdfvtOptions.mapping.RecordID;
+      const recordId = recordIdField && input[recordIdField] ? String(input[recordIdField]) : `record-${i}`;
+
+      const xmpMetadata = `<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:Description rdf:about=""
+      xmlns:pdfvmeta="http://www.npes.org/pdfvt/ns/id/">
+      <pdfvmeta:GTS_PDFVT>true</pdfvmeta:GTS_PDFVT>
+      <pdfvmeta:RecordID>${recordId}</pdfvmeta:RecordID>`;
+
+      let xmpContent = xmpMetadata;
+      for (const [key, field] of Object.entries(pdfvtOptions.mapping) as [string, string][]) {
+        if (key !== 'RecordID' && input[field]) {
+          const value = String(input[field]).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          xmpContent += `\n      <pdfvmeta:${key}>${value}</pdfvmeta:${key}>`;
+        }
+      }
+
+      xmpContent += `
+    </rdf:Description>
+  </rdf:RDF>
+</x:xmpmeta>
+<?xpacket end="w"?>`;
+
+      const xmpStream = pdfDoc.context.stream(xmpContent, { Type: 'Metadata', Subtype: 'XML' });
+      const xmpStreamRef = pdfDoc.context.register(xmpStream);
+      dpartNode.set(pdfLib.PDFName.of('Metadata'), xmpStreamRef);
+
+      dpartRoot.addChild(dpartNode);
+      for (const page of pagesForInput) {
+        page.setDPart(dpartNode);
+      }
+    }
   }
 
   postProcessing({ pdfDoc, options });
+
+  if (pdfvtOptions?.enabled) {
+    // Re-apply PDF/X-4 required Info dict fields after postProcessing
+    pdfDoc.setTitle(vtTitle);
+    // /Trapped /False — PDF/X-4 §4.2.1
+    (pdfDoc as unknown as { getInfoDict(): pdfLib.PDFDict }).getInfoDict()
+      .set(pdfLib.PDFName.of('Trapped'), pdfLib.PDFName.of('False'));
+
+    const dpartRootEntry = pdfDoc.catalog.get(pdfLib.PDFName.of("DPartRoot")) || pdfDoc.catalog.get(pdfLib.PDFName.of("DPart"));
+    if (dpartRootEntry) {
+      pdfDoc.catalog.set(pdfLib.PDFName.of("DPartRoot"), dpartRootEntry);
+    }
+  }
 
   return pdfDoc.save();
 };

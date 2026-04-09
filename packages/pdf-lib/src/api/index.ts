@@ -18,3 +18,4 @@ export { default as PDFPage } from './PDFPage';
 export { default as PDFEmbeddedPage } from './PDFEmbeddedPage';
 export { default as PDFJavaScript } from './PDFJavaScript';
 export type { default as Embeddable } from './Embeddable';
+export { default as PDFDPart } from '../core/structures/PDFDPart';

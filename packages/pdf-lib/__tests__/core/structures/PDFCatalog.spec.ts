@@ -2,6 +2,7 @@ import {
   PDFCatalog,
   PDFContext,
   PDFDict,
+  PDFDPart,
   PDFName,
   PDFPageLeaf,
   PDFPageTree,
@@ -76,6 +77,39 @@ describe(`PDFCatalog`, () => {
     expect(insertionRef).toBe(pageTreeRef1);
     expect(pageTree1.Kids().get(1)).toBe(leafRef2);
     expect(pageTree1.Kids().get(2)).toBe(newLeafRef);
+  });
+
+  it(`can create a DPart root`, () => {
+    const context = PDFContext.create();
+    const pagesRef = PDFRef.of(21);
+    const catalog = PDFCatalog.withContextAndPages(context, pagesRef);
+
+    expect(catalog.getDPart()).toBeUndefined();
+
+    const dpart = catalog.getOrCreateDPart();
+    expect(dpart).toBeInstanceOf(PDFDPart);
+    expect(catalog.get(PDFName.of('DPartRoot'))).toBeDefined();
+  });
+
+  it(`getOrCreateDPart returns existing DPart on second call`, () => {
+    const context = PDFContext.create();
+    const pagesRef = PDFRef.of(21);
+    const catalog = PDFCatalog.withContextAndPages(context, pagesRef);
+
+    const dpart1 = catalog.getOrCreateDPart();
+    const dpart2 = catalog.getOrCreateDPart();
+    expect(dpart1).toBe(dpart2);
+  });
+
+  it(`setXMP creates a metadata stream`, () => {
+    const context = PDFContext.create();
+    const pagesRef = PDFRef.of(21);
+    const catalog = PDFCatalog.withContextAndPages(context, pagesRef);
+
+    catalog.setXMP('<x:xmpmeta>test</x:xmpmeta>');
+
+    const metadataRef = catalog.get(PDFName.of('Metadata'));
+    expect(metadataRef).toBeDefined();
   });
 
   it(`can remove leaf nodes`, () => {

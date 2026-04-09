@@ -3,6 +3,7 @@ import PDFName from '../objects/PDFName';
 import PDFRef from '../objects/PDFRef';
 import PDFContext from '../PDFContext';
 import PDFPageTree from './PDFPageTree';
+import PDFDPart from './PDFDPart';
 import { PDFAcroForm } from '../acroform';
 import ViewerPreferences from '../interactive/ViewerPreferences';
 
@@ -60,13 +61,32 @@ class PDFCatalog extends PDFDict {
     return viewerPrefs;
   }
 
-  /**
-   * Inserts the given ref as a leaf node of this catalog's page tree at the
-   * specified index (zero-based). Also increments the `Count` of each node in
-   * the page tree hierarchy to accomodate the new page.
-   *
-   * Returns the ref of the PDFPageTree node into which `leafRef` was inserted.
-   */
+  DPart(): PDFDPart | undefined {
+    return this.lookupMaybe(PDFName.of('DPartRoot'), PDFDict) as PDFDPart | undefined;
+  }
+
+  getDPart(): PDFDPart | undefined {
+    const dict = this.DPart();
+    if (!dict) return undefined;
+    return dict as PDFDPart;
+  }
+
+  getOrCreateDPart(): PDFDPart {
+    let dpart = this.getDPart();
+    if (!dpart) {
+      dpart = PDFDPart.withContext(this.context, undefined, true);
+      const dpartRef = this.context.register(dpart);
+      this.set(PDFName.of('DPartRoot'), dpartRef);
+    }
+    return dpart;
+  }
+
+  setXMP(xmp: string): void {
+    const xmpStream = this.context.stream(xmp, { Type: 'Metadata', Subtype: 'XML' });
+    const xmpRef = this.context.register(xmpStream);
+    this.set(PDFName.of('Metadata'), xmpRef);
+  }
+
   insertLeafNode(leafRef: PDFRef, index: number): PDFRef {
     const pagesRef = this.get(PDFName.of('Pages')) as PDFRef;
     const maybeParentRef = this.Pages().insertLeafNode(leafRef, index);

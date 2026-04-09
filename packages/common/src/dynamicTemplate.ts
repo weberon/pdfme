@@ -286,6 +286,17 @@ export const getDynamicTemplate = async (
       }
     }
 
+    // If no schema on this page grew dynamically, preserve the original layout.
+    const pageHasDynamicGrowth = items.some(
+      (item) =>
+        item.dynamicHeights.length > 1 ||
+        Math.abs(item.dynamicHeights[0] - item.height) > EPSILON,
+    );
+    if (!pageHasDynamicGrowth) {
+      resultPages.push([...pageSchemas]);
+      continue;
+    }
+
     // Process all pages independently (no cross-page offset propagation)
     const processedPages = processDynamicPage(items, orderMap, contentHeight, paddingTop);
     resultPages.push(...processedPages);
