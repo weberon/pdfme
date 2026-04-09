@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useContext, useMemo } from 'react';
 import {
   Template,
   SchemaForUI,
@@ -7,7 +7,7 @@ import {
   getDynamicTemplate,
   replacePlaceholders,
 } from '@pdfme/common';
-import { getDynamicHeightsForTable } from '@pdfme/schemas/tables';
+import { getDynamicHeightsForTable } from '@pdfme/schemas/utils';
 import UnitPager from './UnitPager.js';
 import Root from './Root.js';
 import StaticSchema from './StaticSchema.js';
@@ -16,11 +16,42 @@ import CtlBar from './CtlBar.js';
 import Paper from './Paper.js';
 import Renderer from './Renderer.js';
 import { useUIPreProcessor, useScrollPageCursor } from '../hooks.js';
-import { FontContext, OptionsContext } from '../contexts.js';
+import { FontContext, OptionsContext, CacheContext } from '../contexts.js';
 import { template2SchemasList, getPagesScrollTopByIndex, useMaxZoom } from '../helper.js';
 import { theme } from 'antd';
 
-const _cache = new Map<string | number, unknown>();
+
+const RendererItem = React.memo(({ schema, value, mode, placeholder, tabIndex, outline, scale, index, basePdf, onChange }: {
+  schema: SchemaForUI;
+  value: string;
+  mode: 'viewer' | 'form';
+  placeholder?: string;
+  tabIndex: number;
+  outline: string;
+  scale: number;
+  index: number;
+  basePdf: any; // Use any to avoid stubborn type mismatches with complex Template union
+  onChange: (arg: { key: string; value: unknown } | { key: string; value: unknown }[], schema: SchemaForUI) => void;
+}) => {
+  const _onChange = React.useCallback((arg: { key: string; value: unknown } | { key: string; value: unknown }[]) => {
+    onChange(arg, schema);
+  }, [onChange, schema]);
+
+  return (
+    <Renderer
+      key={schema.id}
+      schema={schema}
+      basePdf={basePdf}
+      value={value}
+      mode={mode}
+      placeholder={placeholder}
+      tabIndex={tabIndex}
+      outline={outline}
+      scale={scale}
+      onChange={_onChange}
+    />
+  );
+});
 
 const Preview = ({
   template,
@@ -37,6 +68,7 @@ const Preview = ({
 
   const font = useContext(FontContext);
   const options = useContext(OptionsContext);
+  const _cache = useContext(CacheContext);
   const maxZoom = useMaxZoom();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,6 +78,28 @@ const Preview = ({
   const [pageCursor, setPageCursor] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(options.zoomLevel ?? 1);
   const [schemasList, setSchemasList] = useState<SchemaForUI[][]>([[]] as SchemaForUI[][]);
+
+  // Structural fingerprint: changes only when template layout/content changes,
+  // NOT when cosmetic highlight properties (borderColor, backgroundColor, variableStyles) change.
+  const templateStructureKey = useMemo(() => {
+    return JSON.stringify({
+      basePdfId: typeof template.basePdf === 'string' ? template.basePdf.length : JSON.stringify(template.basePdf),
+      schemas: template.schemas.map(page =>
+        page.map(s => ({
+          n: s.name,
+          t: s.type,
+          x: s.position?.x,
+          y: s.position?.y,
+          w: s.width,
+          h: s.height,
+          c: s.content,
+          ro: s.readOnly,
+        }))
+      ),
+    });
+  }, [template]);
+
+  const prevStructureKeyRef = useRef<string>('');
 
   const { backgrounds, pageSizes, scale, error, refresh } = useUIPreProcessor({
     template,
@@ -57,36 +111,10 @@ const Preview = ({
   const isForm = Boolean(onChangeInput);
 
   const input = inputs[unitCursor];
-  const latestFontRef = useRef(font);
-  const latestInputRef = useRef(input);
-  const latestRefreshRef = useRef(refresh);
-  const isMountedRef = useRef(true);
-  const initRequestIdRef = useRef(0);
 
-  useEffect(() => {
-    latestFontRef.current = font;
-  }, [font]);
-
-  useEffect(() => {
-    latestInputRef.current = input;
-  }, [input]);
-
-  useEffect(() => {
-    latestRefreshRef.current = refresh;
-  }, [refresh]);
-
-  useEffect(
-    () => () => {
-      isMountedRef.current = false;
-    },
-    [],
-  );
-
-  const init = useCallback((template: Template, inputOverride?: Record<string, string>) => {
-    const requestId = ++initRequestIdRef.current;
-    const currentInput = inputOverride ?? latestInputRef.current;
-    const options = { font: latestFontRef.current };
-    const currentRefresh = latestRefreshRef.current;
+  const init = (template: Template, inputOverride?: Record<string, string>) => {
+    const currentInput = inputOverride ?? input;
+    const options = { font };
     getDynamicTemplate({
       template,
       input: currentInput,
@@ -103,28 +131,75 @@ const Preview = ({
     })
       .then(async (dynamicTemplate) => {
         const sl = await template2SchemasList(dynamicTemplate);
-        if (!isMountedRef.current || requestId !== initRequestIdRef.current) {
-          return;
-        }
         setSchemasList(sl);
-        await currentRefresh(dynamicTemplate);
+        await refresh(dynamicTemplate);
       })
       .catch((err) => console.error(`[@pdfme/ui] `, err));
-  }, []);
+  };
 
+  // Update component state only when _options_ changes
+  // Ignore exhaustive useEffect dependency warnings here
   useEffect(() => {
-    if (typeof options.zoomLevel === 'number') {
+    if (typeof options.zoomLevel === 'number' && options.zoomLevel !== zoomLevel) {
       setZoomLevel(options.zoomLevel);
     }
-  }, [options.zoomLevel]);
+    // eslint-disable-next-line
+  }, [options]);
 
+  // Full re-initialization ONLY when template STRUCTURE or viewport size changes.
+  // Cosmetic changes (highlighting) update schemasList styles in-place without expensive init().
+  useEffect(() => {
+    if (templateStructureKey !== prevStructureKeyRef.current) {
+      // Structural change (new template loaded, schema added/removed, position changed)
+      prevStructureKeyRef.current = templateStructureKey;
+      init(template);
+    } else {
+      // Cosmetic-only change (highlight border/background/variableStyles)
+      // Copy style props from the new template schemas onto existing schemasList entries.
+      setSchemasList(prev => {
+        if (!prev || prev.length === 0 || prev[0].length === 0) return prev;
+        return prev.map((page, pageIdx) =>
+          page.map((schema, schemaIdx) => {
+            const source = (template.schemas[pageIdx]?.[schemaIdx]) as any;
+            if (!source) return schema;
+            
+            // Optimization: If cosmetic properties haven't changed, return the existing schema object
+            // to preserve its identity and avoid redundant re-renders of the Renderer.
+            const s = schema as any;
+            if (
+              s.borderWidth === source.borderWidth &&
+              s.borderColor === source.borderColor &&
+              s.backgroundColor === source.backgroundColor &&
+              s.variableStyles === source.variableStyles &&
+              s.borderPadding === source.borderPadding
+            ) {
+              return schema;
+            }
+
+            return {
+              ...schema,
+              borderWidth: source.borderWidth,
+              borderColor: source.borderColor,
+              backgroundColor: source.backgroundColor,
+              variableStyles: source.variableStyles,
+              borderPadding: source.borderPadding,
+            };
+
+          })
+        );
+      });
+    }
+    // eslint-disable-next-line
+  }, [template, size]);
+
+  // Keep unitCursor in bounds when the number of inputs shrinks (e.g. after a unit is deleted).
+  // This does NOT re-initialize the canvas — only bounds-checks the cursor.
   useEffect(() => {
     if (unitCursor > inputs.length - 1) {
       setUnitCursor(inputs.length - 1);
-      return;
     }
-    init(template);
-  }, [init, inputs, size, template, unitCursor]);
+    // eslint-disable-next-line
+  }, [inputs]);
 
   useScrollPageCursor({
     ref: containerRef,
@@ -173,6 +248,14 @@ const Preview = ({
     setSchemasList([...schemasList]);
   };
 
+  const handleOnChangeRendererStable = React.useCallback(
+    (arg: { key: string; value: unknown } | { key: string; value: unknown }[], schema: SchemaForUI) => {
+      const args = Array.isArray(arg) ? arg : [arg];
+      handleOnChangeRenderer(args, schema);
+    },
+    [handleOnChangeRenderer],
+  );
+
   if (error) {
     return <ErrorScreen size={size} error={error} />;
   }
@@ -211,28 +294,26 @@ const Preview = ({
           renderSchema={({ schema, index }) => {
             const value = schema.readOnly
               ? replacePlaceholders({
-                  content: schema.content || '',
-                  variables: { ...input, totalPages: schemasList.length, currentPage: index + 1 },
-                  schemas: schemasList,
-                })
+                content: schema.content || '',
+                variables: { ...input, totalPages: schemasList.length, currentPage: index + 1 },
+                schemas: schemasList,
+              })
               : String((input && input[schema.name]) || '');
             return (
-              <Renderer
+              <RendererItem
                 key={schema.id}
                 schema={schema}
-                basePdf={template.basePdf}
                 value={value}
                 mode={isForm ? 'form' : 'viewer'}
                 placeholder={schema.content}
                 tabIndex={index + 100}
-                onChange={(arg) => {
-                  const args = Array.isArray(arg) ? arg : [arg];
-                  handleOnChangeRenderer(args, schema);
-                }}
+                onChange={handleOnChangeRendererStable}
                 outline={
                   isForm && !schema.readOnly ? `1px dashed ${token.colorPrimary}` : 'transparent'
                 }
                 scale={scale}
+                index={index}
+                basePdf={template.basePdf}
               />
             );
           }}

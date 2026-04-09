@@ -36,23 +36,50 @@ type ReRenderCheckProps = {
   options: UIOptions;
 };
 
-const useRenderKey = (arg: ReRenderCheckProps) => {
+const useRerenderDependencies = (arg: ReRenderCheckProps) => {
   const { plugin, value, mode, scale, schema, options } = arg;
-  const _options = cloneDeep(options);
-  if (_options.font) {
-    Object.values(_options.font).forEach((fontObj) => {
-      (fontObj as { data: string }).data = '...';
-    });
-  }
-  const optionStr = JSON.stringify(_options);
+
+  // Compute a stable, font-data-stripped options string.
+  // This is memoized separately so it ONLY recomputes when options itself changes.
+  const optionStr = useMemo(() => {
+    const _options = cloneDeep(options);
+    if (_options.font) {
+      Object.values(_options.font).forEach((fontObj) => {
+        (fontObj as { data: string }).data = '...';
+      });
+    }
+    return JSON.stringify(_options);
+  }, [options]);
+
+  // Memoize the schema stringification to avoid repeating it on every single render
+  // if the schema object identity hasn't changed.
+  // Cosmetic highlight properties (borderColor, backgroundColor, etc.) are appended
+  // separately so they are never lost to fingerprint truncation of large schemas.
+  const schemaStr = useMemo(() => {
+    const str = JSON.stringify(schema);
+    const base = str.length > 256 ? `${str.length}:${str.slice(0, 32)}:${str.slice(-32)}` : str;
+    const s = schema as any;
+    return `${base}|${s.borderWidth ?? ''}|${s.borderColor ?? ''}|${s.backgroundColor ?? ''}|${s.borderPadding ?? ''}|${JSON.stringify(s.variableStyles ?? '')}`;
+  }, [schema]);
 
   return useMemo(() => {
     if (plugin?.uninterruptedEditMode && mode === 'designer') {
-      return mode;
+      return [mode];
     } else {
-      return JSON.stringify([value, mode, scale, schema, optionStr]);
+      // Fingerprint 'value' if it's large to avoid allocating multi-MB dependency strings.
+      const fingerprintValue = value.length > 256
+        ? `${value.length}:${value.slice(0, 32)}:${value.slice(-32)}`
+        : value;
+
+      return [
+        fingerprintValue,
+        mode,
+        scale,
+        schemaStr,
+        optionStr
+      ];
     }
-  }, [value, mode, scale, schema, optionStr, plugin]);
+  }, [value, mode, scale, schemaStr, optionStr, plugin]);
 };
 
 const Wrapper = ({
@@ -110,41 +137,8 @@ const Renderer = (props: RendererProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const _cache = useContext(CacheContext);
   const plugin = pluginsRegistry.findByType(schema.type);
-  const renderArgsRef = useRef({
-    plugin,
-    value,
-    schema,
-    basePdf,
-    mode,
-    onChange,
-    stopEditing,
-    tabIndex,
-    placeholder,
-    options,
-    theme,
-    i18n,
-    scale,
-    _cache,
-  });
 
-  renderArgsRef.current = {
-    plugin,
-    value,
-    schema,
-    basePdf,
-    mode,
-    onChange,
-    stopEditing,
-    tabIndex,
-    placeholder,
-    options,
-    theme,
-    i18n,
-    scale,
-    _cache,
-  };
-
-  const renderKey = useRenderKey({
+  const reRenderDependencies = useRerenderDependencies({
     plugin,
     value,
     mode,
@@ -154,47 +148,34 @@ const Renderer = (props: RendererProps) => {
   });
 
   useEffect(() => {
-    const element = ref.current;
-    const renderArgs = renderArgsRef.current;
-    if (!renderArgs.plugin?.ui || !element || !schema.type) return;
+    if (!plugin?.ui || !ref.current || !schema.type) return;
 
-    let cancelled = false;
-    element.innerHTML = '';
-    element.dataset.pdfmeRenderReady = 'false';
-    const render = renderArgs.plugin.ui;
+    ref.current.innerHTML = '';
+    const render = plugin.ui;
 
-    void Promise.resolve(
-      render({
-        value: renderArgs.value,
-        schema: renderArgs.schema,
-        basePdf: renderArgs.basePdf,
-        rootElement: element,
-        mode: renderArgs.mode,
-        onChange: renderArgs.onChange,
-        stopEditing: renderArgs.stopEditing,
-        tabIndex: renderArgs.tabIndex,
-        placeholder: renderArgs.placeholder,
-        options: renderArgs.options,
-        theme: renderArgs.theme,
-        i18n: renderArgs.i18n,
-        scale: renderArgs.scale,
-        _cache: renderArgs._cache,
-      }),
-    ).finally(() => {
-      if (!cancelled) {
-        element.dataset.pdfmeRenderReady = 'true';
-      }
+    void render({
+      value,
+      schema,
+      basePdf,
+      rootElement: ref.current,
+      mode,
+      onChange,
+      stopEditing,
+      tabIndex,
+      placeholder,
+      options,
+      theme,
+      i18n,
+      scale,
+      _cache,
     });
 
     return () => {
-      cancelled = true;
-      if (element) {
-        element.dispatchEvent(new Event('beforeRemove'));
-        element.innerHTML = '';
-        delete element.dataset.pdfmeRenderReady;
+      if (ref.current) {
+        ref.current.innerHTML = '';
       }
     };
-  }, [renderKey, schema.type]);
+  }, reRenderDependencies);
 
   if (!plugin) {
     console.error(`[@pdfme/ui] Renderer for type ${schema.type} not found. 
@@ -208,4 +189,19 @@ Check this document: https://pdfme.com/docs/custom-schemas`);
     </Wrapper>
   );
 };
-export default Renderer;
+export default React.memo(Renderer, (prevProps, nextProps) => {
+  // Deep equality check for stable Renderer re-renders.
+  // This prevents the entire Renderer body from executing (including useMemo hooks)
+  // unless a relevant property has changed.
+  return (
+    prevProps.value === nextProps.value &&
+    prevProps.mode === nextProps.mode &&
+    prevProps.scale === nextProps.scale &&
+    prevProps.outline === nextProps.outline &&
+    prevProps.selectable === nextProps.selectable &&
+    // Schema is typically modified in-place or replaced. 
+    // If it's the same object and other props match, we skip re-render.
+    prevProps.schema === nextProps.schema &&
+    prevProps.basePdf === nextProps.basePdf
+  );
+});

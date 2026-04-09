@@ -8,7 +8,6 @@ import {
 import { isEditable } from '../utils.js';
 import { getFontKitFont } from '../text/helper.js';
 import { substituteVariables } from './helper.js';
-import { countUniqueVariableNames, getVariableIndices } from './variables.js';
 
 export const uiRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
   const { value, schema, rootElement, mode, onChange, ...rest } = arg;
@@ -18,6 +17,11 @@ export const uiRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
 
   if (mode === 'form' && numVariables > 0) {
     await formUiRender(arg);
+    return;
+  }
+
+  if (mode === 'viewer' && schema.variableStyles) {
+    await styledViewerRender(arg);
     return;
   }
 
@@ -60,26 +64,12 @@ export const uiRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
   }
 };
 
-const formUiRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
-  const { value, schema, rootElement, onChange, stopEditing, theme, _cache, options } = arg;
+const styledViewerRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
+  const { value, schema, rootElement, options, _cache } = arg;
   const rawText = schema.text;
-
-  if (rootElement.parentElement) {
-    // remove the outline for the whole schema, we'll apply outlines on each individual variable field instead
-    rootElement.parentElement.style.outline = '';
-  }
-
-  let variables: Record<string, string> = {};
-  if (value) {
-    try {
-      const parsed = JSON.parse(value);
-      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-        variables = parsed as Record<string, string>;
-      }
-    } catch {
-      // value is not valid JSON — use empty variables
-    }
-  }
+  const variables: Record<string, string> = value
+    ? (JSON.parse(value) as Record<string, string>) || {}
+    : {};
   const variableIndices = getVariableIndices(rawText);
   const substitutedText = substituteVariables(rawText, variables);
   const font = options?.font || getDefaultFont();
@@ -90,23 +80,87 @@ const formUiRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
   );
 
   const textBlock = buildStyledTextContainer(arg, fontKitFont, substitutedText);
+  textBlock.innerHTML = ''; // Clear because buildStyledTextContainer might have filled it
+
+  const styles: Record<string, any> = schema.variableStyles || {};
+
+  let inVarString = false;
+  for (let i = 0; i < rawText.length; i++) {
+    if (variableIndices[i]) {
+      inVarString = true;
+      const varName = variableIndices[i];
+      let span = document.createElement('span');
+      span.dataset.pdfmeVarName = varName;
+      if (styles[varName]) {
+        Object.assign(span.style, styles[varName]);
+        if (!styles[varName].borderRadius) span.style.borderRadius = '2px';
+        if (!styles[varName].padding) span.style.padding = '0 2px';
+      }
+      span.textContent = variables[varName] || '';
+      textBlock.appendChild(span);
+    } else if (inVarString) {
+      if (rawText[i] === '}') {
+        inVarString = false;
+      }
+    } else {
+      let span = document.createElement('span');
+      span.textContent = rawText[i];
+      textBlock.appendChild(span);
+    }
+  }
+};
+
+const formUiRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
+  const { value, schema, rootElement, onChange, stopEditing, theme, _cache, options } = arg;
+  const rawText = schema.text;
+
+  if (rootElement.parentElement) {
+    // remove the outline for the whole schema, we'll apply outlines on each individual variable field instead
+    rootElement.parentElement.style.outline = '';
+  }
+
+  const variables: Record<string, string> = value
+    ? (JSON.parse(value) as Record<string, string>) || {}
+    : {};
+  const variableIndices = getVariableIndices(rawText);
+  const substitutedText = substituteVariables(rawText, variables);
+  const font = options?.font || getDefaultFont();
+  const fontKitFont = await getFontKitFont(
+    schema.fontName,
+    font,
+    _cache as Map<string, import('fontkit').Font>,
+  );
+
+  const textBlock = buildStyledTextContainer(arg, fontKitFont, substitutedText);
+  textBlock.innerHTML = '';
+
+  const styles: Record<string, any> = schema.variableStyles || {};
 
   // Construct content-editable spans for each variable within the string
   let inVarString = false;
 
   for (let i = 0; i < rawText.length; i++) {
-    const variableName = variableIndices.get(i);
-
-    if (variableName) {
+    if (variableIndices[i]) {
       inVarString = true;
+      const varName = variableIndices[i];
       let span = document.createElement('span');
-      span.style.outline = `${theme.colorPrimary} dashed 1px`;
+      span.dataset.pdfmeVarName = varName;
+      
+      if (styles[varName]) {
+        Object.assign(span.style, styles[varName]);
+        if (!styles[varName].outline) span.style.outline = `${theme.colorPrimary} dashed 1px`;
+        if (!styles[varName].borderRadius) span.style.borderRadius = '2px';
+        if (!styles[varName].padding) span.style.padding = '0 2px';
+      } else {
+        span.style.outline = `${theme.colorPrimary} dashed 1px`;
+      }
+
       makeElementPlainTextContentEditable(span);
-      span.textContent = variables[variableName];
+      span.textContent = variables[varName] || '';
       span.addEventListener('blur', (e: Event) => {
         const newValue = (e.target as HTMLSpanElement).textContent || '';
-        if (newValue !== variables[variableName]) {
-          variables[variableName] = newValue;
+        if (newValue !== variables[varName]) {
+          variables[varName] = newValue;
           if (onChange) onChange({ key: 'content', value: JSON.stringify(variables) });
           if (stopEditing) stopEditing();
         }
@@ -123,6 +177,30 @@ const formUiRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
       textBlock.appendChild(span);
     }
   }
+};
+
+const getVariableIndices = (content: string) => {
+  const regex = /\{([^}]+)}/g;
+  const indices = [];
+  let match;
+
+  while ((match = regex.exec(content)) !== null) {
+    indices[match.index] = match[1];
+  }
+
+  return indices;
+};
+
+const countUniqueVariableNames = (content: string) => {
+  const regex = /\{([^}]+)}/g;
+  const uniqueMatchesSet = new Set();
+  let match;
+
+  while ((match = regex.exec(content)) !== null) {
+    uniqueMatchesSet.add(match[1]);
+  }
+
+  return uniqueMatchesSet.size;
 };
 
 /**

@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
 import { createRoot, Root } from 'react-dom/client';
+import type { ReactNode } from 'react';
 import { DESTROYED_ERR_MSG, DEFAULT_LANG } from './constants.js';
 import { debounce } from './helper.js';
 import {
@@ -20,16 +20,15 @@ import {
   checkPreviewProps,
   pluginRegistry,
 } from '@pdfme/common';
-import { builtInPlugins } from '@pdfme/schemas/builtins';
+import { builtInPlugins } from '@pdfme/schemas';
 
 export abstract class BaseUIClass {
   protected domContainer!: HTMLElement | null;
+  private reactRoot: Root | null = null;
 
   protected template!: Template;
 
   protected size!: Size;
-
-  private reactRoot: Root | null = null;
 
   private lang: Lang = DEFAULT_LANG;
 
@@ -68,20 +67,25 @@ export abstract class BaseUIClass {
     this.domContainer = domContainer;
     this.template = cloneDeep(template);
     this.options = options;
-    const container = this.domContainer;
     this.size = {
-      height: container.clientHeight || window.innerHeight,
-      width: container.clientWidth || window.innerWidth,
+      height: this.domContainer.clientHeight || window.innerHeight,
+      width: this.domContainer.clientWidth || window.innerWidth,
     };
-    this.resizeObserver.observe(container);
+    this.resizeObserver.observe(this.domContainer);
 
     const { lang, font } = options;
     if (lang) {
       this.lang = lang;
     }
-    if (font) {
-      this.font = font;
+    
+    // Merge template-embedded fonts with options fonts (options fonts take precedence)
+    let mergedFont = this.font;
+    if (this.template.fonts) {
+      mergedFont = { ...this.template.fonts, ...font };
+    } else if (font) {
+      mergedFont = font;
     }
+    this.font = mergedFont;
 
     if (Object.values(plugins).length > 0) {
       this.pluginsRegistry = pluginRegistry(plugins);
@@ -164,12 +168,18 @@ export abstract class PreviewUI extends BaseUIClass {
     return this.inputs;
   }
 
+  // Debounced render for setInputs: rapid keystrokes (live typing) are batched
+  // into a single React reconciliation per animation frame (~16ms).
+  // All other render callers (updateTemplate, updateOptions, resize) use render()
+  // directly so they remain immediate.
+  private readonly _renderDebounced = debounce(() => this.render(), 16);
+
   public setInputs(inputs: { [key: string]: string }[]) {
     if (!this.domContainer) throw Error(DESTROYED_ERR_MSG);
     checkInputs(inputs);
 
     this.inputs = convertToStingObjectArray(inputs);
-    this.render();
+    this._renderDebounced();
   }
 
   protected abstract render(): void;
