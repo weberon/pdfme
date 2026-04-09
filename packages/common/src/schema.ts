@@ -123,11 +123,22 @@ const Uint8ArraySchema: z.ZodSchema<Uint8Array<ArrayBuffer>> = z
   .any()
   .refine((v) => v instanceof Uint8Array && v.buffer instanceof ArrayBuffer);
 
+export const BoxOffsets = z.object({
+  bleed: z.number().nonnegative().optional(),
+  media: z.number().nonnegative().optional(),
+  trim:  z.number().nonnegative().optional(),
+  art:   z.number().nonnegative().optional(),
+}).refine(
+  (o) => (o.media === undefined || o.bleed === undefined || o.media >= o.bleed),
+  { message: 'boxOffsets.media must be >= boxOffsets.bleed (MediaBox must contain BleedBox)' }
+).optional();
+
 export const BlankPdf = z.object({
   width: z.number(),
   height: z.number(),
   padding: z.tuple([z.number(), z.number(), z.number(), z.number()]),
   staticSchema: z.array(Schema).optional(),
+  boxOffsets: BoxOffsets,
 });
 
 export const CustomPdf = z.union([z.string(), ArrayBufferSchema, Uint8ArraySchema]);
