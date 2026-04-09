@@ -39,10 +39,6 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
   let dpartRoot: pdfLib.PDFDPart | undefined;
   const pdfvtOptions = (template as any).pdfvtOptions;
 
-  // Convert pdfvtOptions.colorSpace to options.colorType for rendering
-  if (pdfvtOptions?.colorSpace) {
-    options.colorType = pdfvtOptions.colorSpace.toLowerCase() as 'rgb' | 'cmyk';
-  }
   // Computed once; used in XMP and re-applied to Info dict after postProcessing.
   const vtTitle = (options as Record<string, unknown>).title as string | undefined
     || 'PDF/VT Document';
