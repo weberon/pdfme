@@ -25,7 +25,7 @@ export const getEmbedPdfPages = async (arg: { template: Template; pdfDoc: PDFDoc
   let embedPdfBoxes: EmbedPdfBox[] = [];
 
   if (isBlankPdf(basePdf)) {
-    const { width: _width, height: _height } = basePdf;
+    const { width: _width, height: _height, boxOffsets } = basePdf;
     const width = mm2pt(_width);
     const height = mm2pt(_height);
     basePages = schemas.map(() => {
@@ -33,10 +33,19 @@ export const getEmbedPdfPages = async (arg: { template: Template; pdfDoc: PDFDoc
       page.setSize(width, height);
       return page;
     });
+
+    const bleed = boxOffsets?.bleed !== undefined ? mm2pt(boxOffsets.bleed) : 0;
+    const media = boxOffsets?.media !== undefined ? mm2pt(boxOffsets.media) : bleed;
+    const trim  = boxOffsets?.trim  !== undefined ? mm2pt(boxOffsets.trim)  : 0;
+    const art   = boxOffsets?.art   !== undefined ? mm2pt(boxOffsets.art)   : undefined;
+
     embedPdfBoxes = schemas.map(() => ({
-      mediaBox: { x: 0, y: 0, width, height },
-      bleedBox: { x: 0, y: 0, width, height },
-      trimBox: { x: 0, y: 0, width, height },
+      mediaBox: { x: -media,        y: -media,        width: width + 2 * media,        height: height + 2 * media },
+      bleedBox: { x: -bleed,        y: -bleed,        width: width + 2 * bleed,        height: height + 2 * bleed },
+      trimBox:  { x: trim,          y: trim,          width: width - 2 * trim,          height: height - 2 * trim },
+      artBox:   art !== undefined
+        ? { x: trim + art, y: trim + art, width: width - 2 * (trim + art), height: height - 2 * (trim + art) }
+        : undefined,
     }));
   } else {
     const willLoadPdf = await getB64BasePdf(basePdf);
@@ -162,10 +171,13 @@ export const insertPage = (arg: {
 
   if (basePage instanceof PDFEmbeddedPage) {
     insertedPage.drawPage(basePage);
-    const { mediaBox, bleedBox, trimBox } = embedPdfBox;
-    insertedPage.setMediaBox(mediaBox.x, mediaBox.y, mediaBox.width, mediaBox.height);
-    insertedPage.setBleedBox(bleedBox.x, bleedBox.y, bleedBox.width, bleedBox.height);
-    insertedPage.setTrimBox(trimBox.x, trimBox.y, trimBox.width, trimBox.height);
+  }
+  const { mediaBox, bleedBox, trimBox, artBox } = embedPdfBox;
+  insertedPage.setMediaBox(mediaBox.x, mediaBox.y, mediaBox.width, mediaBox.height);
+  insertedPage.setBleedBox(bleedBox.x, bleedBox.y, bleedBox.width, bleedBox.height);
+  insertedPage.setTrimBox(trimBox.x, trimBox.y, trimBox.width, trimBox.height);
+  if (artBox) {
+    insertedPage.setArtBox(artBox.x, artBox.y, artBox.width, artBox.height);
   }
 
   return insertedPage;
