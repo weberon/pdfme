@@ -38,7 +38,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
   // PDF/VT-1 setup — only activates when template.pdfvtOptions is present.
   // Templates without pdfvtOptions produce normal PDFs with no DPart/XMP/OutputIntent.
   let dpartRoot: pdfLib.PDFDPart | undefined;
-  const pdfvtOptions = (template as any).pdfvtOptions;
+  const pdfvtOptions = template.pdfvtOptions;
 
   // Computed once; used in XMP and re-applied to Info dict after postProcessing.
   const vtTitle = (options as Record<string, unknown>).title as string | undefined
