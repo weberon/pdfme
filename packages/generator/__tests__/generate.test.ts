@@ -1,6 +1,6 @@
 import generate from '../src/generate.js';
 import { Template, BLANK_PDF, Schema } from '@pdfme/common';
-import { PDFDocument, PDFName, PDFArray, PDFDict } from '@pdfme/pdf-lib';
+import { PDFDocument, PDFName, PDFArray, PDFDict, PDFStream, PDFBool } from '@pdfme/pdf-lib';
 import { getFont, getImageSnapshotOptions, pdfToImages } from './utils.js';
 
 describe('generate integrate test', () => {
@@ -406,6 +406,93 @@ Check this document: https://pdfme.com/docs/custom-fonts`
       expect(dpartRoot).toBeDefined();
     });
 
+    test('tags embedded page Form XObjects with GTS_PDFVTCached when using customPdf', async () => {
+      // Create a small custom PDF to use as basePdf (must draw something so Contents exists)
+      const basePdfDoc = await PDFDocument.create();
+      const page = basePdfDoc.addPage([200, 200]);
+      page.setTrimBox(10, 10, 180, 180);
+      page.drawRectangle({ x: 0, y: 0, width: 1, height: 1 });
+      const basePdfBytes = await basePdfDoc.save();
+      const basePdfBase64 = 'data:application/pdf;base64,' + Buffer.from(basePdfBytes).toString('base64');
+
+      const template: Template = {
+        basePdf: basePdfBase64,
+        schemas: [[textSchema('name')]],
+        pdfvtOptions: {
+          version: 'PDF/VT-1',
+          mapping: { RecordID: 'id' },
+        },
+      } as Template;
+
+      const inputs = [{ id: 'rec-1', name: 'Alice' }, { id: 'rec-2', name: 'Bob' }];
+      const pdf = await generate({ inputs, template, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+
+      // Find Form XObjects (embedded pages) in the output and verify GTS_PDFVTCached
+      const pages = pdfDoc.getPages();
+      let foundCachedXObject = false;
+
+      for (const p of pages) {
+        const resources = p.node.get(PDFName.of('Resources'));
+        if (!resources) continue;
+        const resourcesDict = pdfDoc.context.lookup(resources, PDFDict);
+        const xObjects = resourcesDict.get(PDFName.of('XObject'));
+        if (!xObjects) continue;
+        const xObjectsDict = pdfDoc.context.lookup(xObjects, PDFDict);
+
+        for (const [, ref] of xObjectsDict.entries()) {
+          const obj = pdfDoc.context.lookup(ref);
+          if (obj instanceof PDFStream) {
+            const subtype = obj.dict.get(PDFName.of('Subtype'));
+            if (subtype === PDFName.of('Form')) {
+              const cached = obj.dict.get(PDFName.of('GTS_PDFVTCached'));
+              if (cached === PDFBool.True) {
+                foundCachedXObject = true;
+              }
+            }
+          }
+        }
+      }
+
+      expect(foundCachedXObject).toBe(true);
+    });
+
+    test('does not tag Form XObjects with GTS_PDFVTCached when pdfvtOptions is absent', async () => {
+      const basePdfDoc = await PDFDocument.create();
+      const p = basePdfDoc.addPage([200, 200]);
+      p.drawRectangle({ x: 0, y: 0, width: 1, height: 1 });
+      const basePdfBytes = await basePdfDoc.save();
+      const basePdfBase64 = 'data:application/pdf;base64,' + Buffer.from(basePdfBytes).toString('base64');
+
+      const template: Template = {
+        basePdf: basePdfBase64,
+        schemas: [[textSchema('name')]],
+      };
+
+      const inputs = [{ name: 'Alice' }];
+      const pdf = await generate({ inputs, template, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const pages = pdfDoc.getPages();
+
+      for (const p of pages) {
+        const resources = p.node.get(PDFName.of('Resources'));
+        if (!resources) continue;
+        const resourcesDict = pdfDoc.context.lookup(resources, PDFDict);
+        const xObjects = resourcesDict.get(PDFName.of('XObject'));
+        if (!xObjects) continue;
+        const xObjectsDict = pdfDoc.context.lookup(xObjects, PDFDict);
+
+        for (const [, ref] of xObjectsDict.entries()) {
+          const obj = pdfDoc.context.lookup(ref);
+          if (obj instanceof PDFStream) {
+            const cached = obj.dict.get(PDFName.of('GTS_PDFVTCached'));
+            expect(cached).toBeUndefined();
+          }
+        }
+      }
+    });
   });
 
   describe('customPdf box propagation', () => {

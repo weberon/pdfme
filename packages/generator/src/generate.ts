@@ -118,6 +118,23 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
       pdfDoc,
     });
 
+    // PDF/VT: Tag embedded page Form XObjects with GTS_PDFVTCached so
+    // PDF/VT-aware RIPs can tile-cache the shared base page content.
+    if (pdfvtOptions) {
+      for (const basePage of basePages) {
+        if (basePage instanceof pdfLib.PDFEmbeddedPage) {
+          await basePage.embed();
+          const xObject = pdfDoc.context.lookup(basePage.ref);
+          if (xObject instanceof pdfLib.PDFStream) {
+            xObject.dict.set(
+              pdfLib.PDFName.of('GTS_PDFVTCached'),
+              pdfLib.PDFBool.True,
+            );
+          }
+        }
+      }
+    }
+
     const schemas = dynamicTemplate.schemas;
     // Create a type-safe array of schema names without using Set spread which requires downlevelIteration
     const schemaNameSet = new Set<string>();
