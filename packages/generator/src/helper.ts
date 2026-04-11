@@ -55,6 +55,7 @@ export const getEmbedPdfPages = async (arg: { template: Template; pdfDoc: PDFDoc
       mediaBox: p.getMediaBox(),
       bleedBox: p.getBleedBox(),
       trimBox: p.getTrimBox(),
+      artBox: p.getArtBox(),
     }));
     const boundingBoxes = embedPdfPages.map((p) => {
       const { x, y, width, height } = p.getMediaBox();

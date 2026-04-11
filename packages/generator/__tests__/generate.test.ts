@@ -405,5 +405,93 @@ Check this document: https://pdfme.com/docs/custom-fonts`
       const dpartRoot = catalog.get(PDFName.of('DPartRoot'));
       expect(dpartRoot).toBeDefined();
     });
+
+  });
+
+  describe('customPdf box propagation', () => {
+    const textSchema = (name: string): Schema => ({
+      name,
+      type: 'text',
+      content: '',
+      position: { x: 10, y: 10 },
+      width: 50,
+      height: 20,
+    });
+
+    test('propagates ArtBox from customPdf to output pages', async () => {
+      const basePdfDoc = await PDFDocument.create();
+      const page = basePdfDoc.addPage([300, 400]);
+      page.setMediaBox(0, 0, 300, 400);
+      page.setBleedBox(5, 5, 290, 390);
+      page.setTrimBox(10, 10, 280, 380);
+      page.setArtBox(20, 20, 260, 360);
+      page.drawRectangle({ x: 0, y: 0, width: 1, height: 1 });
+      const basePdfBytes = await basePdfDoc.save();
+      const basePdfBase64 = 'data:application/pdf;base64,' + Buffer.from(basePdfBytes).toString('base64');
+
+      const template: Template = {
+        basePdf: basePdfBase64,
+        schemas: [[textSchema('name')]],
+      };
+
+      const inputs = [{ name: 'Alice' }];
+      const pdf = await generate({ inputs, template, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const outputPage = pdfDoc.getPage(0);
+
+      const artBox = outputPage.getArtBox();
+      expect(artBox.x).toBeCloseTo(20, 0);
+      expect(artBox.y).toBeCloseTo(20, 0);
+      expect(artBox.width).toBeCloseTo(260, 0);
+      expect(artBox.height).toBeCloseTo(360, 0);
+    });
+
+    test('propagates all page boxes from customPdf to output pages', async () => {
+      const basePdfDoc = await PDFDocument.create();
+      const page = basePdfDoc.addPage([300, 400]);
+      page.setMediaBox(0, 0, 300, 400);
+      page.setBleedBox(3, 3, 294, 394);
+      page.setTrimBox(10, 10, 280, 380);
+      page.setArtBox(15, 15, 270, 370);
+      page.drawRectangle({ x: 0, y: 0, width: 1, height: 1 });
+      const basePdfBytes = await basePdfDoc.save();
+      const basePdfBase64 = 'data:application/pdf;base64,' + Buffer.from(basePdfBytes).toString('base64');
+
+      const template: Template = {
+        basePdf: basePdfBase64,
+        schemas: [[textSchema('field')]],
+      };
+
+      const inputs = [{ field: 'test' }];
+      const pdf = await generate({ inputs, template, options: { font: getFont() } });
+
+      const pdfDoc = await PDFDocument.load(pdf);
+      const outputPage = pdfDoc.getPage(0);
+
+      const mediaBox = outputPage.getMediaBox();
+      expect(mediaBox.x).toBeCloseTo(0, 0);
+      expect(mediaBox.y).toBeCloseTo(0, 0);
+      expect(mediaBox.width).toBeCloseTo(300, 0);
+      expect(mediaBox.height).toBeCloseTo(400, 0);
+
+      const bleedBox = outputPage.getBleedBox();
+      expect(bleedBox.x).toBeCloseTo(3, 0);
+      expect(bleedBox.y).toBeCloseTo(3, 0);
+      expect(bleedBox.width).toBeCloseTo(294, 0);
+      expect(bleedBox.height).toBeCloseTo(394, 0);
+
+      const trimBox = outputPage.getTrimBox();
+      expect(trimBox.x).toBeCloseTo(10, 0);
+      expect(trimBox.y).toBeCloseTo(10, 0);
+      expect(trimBox.width).toBeCloseTo(280, 0);
+      expect(trimBox.height).toBeCloseTo(380, 0);
+
+      const artBox = outputPage.getArtBox();
+      expect(artBox.x).toBeCloseTo(15, 0);
+      expect(artBox.y).toBeCloseTo(15, 0);
+      expect(artBox.width).toBeCloseTo(270, 0);
+      expect(artBox.height).toBeCloseTo(370, 0);
+    });
   });
 });
