@@ -94,6 +94,36 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
 
   const _cache = new Map<string, unknown>();
 
+  // For customPdf (non-blank), embed pages once and reuse across all records.
+  // This creates shared Form XObjects — each record's pages reference the same
+  // XObject, which is the prerequisite for GTS_PDFVTCached to be meaningful.
+  // BlankPdf pages are mutable PDFPage objects and must be created per-record.
+  let sharedBasePages: (pdfLib.PDFEmbeddedPage | pdfLib.PDFPage)[] | undefined;
+  let sharedEmbedPdfBoxes: { mediaBox: { x: number; y: number; width: number; height: number }; bleedBox: { x: number; y: number; width: number; height: number }; trimBox: { x: number; y: number; width: number; height: number }; artBox?: { x: number; y: number; width: number; height: number } }[] | undefined;
+
+  if (!isBlankPdf(basePdf)) {
+    const result = await getEmbedPdfPages({ template, pdfDoc });
+    sharedBasePages = result.basePages;
+    sharedEmbedPdfBoxes = result.embedPdfBoxes;
+
+    // PDF/VT: Tag shared Form XObjects with GTS_PDFVTCached so
+    // PDF/VT-aware RIPs can tile-cache the base page content.
+    if (pdfvtOptions) {
+      for (const basePage of sharedBasePages) {
+        if (basePage instanceof pdfLib.PDFEmbeddedPage) {
+          await basePage.embed();
+          const xObject = pdfDoc.context.lookup(basePage.ref);
+          if (xObject instanceof pdfLib.PDFStream) {
+            xObject.dict.set(
+              pdfLib.PDFName.of('GTS_PDFVTCached'),
+              pdfLib.PDFBool.True,
+            );
+          }
+        }
+      }
+    }
+  }
+
   for (let i = 0; i < inputs.length; i += 1) {
     const input = inputs[i];
     const pagesForInput: pdfLib.PDFPage[] = [];
@@ -113,27 +143,11 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
         }
       },
     });
-    const { basePages, embedPdfBoxes } = await getEmbedPdfPages({
-      template: dynamicTemplate,
-      pdfDoc,
-    });
 
-    // PDF/VT: Tag embedded page Form XObjects with GTS_PDFVTCached so
-    // PDF/VT-aware RIPs can tile-cache the shared base page content.
-    if (pdfvtOptions) {
-      for (const basePage of basePages) {
-        if (basePage instanceof pdfLib.PDFEmbeddedPage) {
-          await basePage.embed();
-          const xObject = pdfDoc.context.lookup(basePage.ref);
-          if (xObject instanceof pdfLib.PDFStream) {
-            xObject.dict.set(
-              pdfLib.PDFName.of('GTS_PDFVTCached'),
-              pdfLib.PDFBool.True,
-            );
-          }
-        }
-      }
-    }
+    // Reuse shared embedded pages for customPdf; create fresh pages for BlankPdf.
+    const { basePages, embedPdfBoxes } = sharedBasePages
+      ? { basePages: sharedBasePages, embedPdfBoxes: sharedEmbedPdfBoxes! }
+      : await getEmbedPdfPages({ template: dynamicTemplate, pdfDoc });
 
     const schemas = dynamicTemplate.schemas;
     // Create a type-safe array of schema names without using Set spread which requires downlevelIteration
