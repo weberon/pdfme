@@ -264,6 +264,74 @@ describe('validate command', () => {
     );
   });
 
+  it('fails when multiVariableText text contains an undeclared variable', () => {
+    const file = join(TMP, 'mvt-missing-variable.json');
+    writeFileSync(
+      file,
+      JSON.stringify({
+        basePdf: { width: 210, height: 297, padding: [20, 20, 20, 20] },
+        schemas: [[
+          {
+            name: 'invoiceMeta',
+            type: 'multiVariableText',
+            text: 'Invoice {inv} total {total}',
+            variables: ['inv'],
+            required: true,
+            position: { x: 20, y: 20 },
+            width: 170,
+            height: 15,
+          },
+        ]],
+      }),
+    );
+
+    const result = runCli(['validate', file, '--json']);
+    expect(result.exitCode).toBe(1);
+
+    const parsed = JSON.parse(result.stdout);
+    expect(parsed.ok).toBe(true);
+    expect(parsed.valid).toBe(false);
+    expect(parsed.errors).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining('text contains variable "{total}"'),
+      ]),
+    );
+  });
+
+  it('fails when multiVariableText declares an unused variable', () => {
+    const file = join(TMP, 'mvt-unused-variable.json');
+    writeFileSync(
+      file,
+      JSON.stringify({
+        basePdf: { width: 210, height: 297, padding: [20, 20, 20, 20] },
+        schemas: [[
+          {
+            name: 'invoiceMeta',
+            type: 'multiVariableText',
+            text: 'Invoice {inv}',
+            variables: ['inv', 'unused'],
+            required: true,
+            position: { x: 20, y: 20 },
+            width: 170,
+            height: 15,
+          },
+        ]],
+      }),
+    );
+
+    const result = runCli(['validate', file, '--json']);
+    expect(result.exitCode).toBe(1);
+
+    const parsed = JSON.parse(result.stdout);
+    expect(parsed.ok).toBe(true);
+    expect(parsed.valid).toBe(false);
+    expect(parsed.errors).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining('declares variable "unused" but it is not present in text'),
+      ]),
+    );
+  });
+
   it('accepts table input as a nested JSON array', () => {
     const file = join(TMP, 'job-valid-table-array.json');
     writeFileSync(
