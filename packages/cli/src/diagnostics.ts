@@ -65,6 +65,33 @@ export interface ValidationSource {
   jobWarnings: string[];
 }
 
+function extractVariableNames(value: unknown): string[] {
+  if (typeof value !== 'string') {
+    return [];
+  }
+
+  const names: string[] = [];
+  let startIndex = -1;
+
+  for (let i = 0; i < value.length; i += 1) {
+    const char = value[i];
+    if (char === '{') {
+      startIndex = i;
+      continue;
+    }
+
+    if (char === '}' && startIndex !== -1) {
+      const name = value.slice(startIndex + 1, i);
+      if (name.length > 0) {
+        names.push(name);
+      }
+      startIndex = -1;
+    }
+  }
+
+  return names;
+}
+
 export function findClosestType(type: string): string | null {
   let bestMatch: string | null = null;
   let bestDist = Infinity;
@@ -171,6 +198,31 @@ export function validateTemplate(template: Record<string, unknown>): ValidationR
         }
         if (position.x < 0 || position.y < 0) {
           warnings.push(`Field "${name}" has negative position (${position.x},${position.y})`);
+        }
+      }
+
+      if (type === 'multiVariableText') {
+        const fieldName = typeof name === 'string' ? name : '<unknown>';
+        const textVariables = [...new Set(extractVariableNames(schema.text))];
+        const declaredVariables = Array.isArray(schema.variables)
+          ? schema.variables.filter((value): value is string => typeof value === 'string')
+          : [];
+        const declaredVariableSet = new Set(declaredVariables);
+
+        for (const variableName of textVariables) {
+          if (!declaredVariableSet.has(variableName)) {
+            errors.push(
+              `Field "${fieldName}" text contains variable "{${variableName}}" but it is not declared in variables array.`,
+            );
+          }
+        }
+
+        for (const variableName of declaredVariables) {
+          if (!textVariables.includes(variableName)) {
+            errors.push(
+              `Field "${fieldName}" declares variable "${variableName}" but it is not present in text.`,
+            );
+          }
         }
       }
     }
