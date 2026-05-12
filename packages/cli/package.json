@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@weberon/cli",
   "version": "0.0.1",
   "description": "CLI tool for pdfme - generate PDFs, convert images, validate templates",
