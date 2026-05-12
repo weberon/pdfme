@@ -1,6 +1,6 @@
-{
+﻿{
   "name": "@weberon/cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "CLI tool for pdfme - generate PDFs, convert images, validate templates",
   "keywords": [
     "pdf",
@@ -10,13 +10,13 @@
   ],
   "homepage": "https://pdfme.com",
   "bugs": {
-    "url": "https://github.com/pdfme/pdfme/issues"
+    "url": "https://github.com/weberon/pdfme/issues"
   },
   "license": "MIT",
   "author": "hand-dot",
   "repository": {
     "type": "git",
-    "url": "git@github.com:pdfme/pdfme.git"
+    "url": "git+https://github.com/weberon/pdfme.git"
   },
   "type": "module",
   "files": [
@@ -60,3 +60,6 @@
     "node": ">=20"
   }
 }
+
+
+

@@ -1,6 +1,6 @@
-{
+﻿{
   "name": "@weberon/common",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "TypeScript base PDF generator and React base UI. Open source, developed by the community, and completely free to use under the MIT license!",
   "keywords": [
     "pdf",
@@ -12,13 +12,13 @@
   ],
   "homepage": "https://pdfme.com",
   "bugs": {
-    "url": "https://github.com/pdfme/pdfme/issues"
+    "url": "https://github.com/weberon/pdfme/issues"
   },
   "license": "MIT",
   "author": "hand-dot",
   "repository": {
     "type": "git",
-    "url": "git@github.com:pdfme/pdfme.git"
+    "url": "git+https://github.com/weberon/pdfme.git"
   },
   "type": "module",
   "sideEffects": false,
@@ -58,3 +58,6 @@
     "@types/estree": "^1.0.6"
   }
 }
+
+
+
