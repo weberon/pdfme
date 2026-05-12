@@ -1,106 +1,106 @@
-# CLI
+﻿# CLI
 
-`@pdfme/cli` は、JSON-first な pdfme workflow のためのコマンドラインインターフェースです。
+`@weberon/cli` ã¯ã€JSON-first ãª pdfme workflow ã®ãŸã‚ã®ã‚³ãƒžãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã§ã™ã€‚
 
-主な用途:
+ä¸»ãªç”¨é€”:
 
-- custom Node script を書かずに template と inputs から PDF を生成する
-- `generate` の前に template や unified job を検証する
-- CI や agent 実行前に runtime、font、`basePdf`、出力先の問題を診断する
-- 既存 PDF を画像やページサイズ情報に変換する
-- official example を template または unified job として取り出す
+- custom Node script ã‚’æ›¸ã‹ãšã« template ã¨ inputs ã‹ã‚‰ PDF ã‚’ç”Ÿæˆã™ã‚‹
+- `generate` ã®å‰ã« template ã‚„ unified job ã‚’æ¤œè¨¼ã™ã‚‹
+- CI ã‚„ agent å®Ÿè¡Œå‰ã« runtimeã€fontã€`basePdf`ã€å‡ºåŠ›å…ˆã®å•é¡Œã‚’è¨ºæ–­ã™ã‚‹
+- æ—¢å­˜ PDF ã‚’ç”»åƒã‚„ãƒšãƒ¼ã‚¸ã‚µã‚¤ã‚ºæƒ…å ±ã«å¤‰æ›ã™ã‚‹
+- official example ã‚’ template ã¾ãŸã¯ unified job ã¨ã—ã¦å–ã‚Šå‡ºã™
 
-## インストール
+## ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
 
-Node.js 20 以降が必要です。
-
-```bash
-npm install -D @pdfme/cli
-```
-
-`npx` から直接実行することもできます。
+Node.js 20 ä»¥é™ãŒå¿…è¦ã§ã™ã€‚
 
 ```bash
-npx @pdfme/cli generate --help
+npm install -D @weberon/cli
 ```
 
-## コマンド一覧
+`npx` ã‹ã‚‰ç›´æŽ¥å®Ÿè¡Œã™ã‚‹ã“ã¨ã‚‚ã§ãã¾ã™ã€‚
+
+```bash
+npx @weberon/cli generate --help
+```
+
+## ã‚³ãƒžãƒ³ãƒ‰ä¸€è¦§
 
 - `pdfme generate`
-  - unified job または `--template` + `--inputs` から PDF を生成する
-  - 必要に応じてページ画像も出力する
-  - 画像にグリッド線と schema 境界を重ねられる
+  - unified job ã¾ãŸã¯ `--template` + `--inputs` ã‹ã‚‰ PDF ã‚’ç”Ÿæˆã™ã‚‹
+  - å¿…è¦ã«å¿œã˜ã¦ãƒšãƒ¼ã‚¸ç”»åƒã‚‚å‡ºåŠ›ã™ã‚‹
+  - ç”»åƒã«ã‚°ãƒªãƒƒãƒ‰ç·šã¨ schema å¢ƒç•Œã‚’é‡ã­ã‚‰ã‚Œã‚‹
 - `pdfme validate`
-  - 生成前に template または unified job を検証する
-  - `--json` で machine-readable な inspection を返す
+  - ç”Ÿæˆå‰ã« template ã¾ãŸã¯ unified job ã‚’æ¤œè¨¼ã™ã‚‹
+  - `--json` ã§ machine-readable ãª inspection ã‚’è¿”ã™
 - `pdfme doctor`
-  - 環境、input、font、`basePdf`、cache、output path を診断する
+  - ç’°å¢ƒã€inputã€fontã€`basePdf`ã€cacheã€output path ã‚’è¨ºæ–­ã™ã‚‹
 - `pdfme pdf2img`
-  - 既存 PDF をページ画像へ変換する
+  - æ—¢å­˜ PDF ã‚’ãƒšãƒ¼ã‚¸ç”»åƒã¸å¤‰æ›ã™ã‚‹
 - `pdfme pdf2size`
-  - PDF のページサイズをミリメートル単位で確認する
+  - PDF ã®ãƒšãƒ¼ã‚¸ã‚µã‚¤ã‚ºã‚’ãƒŸãƒªãƒ¡ãƒ¼ãƒˆãƒ«å˜ä½ã§ç¢ºèªã™ã‚‹
 - `pdfme examples`
-  - official example を一覧表示または出力する
+  - official example ã‚’ä¸€è¦§è¡¨ç¤ºã¾ãŸã¯å‡ºåŠ›ã™ã‚‹
 
 ## `pdfme generate`
 
-`generate` は次の 2 形式を受け付けます。
+`generate` ã¯æ¬¡ã® 2 å½¢å¼ã‚’å—ã‘ä»˜ã‘ã¾ã™ã€‚
 
 - unified job file
 - template file + separate inputs file
 
-使用例:
+ä½¿ç”¨ä¾‹:
 
 ```bash
 # Unified job file: { template, inputs, options? }
 pdfme generate job.json -o out.pdf
 
-# Template + inputs を別ファイルで指定
+# Template + inputs ã‚’åˆ¥ãƒ•ã‚¡ã‚¤ãƒ«ã§æŒ‡å®š
 pdfme generate -t template.json -i inputs.json -o out.pdf
 
-# ページ画像も出力
+# ãƒšãƒ¼ã‚¸ç”»åƒã‚‚å‡ºåŠ›
 pdfme generate job.json -o out.pdf --image
 
-# 画像にグリッド線と schema 境界を重ねる
+# ç”»åƒã«ã‚°ãƒªãƒƒãƒ‰ç·šã¨ schema å¢ƒç•Œã‚’é‡ã­ã‚‹
 pdfme generate job.json -o out.pdf --grid
 
-# CLI から basePdf を上書き
+# CLI ã‹ã‚‰ basePdf ã‚’ä¸Šæ›¸ã
 pdfme generate -t template.json -i inputs.json --basePdf invoice.pdf -o out.pdf
 
-# CI / agent 向けの構造化出力
+# CI / agent å‘ã‘ã®æ§‹é€ åŒ–å‡ºåŠ›
 pdfme generate job.json -o out.pdf --image --json
 ```
 
-主なオプション:
+ä¸»ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³:
 
-| オプション | デフォルト | 説明 |
+| ã‚ªãƒ—ã‚·ãƒ§ãƒ³ | ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ | èª¬æ˜Ž |
 | --- | --- | --- |
-| `[file]` | - | `{ template, inputs, options? }` を含む unified job file |
+| `[file]` | - | `{ template, inputs, options? }` ã‚’å«ã‚€ unified job file |
 | `-t, --template` | - | Template JSON file |
 | `-i, --inputs` | - | Input JSON file |
-| `-o, --output` | `output.pdf` | 出力 PDF パス |
-| `--force` | `false` | 暗黙の `output.pdf` 上書きを許可する |
-| `--image` | `false` | 生成した各ページの画像も書き出す |
-| `--imageFormat` | `png` | `png` または `jpeg` |
-| `--scale` | `1` | 画像レンダリングの scale |
-| `--grid` | `false` | 生成画像にグリッド線と schema 境界を描画する |
-| `--gridSize` | `10` | グリッド間隔(mm) |
-| `--font` | - | `Name=path.ttf` 形式のローカル custom font。複数指定時はカンマ区切り |
-| `--basePdf` | - | `template.basePdf` を PDF file path で上書きする |
-| `--noAutoFont` | `false` | CJK 文字向けの `NotoSansJP` 自動解決を無効化する |
-| `-v, --verbose` | `false` | 入出力や描画条件を stderr に出す |
-| `--json` | `false` | stdout に JSON のみを出す |
+| `-o, --output` | `output.pdf` | å‡ºåŠ› PDF ãƒ‘ã‚¹ |
+| `--force` | `false` | æš—é»™ã® `output.pdf` ä¸Šæ›¸ãã‚’è¨±å¯ã™ã‚‹ |
+| `--image` | `false` | ç”Ÿæˆã—ãŸå„ãƒšãƒ¼ã‚¸ã®ç”»åƒã‚‚æ›¸ãå‡ºã™ |
+| `--imageFormat` | `png` | `png` ã¾ãŸã¯ `jpeg` |
+| `--scale` | `1` | ç”»åƒãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã® scale |
+| `--grid` | `false` | ç”Ÿæˆç”»åƒã«ã‚°ãƒªãƒƒãƒ‰ç·šã¨ schema å¢ƒç•Œã‚’æç”»ã™ã‚‹ |
+| `--gridSize` | `10` | ã‚°ãƒªãƒƒãƒ‰é–“éš”(mm) |
+| `--font` | - | `Name=path.ttf` å½¢å¼ã®ãƒ­ãƒ¼ã‚«ãƒ« custom fontã€‚è¤‡æ•°æŒ‡å®šæ™‚ã¯ã‚«ãƒ³ãƒžåŒºåˆ‡ã‚Š |
+| `--basePdf` | - | `template.basePdf` ã‚’ PDF file path ã§ä¸Šæ›¸ãã™ã‚‹ |
+| `--noAutoFont` | `false` | CJK æ–‡å­—å‘ã‘ã® `NotoSansJP` è‡ªå‹•è§£æ±ºã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ |
+| `-v, --verbose` | `false` | å…¥å‡ºåŠ›ã‚„æç”»æ¡ä»¶ã‚’ stderr ã«å‡ºã™ |
+| `--json` | `false` | stdout ã« JSON ã®ã¿ã‚’å‡ºã™ |
 
-注意点:
+æ³¨æ„ç‚¹:
 
-- `output.pdf` が既に存在し、かつ `-o` や `--force` を明示していない場合、`generate` は上書きを拒否します。
-- `--grid` は `--image` を付けていなくても画像出力を有効にします。
-- 生成画像は出力 PDF と同じディレクトリに `<output-base>-1.png`, `<output-base>-2.png` の形式で保存されます。`--imageFormat jpeg` の場合は `.jpg` になります。
-- `--font` のローカルパスは CLI 実行時の current working directory 基準で解決されます。
-- unified job の `options.font.<name>.data` にあるローカルパスは、job file または template file のあるディレクトリ基準で解決されます。
-- CJK が含まれ、かつ明示的な font source がない場合、CLI は `--noAutoFont` が付いていない限り `NotoSansJP` を自動解決して cache します。
+- `output.pdf` ãŒæ—¢ã«å­˜åœ¨ã—ã€ã‹ã¤ `-o` ã‚„ `--force` ã‚’æ˜Žç¤ºã—ã¦ã„ãªã„å ´åˆã€`generate` ã¯ä¸Šæ›¸ãã‚’æ‹’å¦ã—ã¾ã™ã€‚
+- `--grid` ã¯ `--image` ã‚’ä»˜ã‘ã¦ã„ãªãã¦ã‚‚ç”»åƒå‡ºåŠ›ã‚’æœ‰åŠ¹ã«ã—ã¾ã™ã€‚
+- ç”Ÿæˆç”»åƒã¯å‡ºåŠ› PDF ã¨åŒã˜ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã« `<output-base>-1.png`, `<output-base>-2.png` ã®å½¢å¼ã§ä¿å­˜ã•ã‚Œã¾ã™ã€‚`--imageFormat jpeg` ã®å ´åˆã¯ `.jpg` ã«ãªã‚Šã¾ã™ã€‚
+- `--font` ã®ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‘ã‚¹ã¯ CLI å®Ÿè¡Œæ™‚ã® current working directory åŸºæº–ã§è§£æ±ºã•ã‚Œã¾ã™ã€‚
+- unified job ã® `options.font.<name>.data` ã«ã‚ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‘ã‚¹ã¯ã€job file ã¾ãŸã¯ template file ã®ã‚ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåŸºæº–ã§è§£æ±ºã•ã‚Œã¾ã™ã€‚
+- CJK ãŒå«ã¾ã‚Œã€ã‹ã¤æ˜Žç¤ºçš„ãª font source ãŒãªã„å ´åˆã€CLI ã¯ `--noAutoFont` ãŒä»˜ã„ã¦ã„ãªã„é™ã‚Š `NotoSansJP` ã‚’è‡ªå‹•è§£æ±ºã—ã¦ cache ã—ã¾ã™ã€‚
 
-Unified job の例:
+Unified job ã®ä¾‹:
 
 ```json
 {
@@ -137,9 +137,9 @@ Unified job の例:
 }
 ```
 
-`template.basePdf` には `"./invoice.pdf"` のような相対 PDF path も指定できます。必要なら `--basePdf` で実行時に上書きできます。
+`template.basePdf` ã«ã¯ `"./invoice.pdf"` ã®ã‚ˆã†ãªç›¸å¯¾ PDF path ã‚‚æŒ‡å®šã§ãã¾ã™ã€‚å¿…è¦ãªã‚‰ `--basePdf` ã§å®Ÿè¡Œæ™‚ã«ä¸Šæ›¸ãã§ãã¾ã™ã€‚
 
-`--json` 指定時の stdout は JSON のみになります。
+`--json` æŒ‡å®šæ™‚ã® stdout ã¯ JSON ã®ã¿ã«ãªã‚Šã¾ã™ã€‚
 
 ```json
 {
@@ -157,9 +157,9 @@ Unified job の例:
 
 ## `pdfme validate`
 
-`validate` は template file または unified job file を、生成前に検証します。
+`validate` ã¯ template file ã¾ãŸã¯ unified job file ã‚’ã€ç”Ÿæˆå‰ã«æ¤œè¨¼ã—ã¾ã™ã€‚
 
-使用例:
+ä½¿ç”¨ä¾‹:
 
 ```bash
 pdfme validate template.json
@@ -169,67 +169,67 @@ pdfme validate template.json --strict
 pdfme validate template.json -v --json
 ```
 
-主な検証内容:
+ä¸»ãªæ¤œè¨¼å†…å®¹:
 
-- pdfme の template validation による構造チェック
-- 未知の schema type
-- 同一ページ内の重複 field name
-- ページをまたいだ同名 field の warning
-- ページ境界外にはみ出す field position の warning
-- template top-level の未知フィールドに対する warning
-- unified job が `generate` に渡せる形かどうか
-- unified job に対する field-level input contract check
+- pdfme ã® template validation ã«ã‚ˆã‚‹æ§‹é€ ãƒã‚§ãƒƒã‚¯
+- æœªçŸ¥ã® schema type
+- åŒä¸€ãƒšãƒ¼ã‚¸å†…ã®é‡è¤‡ field name
+- ãƒšãƒ¼ã‚¸ã‚’ã¾ãŸã„ã åŒå field ã® warning
+- ãƒšãƒ¼ã‚¸å¢ƒç•Œå¤–ã«ã¯ã¿å‡ºã™ field position ã® warning
+- template top-level ã®æœªçŸ¥ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«å¯¾ã™ã‚‹ warning
+- unified job ãŒ `generate` ã«æ¸¡ã›ã‚‹å½¢ã‹ã©ã†ã‹
+- unified job ã«å¯¾ã™ã‚‹ field-level input contract check
 
-便利なフラグ:
+ä¾¿åˆ©ãªãƒ•ãƒ©ã‚°:
 
 - `--strict`
-  - warning も failure 扱いにする
+  - warning ã‚‚ failure æ‰±ã„ã«ã™ã‚‹
 - `--json`
-  - `valid`, `errors`, `warnings`, `inspection`, `inputHints` を返す
+  - `valid`, `errors`, `warnings`, `inspection`, `inputHints` ã‚’è¿”ã™
 - `-v, --verbose`
-  - 入力 source、mode、件数、サマリを stderr に出す
+  - å…¥åŠ› sourceã€modeã€ä»¶æ•°ã€ã‚µãƒžãƒªã‚’ stderr ã«å‡ºã™
 
-`inputHints` により、`generate` 実行前に writable field が何を期待しているかを判定できます。現行 CLI は次の入力種別を区別します。
+`inputHints` ã«ã‚ˆã‚Šã€`generate` å®Ÿè¡Œå‰ã« writable field ãŒä½•ã‚’æœŸå¾…ã—ã¦ã„ã‚‹ã‹ã‚’åˆ¤å®šã§ãã¾ã™ã€‚ç¾è¡Œ CLI ã¯æ¬¡ã®å…¥åŠ›ç¨®åˆ¥ã‚’åŒºåˆ¥ã—ã¾ã™ã€‚
 
 - plain string
-- `contentKind` 付きの asset-like string
-- human-readable な `rule` を持つ barcode string
-- `string[][]` の table payload
-- `format` metadata を持つ canonical date/time string
-- `select` / `checkbox` / `radioGroup` の constrained enum string
-- `multiVariableText` 向けの JSON string object
+- `contentKind` ä»˜ãã® asset-like string
+- human-readable ãª `rule` ã‚’æŒã¤ barcode string
+- `string[][]` ã® table payload
+- `format` metadata ã‚’æŒã¤ canonical date/time string
+- `select` / `checkbox` / `radioGroup` ã® constrained enum string
+- `multiVariableText` å‘ã‘ã® JSON string object
 
 ## `pdfme doctor`
 
-`doctor` は実行環境や特定の template/job を、生成前に診断します。
+`doctor` ã¯å®Ÿè¡Œç’°å¢ƒã‚„ç‰¹å®šã® template/job ã‚’ã€ç”Ÿæˆå‰ã«è¨ºæ–­ã—ã¾ã™ã€‚
 
-使用例:
+ä½¿ç”¨ä¾‹:
 
 ```bash
-# 環境診断
+# ç’°å¢ƒè¨ºæ–­
 pdfme doctor
 
-# Template または job の診断
+# Template ã¾ãŸã¯ job ã®è¨ºæ–­
 pdfme doctor job.json --json
 
-# stdin から診断
+# stdin ã‹ã‚‰è¨ºæ–­
 cat job.json | pdfme doctor - --json
 
-# Font に絞った診断
+# Font ã«çµžã£ãŸè¨ºæ–­
 pdfme doctor fonts job.json --json
 
-# 自動 CJK font 解決を無効化した条件で診断
+# è‡ªå‹• CJK font è§£æ±ºã‚’ç„¡åŠ¹åŒ–ã—ãŸæ¡ä»¶ã§è¨ºæ–­
 pdfme doctor job.json --noAutoFont --json
 
-# generate と同じ output path / image output 条件で事前診断
+# generate ã¨åŒã˜ output path / image output æ¡ä»¶ã§äº‹å‰è¨ºæ–­
 pdfme doctor job.json -o artifacts/out.pdf --image --imageFormat jpeg --json
 ```
 
 ## `pdfme pdf2img`
 
-既存 PDF をページ画像に変換します。
+æ—¢å­˜ PDF ã‚’ãƒšãƒ¼ã‚¸ç”»åƒã«å¤‰æ›ã—ã¾ã™ã€‚
 
-使用例:
+ä½¿ç”¨ä¾‹:
 
 ```bash
 pdfme pdf2img invoice.pdf
@@ -239,26 +239,26 @@ pdfme pdf2img invoice.pdf -o ./images --imageFormat jpeg
 pdfme pdf2img invoice.pdf -o ./images --json
 ```
 
-挙動:
+æŒ™å‹•:
 
-- `-o, --output` はファイル名ではなくディレクトリを受け取ります
-- 出力ファイル名は `<input-base>-<page>.png` または `.jpg` です
-- `--pages` は `1-3` や `1,3,5` のような形式を受け取ります
-- `--grid` はレンダリングされたページ画像にミリメートルグリッドを描画します
-- `--json` では `pageCount`, `selectedPageCount`, `outputPaths`, 各ページの width/height を返します
+- `-o, --output` ã¯ãƒ•ã‚¡ã‚¤ãƒ«åã§ã¯ãªããƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’å—ã‘å–ã‚Šã¾ã™
+- å‡ºåŠ›ãƒ•ã‚¡ã‚¤ãƒ«åã¯ `<input-base>-<page>.png` ã¾ãŸã¯ `.jpg` ã§ã™
+- `--pages` ã¯ `1-3` ã‚„ `1,3,5` ã®ã‚ˆã†ãªå½¢å¼ã‚’å—ã‘å–ã‚Šã¾ã™
+- `--grid` ã¯ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã•ã‚ŒãŸãƒšãƒ¼ã‚¸ç”»åƒã«ãƒŸãƒªãƒ¡ãƒ¼ãƒˆãƒ«ã‚°ãƒªãƒƒãƒ‰ã‚’æç”»ã—ã¾ã™
+- `--json` ã§ã¯ `pageCount`, `selectedPageCount`, `outputPaths`, å„ãƒšãƒ¼ã‚¸ã® width/height ã‚’è¿”ã—ã¾ã™
 
 ## `pdfme pdf2size`
 
-PDF のページサイズをミリメートル単位で確認します。
+PDF ã®ãƒšãƒ¼ã‚¸ã‚µã‚¤ã‚ºã‚’ãƒŸãƒªãƒ¡ãƒ¼ãƒˆãƒ«å˜ä½ã§ç¢ºèªã—ã¾ã™ã€‚
 
-使用例:
+ä½¿ç”¨ä¾‹:
 
 ```bash
 pdfme pdf2size invoice.pdf
 pdfme pdf2size invoice.pdf --json
 ```
 
-標準サイズを検出できる場合、人間向け出力には `A4 portrait` のようなラベルも付きます。JSON 出力の例:
+æ¨™æº–ã‚µã‚¤ã‚ºã‚’æ¤œå‡ºã§ãã‚‹å ´åˆã€äººé–“å‘ã‘å‡ºåŠ›ã«ã¯ `A4 portrait` ã®ã‚ˆã†ãªãƒ©ãƒ™ãƒ«ã‚‚ä»˜ãã¾ã™ã€‚JSON å‡ºåŠ›ã®ä¾‹:
 
 ```json
 {
@@ -273,81 +273,81 @@ pdfme pdf2size invoice.pdf --json
 
 ## `pdfme examples`
 
-playground の asset manifest から official example を一覧表示または出力します。
+playground ã® asset manifest ã‹ã‚‰ official example ã‚’ä¸€è¦§è¡¨ç¤ºã¾ãŸã¯å‡ºåŠ›ã—ã¾ã™ã€‚
 
-使用例:
+ä½¿ç”¨ä¾‹:
 
 ```bash
-# 一覧表示
+# ä¸€è¦§è¡¨ç¤º
 pdfme examples --list
 
-# name 未指定でも一覧表示
+# name æœªæŒ‡å®šã§ã‚‚ä¸€è¦§è¡¨ç¤º
 pdfme examples
 
-# Template を stdout に出力
+# Template ã‚’ stdout ã«å‡ºåŠ›
 pdfme examples invoice
 
-# Template をファイルに保存
+# Template ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜
 pdfme examples invoice -o template.json
 
-# サンプル入力付き unified job を出力
+# ã‚µãƒ³ãƒ—ãƒ«å…¥åŠ›ä»˜ã unified job ã‚’å‡ºåŠ›
 pdfme examples invoice --withInputs -o job.json
 
-# Manifest metadata を JSON で取得
+# Manifest metadata ã‚’ JSON ã§å–å¾—
 pdfme examples --list --json
 ```
 
-挙動:
+æŒ™å‹•:
 
-- manifest と template asset は `https://playground.pdfme.com/template-assets` から取得されます
-- `PDFME_EXAMPLES_BASE_URL` 環境変数で base URL を上書きできます
-- `--withInputs` では sample inputs に加えて、official hosted font が必要な例では `options.font` も同梱されます
-- `--json` の list mode では template name、schema type、font name、page count などの metadata を返します
+- manifest ã¨ template asset ã¯ `https://playground.pdfme.com/template-assets` ã‹ã‚‰å–å¾—ã•ã‚Œã¾ã™
+- `PDFME_EXAMPLES_BASE_URL` ç’°å¢ƒå¤‰æ•°ã§ base URL ã‚’ä¸Šæ›¸ãã§ãã¾ã™
+- `--withInputs` ã§ã¯ sample inputs ã«åŠ ãˆã¦ã€official hosted font ãŒå¿…è¦ãªä¾‹ã§ã¯ `options.font` ã‚‚åŒæ¢±ã•ã‚Œã¾ã™
+- `--json` ã® list mode ã§ã¯ template nameã€schema typeã€font nameã€page count ãªã©ã® metadata ã‚’è¿”ã—ã¾ã™
 
 ## Font Contract
 
-CLI は font を「明示的な source contract」として扱います。
+CLI ã¯ font ã‚’ã€Œæ˜Žç¤ºçš„ãª source contractã€ã¨ã—ã¦æ‰±ã„ã¾ã™ã€‚
 
-サポートされる explicit font source:
+ã‚µãƒãƒ¼ãƒˆã•ã‚Œã‚‹ explicit font source:
 
-- `--font Name=./path.ttf` による local `.ttf` file
-- unified job `options.font.<name>.data` にある local `.ttf` file
-- public な direct `http(s)` font asset URL
+- `--font Name=./path.ttf` ã«ã‚ˆã‚‹ local `.ttf` file
+- unified job `options.font.<name>.data` ã«ã‚ã‚‹ local `.ttf` file
+- public ãª direct `http(s)` font asset URL
 - `.ttf` data URI
-- programmatic use における inline bytes
+- programmatic use ã«ãŠã‘ã‚‹ inline bytes
 
-現行ルール:
+ç¾è¡Œãƒ«ãƒ¼ãƒ«:
 
-- 明示的にサポートする custom font format は `.ttf` のみ
-- `.otf` と `.ttc` は reject される
-- `fonts.googleapis.com/css*` の stylesheet URL は reject される
-- unsafe/private/loopback な `http(s)` URL は reject される
-- explicit remote font fetch は 15 秒 timeout、32 MiB size limit で解決される
-- remote font failure は `EFONT` で返る
+- æ˜Žç¤ºçš„ã«ã‚µãƒãƒ¼ãƒˆã™ã‚‹ custom font format ã¯ `.ttf` ã®ã¿
+- `.otf` ã¨ `.ttc` ã¯ reject ã•ã‚Œã‚‹
+- `fonts.googleapis.com/css*` ã® stylesheet URL ã¯ reject ã•ã‚Œã‚‹
+- unsafe/private/loopback ãª `http(s)` URL ã¯ reject ã•ã‚Œã‚‹
+- explicit remote font fetch ã¯ 15 ç§’ timeoutã€32 MiB size limit ã§è§£æ±ºã•ã‚Œã‚‹
+- remote font failure ã¯ `EFONT` ã§è¿”ã‚‹
 
-CJK 向けの自動 `NotoSansJP` 解決は、明示的な font source がないときだけ使われます。CJK を含み、font が cache されておらず、さらに自動解決が無効または不可能な場合は `generate` は `EFONT` で失敗します。
+CJK å‘ã‘ã®è‡ªå‹• `NotoSansJP` è§£æ±ºã¯ã€æ˜Žç¤ºçš„ãª font source ãŒãªã„ã¨ãã ã‘ä½¿ã‚ã‚Œã¾ã™ã€‚CJK ã‚’å«ã¿ã€font ãŒ cache ã•ã‚Œã¦ãŠã‚‰ãšã€ã•ã‚‰ã«è‡ªå‹•è§£æ±ºãŒç„¡åŠ¹ã¾ãŸã¯ä¸å¯èƒ½ãªå ´åˆã¯ `generate` ã¯ `EFONT` ã§å¤±æ•—ã—ã¾ã™ã€‚
 
-## Structured Output と Exit Code
+## Structured Output ã¨ Exit Code
 
-`--json` を付けると:
+`--json` ã‚’ä»˜ã‘ã‚‹ã¨:
 
-- stdout は JSON のみになる
-- 成功 payload は `ok: true`
-- failure payload は `ok: false` と `error.code`, `error.message`, 場合によっては `error.details` を含む
-- `-v, --verbose` の人間向け情報は引き続き stderr に出る
+- stdout ã¯ JSON ã®ã¿ã«ãªã‚‹
+- æˆåŠŸ payload ã¯ `ok: true`
+- failure payload ã¯ `ok: false` ã¨ `error.code`, `error.message`, å ´åˆã«ã‚ˆã£ã¦ã¯ `error.details` ã‚’å«ã‚€
+- `-v, --verbose` ã®äººé–“å‘ã‘æƒ…å ±ã¯å¼•ãç¶šã stderr ã«å‡ºã‚‹
 
-現行の exit code 区分:
+ç¾è¡Œã® exit code åŒºåˆ†:
 
-| コード | 意味 |
+| ã‚³ãƒ¼ãƒ‰ | æ„å‘³ |
 | --- | --- |
-| `0` | 成功 |
+| `0` | æˆåŠŸ |
 | `1` | argument / validation / unsupported input failure |
 | `2` | runtime / font-resolution failure |
 | `3` | file I/O failure |
 
-## 典型的な使い方
+## å…¸åž‹çš„ãªä½¿ã„æ–¹
 
-official example から job を作成して、まず診断し、画像で確認してから PDF を作成します。
+official example ã‹ã‚‰ job ã‚’ä½œæˆã—ã¦ã€ã¾ãšè¨ºæ–­ã—ã€ç”»åƒã§ç¢ºèªã—ã¦ã‹ã‚‰ PDF ã‚’ä½œæˆã—ã¾ã™ã€‚
 
 ```bash
 pdfme examples invoice --withInputs -o job.json
@@ -355,7 +355,7 @@ pdfme doctor job.json --json
 pdfme generate job.json -o out.pdf --image --grid
 ```
 
-既存 PDF を basePdf として使う overlay workflow:
+æ—¢å­˜ PDF ã‚’ basePdf ã¨ã—ã¦ä½¿ã† overlay workflow:
 
 ```bash
 pdfme pdf2img invoice.pdf --grid --gridSize 10
@@ -363,3 +363,4 @@ pdfme pdf2size invoice.pdf --json
 pdfme doctor template.json -o out.pdf --image --json
 pdfme generate -t template.json -i inputs.json -o out.pdf --image --grid
 ```
+

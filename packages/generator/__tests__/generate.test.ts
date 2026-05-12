@@ -1,6 +1,6 @@
-import generate from '../src/generate.js';
-import { Template, BLANK_PDF, Schema } from '@pdfme/common';
-import { PDFDocument, PDFName, PDFArray, PDFDict, PDFStream, PDFBool } from '@pdfme/pdf-lib';
+﻿import generate from '../src/generate.js';
+import { Template, BLANK_PDF, Schema } from '@weberon/common';
+import { PDFDocument, PDFName, PDFArray, PDFDict, PDFStream, PDFBool } from '@weberon/pdf-lib';
 import { getFont, getImageSnapshotOptions, pdfToImages } from './utils.js';
 
 describe('generate integrate test', () => {
@@ -171,7 +171,7 @@ describe('check validation', () => {
       await generate({ inputs, template, options: { font: getFont() } });
       fail();
     } catch (e: any) {
-      expect(e.message).toEqual(`[@pdfme/common] Invalid argument:
+      expect(e.message).toEqual(`[@weberon/common] Invalid argument:
 --------------------------
 ERROR POSITION: inputs
 ERROR MESSAGE: Too small: expected array to have >=1 items
@@ -202,7 +202,7 @@ ERROR MESSAGE: Too small: expected array to have >=1 items
       fail();
     } catch (e: any) {
       expect(e.message).toEqual(
-        `[@pdfme/common] fallback flag is not found in font. true fallback flag must be only one.
+        `[@weberon/common] fallback flag is not found in font. true fallback flag must be only one.
 Check this document: https://pdfme.com/docs/custom-fonts#about-font-type`
       );
     }
@@ -233,7 +233,7 @@ Check this document: https://pdfme.com/docs/custom-fonts#about-font-type`
       fail();
     } catch (e: any) {
       expect(e.message).toEqual(
-        `[@pdfme/common] 2 fallback flags found in font. true fallback flag must be only one.
+        `[@weberon/common] 2 fallback flags found in font. true fallback flag must be only one.
 Check this document: https://pdfme.com/docs/custom-fonts#about-font-type`
       );
     }
@@ -269,7 +269,7 @@ Check this document: https://pdfme.com/docs/custom-fonts#about-font-type`
       fail();
     } catch (e: any) {
       expect(e.message).toEqual(
-        `[@pdfme/common] DUMMY_FONT of template.schemas is not found in font.
+        `[@weberon/common] DUMMY_FONT of template.schemas is not found in font.
 Check this document: https://pdfme.com/docs/custom-fonts`
       );
     }
@@ -582,3 +582,4 @@ Check this document: https://pdfme.com/docs/custom-fonts`
     });
   });
 });
+

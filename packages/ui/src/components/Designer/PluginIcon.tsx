@@ -1,5 +1,5 @@
-import React, { useContext, useMemo } from 'react';
-import { Plugin, Schema } from '@pdfme/common';
+﻿import React, { useContext, useMemo } from 'react';
+import { Plugin, Schema } from '@weberon/common';
 import { OptionsContext } from '../../contexts.js';
 import { theme } from 'antd';
 import DOMPurify from 'dompurify';
@@ -133,3 +133,4 @@ const PluginIcon = (props: PluginIconProps) => {
 };
 
 export default PluginIcon;
+

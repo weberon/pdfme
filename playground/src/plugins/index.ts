@@ -1,4 +1,4 @@
-import {
+﻿import {
   multiVariableText,
   text,
   barcodes,
@@ -15,7 +15,7 @@ import {
   select,
   checkbox,
   radioGroup,
-} from '@pdfme/schemas';
+} from '@weberon/schemas';
 
 export const getPlugins = () => {
   return {
@@ -48,3 +48,4 @@ export const getPlugins = () => {
     // PDF417: barcodes.pdf417,
   };
 };
+

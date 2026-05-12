@@ -1,36 +1,36 @@
-# コンバーター
+﻿# ã‚³ãƒ³ãƒãƒ¼ã‚¿ãƒ¼
 
-`@pdfme/converter` は Node.js とブラウザの両方で使用できます。
+`@weberon/converter` ã¯ Node.js ã¨ãƒ–ãƒ©ã‚¦ã‚¶ã®ä¸¡æ–¹ã§ä½¿ç”¨ã§ãã¾ã™ã€‚
 
-その主な目的は、PDFを他の形式（画像など）に変換したり、様々なデータ形式（Markdownなど）をPDFに変換することです。
+ãã®ä¸»ãªç›®çš„ã¯ã€PDFã‚’ä»–ã®å½¢å¼ï¼ˆç”»åƒãªã©ï¼‰ã«å¤‰æ›ã—ãŸã‚Šã€æ§˜ã€…ãªãƒ‡ãƒ¼ã‚¿å½¢å¼ï¼ˆMarkdownãªã©ï¼‰ã‚’PDFã«å¤‰æ›ã™ã‚‹ã“ã¨ã§ã™ã€‚
 
-まだ開発中ですが、すでに以下の機能を使用することができます：
+ã¾ã é–‹ç™ºä¸­ã§ã™ãŒã€ã™ã§ã«ä»¥ä¸‹ã®æ©Ÿèƒ½ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ï¼š
 
-- **PDFを画像に変換**: [pdf2img](https://github.com/pdfme/pdfme/blob/main/packages/converter/src/pdf2img.ts)
-- **各ページの幅と高さを取得**: [pdf2size](https://github.com/pdfme/pdfme/blob/main/packages/converter/src/pdf2size.ts)
-- **画像をPDFに変換**: [img2pdf](https://github.com/pdfme/pdfme/blob/main/packages/converter/src/img2pdf.ts)
+- **PDFã‚’ç”»åƒã«å¤‰æ›**: [pdf2img](https://github.com/pdfme/pdfme/blob/main/packages/converter/src/pdf2img.ts)
+- **å„ãƒšãƒ¼ã‚¸ã®å¹…ã¨é«˜ã•ã‚’å–å¾—**: [pdf2size](https://github.com/pdfme/pdfme/blob/main/packages/converter/src/pdf2size.ts)
+- **ç”»åƒã‚’PDFã«å¤‰æ›**: [img2pdf](https://github.com/pdfme/pdfme/blob/main/packages/converter/src/img2pdf.ts)
 
-計画されている変換機能には以下が含まれます：
-- **MarkdownからPDF**: `md2pdf`
-- **PDFからMarkdown**: `pdf2md`
+è¨ˆç”»ã•ã‚Œã¦ã„ã‚‹å¤‰æ›æ©Ÿèƒ½ã«ã¯ä»¥ä¸‹ãŒå«ã¾ã‚Œã¾ã™ï¼š
+- **Markdownã‹ã‚‰PDF**: `md2pdf`
+- **PDFã‹ã‚‰Markdown**: `pdf2md`
 
-## インストール
+## ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«
 
 ```bash
-npm install @pdfme/converter
+npm install @weberon/converter
 ```
 
-Node.js で `pdf2img` を使うために追加の install は不要です。`@pdfme/converter` には必要な Node 向け canvas 実装として `@napi-rs/canvas` がすでに含まれています。
+Node.js ã§ `pdf2img` ã‚’ä½¿ã†ãŸã‚ã«è¿½åŠ ã® install ã¯ä¸è¦ã§ã™ã€‚`@weberon/converter` ã«ã¯å¿…è¦ãª Node å‘ã‘ canvas å®Ÿè£…ã¨ã—ã¦ `@napi-rs/canvas` ãŒã™ã§ã«å«ã¾ã‚Œã¦ã„ã¾ã™ã€‚
 
-## 機能
+## æ©Ÿèƒ½
 
 ### pdf2img
-PDFページを画像（JPEGまたはPNG形式）に変換します。
+PDFãƒšãƒ¼ã‚¸ã‚’ç”»åƒï¼ˆJPEGã¾ãŸã¯PNGå½¢å¼ï¼‰ã«å¤‰æ›ã—ã¾ã™ã€‚
 
 ```ts
-import { pdf2img } from '@pdfme/converter';
+import { pdf2img } from '@weberon/converter';
 
-const pdf = new ArrayBuffer(...); // ソースPDF
+const pdf = new ArrayBuffer(...); // ã‚½ãƒ¼ã‚¹PDF
 const images = await pdf2img(pdf, {
   imageType: 'png',
   scale: 1,
@@ -39,26 +39,26 @@ const images = await pdf2img(pdf, {
 ```
 
 ### pdf2size
-PDFの各ページの幅と高さを取得します。
+PDFã®å„ãƒšãƒ¼ã‚¸ã®å¹…ã¨é«˜ã•ã‚’å–å¾—ã—ã¾ã™ã€‚
 
 ```ts
-import { pdf2size } from '@pdfme/converter';
+import { pdf2size } from '@weberon/converter';
 
-const pdf = new ArrayBuffer(...); // ソースPDF
+const pdf = new ArrayBuffer(...); // ã‚½ãƒ¼ã‚¹PDF
 const sizes = await pdf2size(pdf, {
-  scale: 1, // スケールファクター（デフォルト: 1）
+  scale: 1, // ã‚¹ã‚±ãƒ¼ãƒ«ãƒ•ã‚¡ã‚¯ã‚¿ãƒ¼ï¼ˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ: 1ï¼‰
 });
 // sizes: Array<{ width: number, height: number }>
 ```
 
 ### img2pdf
-1つまたは複数の画像（JPEGまたはPNG）を1つのPDFファイルに変換します。
+1ã¤ã¾ãŸã¯è¤‡æ•°ã®ç”»åƒï¼ˆJPEGã¾ãŸã¯PNGï¼‰ã‚’1ã¤ã®PDFãƒ•ã‚¡ã‚¤ãƒ«ã«å¤‰æ›ã—ã¾ã™ã€‚
 
 ```ts
-import { img2pdf } from '@pdfme/converter';
+import { img2pdf } from '@weberon/converter';
 
-const image1 = new ArrayBuffer(...); // 1枚目の画像
-const image2 = new ArrayBuffer(...); // 2枚目の画像
+const image1 = new ArrayBuffer(...); // 1æžšç›®ã®ç”»åƒ
+const image2 = new ArrayBuffer(...); // 2æžšç›®ã®ç”»åƒ
 const pdf = await img2pdf([image1, image2], {
   scale: 1,
   imageType: 'jpeg',
@@ -67,17 +67,17 @@ const pdf = await img2pdf([image1, image2], {
 });
 ```
 
-## エラー処理
+## ã‚¨ãƒ©ãƒ¼å‡¦ç†
 
-無効なパラメータが提供された場合、すべての関数は説明的なエラーをスローします：
+ç„¡åŠ¹ãªãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒæä¾›ã•ã‚ŒãŸå ´åˆã€ã™ã¹ã¦ã®é–¢æ•°ã¯èª¬æ˜Žçš„ãªã‚¨ãƒ©ãƒ¼ã‚’ã‚¹ãƒ­ãƒ¼ã—ã¾ã™ï¼š
 
-- 無効なPDF: `[@pdfme/converter] Invalid PDF`
-- 空のPDF: `[@pdfme/converter] The PDF file is empty`
-- 無効なページ範囲: `[@pdfme/converter] Invalid page range`
-- 空の画像配列: `[@pdfme/converter] Input must be a non-empty array of image buffers`
-- 無効な画像: `[@pdfme/converter] Failed to process image`
+- ç„¡åŠ¹ãªPDF: `[@weberon/converter] Invalid PDF`
+- ç©ºã®PDF: `[@weberon/converter] The PDF file is empty`
+- ç„¡åŠ¹ãªãƒšãƒ¼ã‚¸ç¯„å›²: `[@weberon/converter] Invalid page range`
+- ç©ºã®ç”»åƒé…åˆ—: `[@weberon/converter] Input must be a non-empty array of image buffers`
+- ç„¡åŠ¹ãªç”»åƒ: `[@weberon/converter] Failed to process image`
 
-## 型定義
+## åž‹å®šç¾©
 
 ```ts
 type ImageType = 'jpeg' | 'png';
@@ -100,14 +100,15 @@ interface Pdf2SizeOptions {
 interface Img2PdfOptions {
   scale?: number;
   imageType?: ImageType;
-  size?: { height: number, width: number }; // ミリメートル単位
-  margin?: [number, number, number, number]; // ミリメートル単位 [上, 右, 下, 左]
+  size?: { height: number, width: number }; // ãƒŸãƒªãƒ¡ãƒ¼ãƒˆãƒ«å˜ä½
+  margin?: [number, number, number, number]; // ãƒŸãƒªãƒ¡ãƒ¼ãƒˆãƒ«å˜ä½ [ä¸Š, å³, ä¸‹, å·¦]
 }
 ```
 
-## お問い合わせ
+## ãŠå•ã„åˆã‚ã›
 
-`@pdfme/converter`に関するご質問やご提案がありましたら、以下までご連絡ください：
+`@weberon/converter`ã«é–¢ã™ã‚‹ã”è³ªå•ã‚„ã”ææ¡ˆãŒã‚ã‚Šã¾ã—ãŸã‚‰ã€ä»¥ä¸‹ã¾ã§ã”é€£çµ¡ãã ã•ã„ï¼š
 
 - **Discord**: [https://discord.gg/xWPTJbmgNV](https://discord.gg/xWPTJbmgNV)
 - **GitHub Issues**: [https://github.com/pdfme/pdfme/issues](https://github.com/pdfme/pdfme/issues)
+

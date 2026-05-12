@@ -1,5 +1,5 @@
-import React from 'react';
-import { Size } from '@pdfme/common';
+﻿import React from 'react';
+import { Size } from '@weberon/common';
 import { theme, Typography, Button } from 'antd';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 
@@ -117,3 +117,4 @@ const UnitPager = ({ size, unitCursor, unitNum, setUnitCursor }: Props) => {
 };
 
 export default UnitPager;
+

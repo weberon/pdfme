@@ -1,6 +1,6 @@
-export const DEFAULT_LANG = 'en';
+﻿export const DEFAULT_LANG = 'en';
 
-export const DESTROYED_ERR_MSG = '[@pdfme/ui] this instance is already destroyed';
+export const DESTROYED_ERR_MSG = '[@weberon/ui] this instance is already destroyed';
 
 export const SELECTABLE_CLASSNAME = 'selectable';
 
@@ -19,3 +19,4 @@ export const DEFAULT_MAX_ZOOM = 2;
 export const DESIGNER_CLASSNAME = 'pdfme-designer-';
 
 export const UI_CLASSNAME = 'pdfme-ui-';
+

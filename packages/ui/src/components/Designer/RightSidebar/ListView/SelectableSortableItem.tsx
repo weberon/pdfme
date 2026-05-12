@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+﻿import React, { useContext } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
-import { SchemaForUI } from '@pdfme/common';
+import { SchemaForUI } from '@weberon/common';
 import { PluginsRegistry, I18nContext } from '../../../../contexts.js';
 import Item from './Item.js';
 import { useMountStatus } from '../../../../hooks.js';
@@ -86,3 +86,4 @@ const SelectableSortableItem = ({
 };
 
 export default SelectableSortableItem;
+

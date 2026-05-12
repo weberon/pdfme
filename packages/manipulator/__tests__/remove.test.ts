@@ -1,4 +1,4 @@
-import { remove } from '../src/index';
+﻿import { remove } from '../src/index';
 import { createTestPDF, getPDFPageCount } from './test-helpers';
 
 describe('remove', () => {
@@ -11,12 +11,12 @@ describe('remove', () => {
   test('throws error when no pages provided', async () => {
     const pdf = await createTestPDF(3);
     await expect(remove(pdf, [])).rejects.toThrow(
-      '[@pdfme/manipulator] At least one page number is required'
+      '[@weberon/manipulator] At least one page number is required'
     );
   });
 
   test('throws error for invalid page numbers', async () => {
     const pdf = await createTestPDF(3);
-    await expect(remove(pdf, [3])).rejects.toThrow('[@pdfme/manipulator] Invalid page number');
+    await expect(remove(pdf, [3])).rejects.toThrow('[@weberon/manipulator] Invalid page number');
   });
 });

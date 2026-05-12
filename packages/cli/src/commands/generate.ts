@@ -1,9 +1,9 @@
-import { defineCommand } from 'citty';
-import { PDFDocument } from '@pdfme/pdf-lib';
-import { generate } from '@pdfme/generator';
-import { pdf2img, pdf2size } from '@pdfme/converter';
-import { checkGenerateProps } from '@pdfme/common';
-import type { Font, GenerateProps, Template } from '@pdfme/common';
+﻿import { defineCommand } from 'citty';
+import { PDFDocument } from '@weberon/pdf-lib';
+import { generate } from '@weberon/generator';
+import { pdf2img, pdf2size } from '@weberon/converter';
+import { checkGenerateProps } from '@weberon/common';
+import type { Font, GenerateProps, Template } from '@weberon/common';
 import {
   assertNoUnknownFlags,
   fail,
@@ -329,3 +329,4 @@ function normalizeSchemaPages(rawSchemas: unknown): Array<Array<Record<string, u
     return [];
   });
 }
+

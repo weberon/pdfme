@@ -1,4 +1,4 @@
-import { RefObject, useRef, useState, useCallback, useEffect } from 'react';
+﻿import { RefObject, useRef, useState, useCallback, useEffect } from 'react';
 import {
   cloneDeep,
   ZOOM,
@@ -9,8 +9,8 @@ import {
   SchemaForUI,
   ChangeSchemas,
   isBlankPdf,
-} from '@pdfme/common';
-import { pdf2img, pdf2size } from '@pdfme/converter';
+} from '@weberon/common';
+import { pdf2img, pdf2size } from '@weberon/converter';
 
 import {
   schemasList2template,
@@ -125,7 +125,7 @@ export const useUIPreProcessor = ({ template, size, zoomLevel, maxZoom }: UIPreP
         const error = err instanceof Error ? err : new Error(String(err));
         if (isMountedRef.current && requestId === requestIdRef.current) {
           setError(error);
-          console.error('[@pdfme/ui]', error);
+          console.error('[@weberon/ui]', error);
         }
       }
     },
@@ -341,3 +341,4 @@ export const useInitEvents = ({
     return destroyEvents;
   }, [initEvents, destroyEvents]);
 };
+

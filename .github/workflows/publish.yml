@@ -26,7 +26,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@weberon'
           cache: npm
           cache-dependency-path: |
             package-lock.json
@@ -71,8 +72,10 @@ jobs:
         env:
           CI: true
 
-      - name: Publish to NPM
-        run: npm publish --workspaces --access public --tag $NPM_TAG
+      - name: Publish to GitHub Packages
+        run: npm publish --workspaces --access restricted --tag $NPM_TAG
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   playground-test:
     runs-on: ubuntu-latest

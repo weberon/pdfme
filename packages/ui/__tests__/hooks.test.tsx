@@ -1,11 +1,11 @@
-import React from 'react';
+﻿import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import { BLANK_PDF, type SchemaForUI, type Template } from '@pdfme/common';
-import * as converter from '@pdfme/converter';
+import { BLANK_PDF, type SchemaForUI, type Template } from '@weberon/common';
+import * as converter from '@weberon/converter';
 import * as helper from '../src/helper';
 import { useInitEvents, useUIPreProcessor } from '../src/hooks';
 
-vi.mock('@pdfme/converter', () => ({
+vi.mock('@weberon/converter', () => ({
   pdf2size: vi.fn(),
   pdf2img: vi.fn(),
 }));
@@ -144,3 +144,4 @@ test('useInitEvents paste ignores missing DOM nodes instead of storing null acti
 
   vi.useRealTimers();
 });
+

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import type { PropPanelWidgetProps } from '@pdfme/common';
+﻿import React, { useEffect, useRef } from 'react';
+import type { PropPanelWidgetProps } from '@weberon/common';
 
 type Props = PropPanelWidgetProps & {
   widget: (props: PropPanelWidgetProps) => void;
@@ -27,3 +27,4 @@ const WidgetRenderer = (props: Props) => {
 };
 
 export default WidgetRenderer;
+

@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { PDFDocument } from '@pdfme/pdf-lib';
+import { PDFDocument } from '@weberon/pdf-lib';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CLI = join(__dirname, '..', 'dist', 'index.js');
@@ -93,3 +93,4 @@ describe('pdf2size command', () => {
     expect(result.stderr).toContain('Pages: 1');
   });
 });
+

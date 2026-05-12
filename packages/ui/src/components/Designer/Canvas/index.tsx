@@ -1,4 +1,4 @@
-import React, {
+﻿import React, {
   Ref,
   useMemo,
   useContext,
@@ -19,7 +19,7 @@ import {
   BasePdf,
   isBlankPdf,
   replacePlaceholders,
-} from '@pdfme/common';
+} from '@weberon/common';
 import { PluginsRegistry } from '../../../contexts.js';
 import { X } from 'lucide-react';
 import { RULER_HEIGHT, RIGHT_SIDEBAR_WIDTH, DESIGNER_CLASSNAME } from '../../../constants.js';
@@ -534,3 +534,4 @@ const Canvas = (props: Props, ref: Ref<HTMLDivElement>) => {
   );
 };
 export default forwardRef<HTMLDivElement, Props>(Canvas);
+

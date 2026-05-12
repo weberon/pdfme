@@ -1,5 +1,5 @@
-import React from 'react';
-import { Size } from '@pdfme/common';
+﻿import React from 'react';
+import { Size } from '@weberon/common';
 import { RULER_HEIGHT } from '../../../constants.js';
 import { theme } from 'antd';
 
@@ -18,3 +18,4 @@ const Mask = ({ width, height }: Size) => (
 );
 
 export default Mask;
+

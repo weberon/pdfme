@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+﻿import { readFileSync } from 'node:fs';
 import { builtinModules } from 'node:module';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -21,7 +21,7 @@ const packageDependencies = [
 ];
 
 // Also externalize transitive native deps that must not be bundled
-const alwaysExternal = ['@napi-rs/canvas', 'pdfjs-dist', 'fontkit', '@pdfme/pdf-lib'];
+const alwaysExternal = ['@napi-rs/canvas', 'pdfjs-dist', 'fontkit', '@weberon/pdf-lib'];
 
 const isExternal = (id: string) =>
   builtinModuleSet.has(id) ||
@@ -50,3 +50,4 @@ export default defineConfig({
     target: 'node20',
   },
 });
+

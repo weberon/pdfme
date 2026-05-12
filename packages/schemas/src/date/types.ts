@@ -1,4 +1,4 @@
-import { Schema } from '@pdfme/common';
+﻿import { Schema } from '@weberon/common';
 import { ALIGNMENT } from '../text/types.js';
 
 export interface DateSchema extends Schema {
@@ -17,3 +17,4 @@ export interface DateSchema extends Schema {
   type: string;
   content?: string;
 }
+

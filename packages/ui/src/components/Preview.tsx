@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext, useCallback } from 'react';
+﻿import React, { useRef, useState, useEffect, useContext, useCallback } from 'react';
 import {
   Template,
   SchemaForUI,
@@ -6,8 +6,8 @@ import {
   Size,
   getDynamicTemplate,
   replacePlaceholders,
-} from '@pdfme/common';
-import { getDynamicHeightsForTable } from '@pdfme/schemas/tables';
+} from '@weberon/common';
+import { getDynamicHeightsForTable } from '@weberon/schemas/tables';
 import UnitPager from './UnitPager.js';
 import Root from './Root.js';
 import StaticSchema from './StaticSchema.js';
@@ -109,7 +109,7 @@ const Preview = ({
         setSchemasList(sl);
         await currentRefresh(dynamicTemplate);
       })
-      .catch((err) => console.error(`[@pdfme/ui] `, err));
+      .catch((err) => console.error(`[@weberon/ui] `, err));
   }, []);
 
   useEffect(() => {
@@ -252,3 +252,4 @@ const Preview = ({
 };
 
 export default Preview;
+

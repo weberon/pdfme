@@ -1,4 +1,4 @@
-import { z } from 'zod';
+﻿import { z } from 'zod';
 import { Buffer } from 'buffer';
 import {
   Schema,
@@ -44,7 +44,7 @@ export const getFallbackFontName = (font: Font) => {
   }, initial);
   if (fallbackFontName === initial) {
     throw Error(
-      `[@pdfme/common] fallback flag is not found in font. true fallback flag must be only one.`,
+      `[@weberon/common] fallback flag is not found in font. true fallback flag must be only one.`,
     );
   }
 
@@ -80,7 +80,7 @@ const blob2Base64Pdf = (blob: Blob) => {
       if ((reader.result as string).startsWith('data:application/pdf;')) {
         resolve(reader.result as string);
       } else {
-        reject(Error('[@pdfme/common] template.basePdf must be pdf data.'));
+        reject(Error('[@weberon/common] template.basePdf must be pdf data.'));
       }
     };
     reader.readAsDataURL(blob);
@@ -192,7 +192,7 @@ export const getB64BasePdf = async (
   ) {
     if (!isUrlSafeToFetch(customPdf)) {
       throw Error(
-        '[@pdfme/common] Invalid or unsafe URL for basePdf. Only http: and https: URLs pointing to public hosts are allowed.',
+        '[@weberon/common] Invalid or unsafe URL for basePdf. Only http: and https: URLs pointing to public hosts are allowed.',
       );
     }
     const response = await fetch(customPdf);
@@ -245,13 +245,13 @@ export const checkFont = (arg: { font: Font; template: Template }) => {
   );
   if (fallbackFontNum === 0) {
     throw Error(
-      `[@pdfme/common] fallback flag is not found in font. true fallback flag must be only one.
+      `[@weberon/common] fallback flag is not found in font. true fallback flag must be only one.
 Check this document: https://pdfme.com/docs/custom-fonts#about-font-type`,
     );
   }
   if (fallbackFontNum > 1) {
     throw Error(
-      `[@pdfme/common] ${fallbackFontNum} fallback flags found in font. true fallback flag must be only one.
+      `[@weberon/common] ${fallbackFontNum} fallback flags found in font. true fallback flag must be only one.
 Check this document: https://pdfme.com/docs/custom-fonts#about-font-type`,
     );
   }
@@ -260,7 +260,7 @@ Check this document: https://pdfme.com/docs/custom-fonts#about-font-type`,
   const fontNames = Object.keys(font);
   if (fontNamesInSchemas.some((f) => !fontNames.includes(f))) {
     throw Error(
-      `[@pdfme/common] ${fontNamesInSchemas
+      `[@weberon/common] ${fontNamesInSchemas
         .filter((f) => !fontNames.includes(f))
         .join()} of template.schemas is not found in font.
 Check this document: https://pdfme.com/docs/custom-fonts`,
@@ -281,7 +281,7 @@ export const checkPlugins = (arg: { plugins: Plugins; template: Template }) => {
 
   if (allSchemaTypes.some((s) => !pluginsSchemaTypes.includes(s))) {
     throw Error(
-      `[@pdfme/common] ${allSchemaTypes
+      `[@weberon/common] ${allSchemaTypes
         .filter((s) => !pluginsSchemaTypes.includes(s))
         .join()} of template.schemas is not found in plugins.`,
     );
@@ -298,12 +298,12 @@ const checkProps = <T>(data: unknown, zodSchema: z.ZodType<T>) => {
 ERROR MESSAGE: ${issue.message}
 --------------------------`,
       );
-      throw Error(`[@pdfme/common] Invalid argument:
+      throw Error(`[@weberon/common] Invalid argument:
 --------------------------
 ${messages.join('\n')}`);
     } else {
       throw Error(
-        `[@pdfme/common] Unexpected parsing error: ${e instanceof Error ? e.message : String(e)}`,
+        `[@weberon/common] Unexpected parsing error: ${e instanceof Error ? e.message : String(e)}`,
       );
     }
   }
@@ -345,3 +345,4 @@ export const checkGenerateProps = (data: unknown) => {
   }
   checkProps(data, GeneratePropsSchema);
 };
+

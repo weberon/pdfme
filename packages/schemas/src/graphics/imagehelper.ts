@@ -1,4 +1,4 @@
-// ref: https://github.com/image-size/image-size ----------------------------
+﻿// ref: https://github.com/image-size/image-size ----------------------------
 // The following code is adapted from the image-size code. Unnecessary formats and dependencies on Node have been removed.
 import { Buffer } from 'buffer';
 
@@ -150,7 +150,8 @@ const imageSize = (imgBuffer: Buffer): { height: number; width: number } => {
   }
 
   throw new TypeError(
-    '[@pdfme/schemas/images] Unsupported file type: ' + (type === undefined ? 'undefined' : type),
+    '[@weberon/schemas/images] Unsupported file type: ' + (type === undefined ? 'undefined' : type),
   );
 };
 // ----------------------------
+

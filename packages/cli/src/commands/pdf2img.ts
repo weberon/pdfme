@@ -1,7 +1,7 @@
-import { basename, extname, join } from 'node:path';
+﻿import { basename, extname, join } from 'node:path';
 import { existsSync, mkdirSync, statSync } from 'node:fs';
 import { defineCommand } from 'citty';
-import { pdf2img, pdf2size } from '@pdfme/converter';
+import { pdf2img, pdf2size } from '@weberon/converter';
 import {
   assertNoUnknownFlags,
   fail,
@@ -135,3 +135,4 @@ export default defineCommand({
     });
   },
 });
+

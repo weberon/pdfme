@@ -1,8 +1,8 @@
-import { readFileSync } from 'node:fs';
+﻿import { readFileSync } from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { Font, getDefaultFont } from '@pdfme/common';
-import { pdf2img } from '@pdfme/converter';
+import { Font, getDefaultFont } from '@weberon/common';
+import { pdf2img } from '@weberon/converter';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -52,3 +52,4 @@ export const getImageSnapshotOptions = (name: string) => ({
   name,
   allowedPixelRatio: IMAGE_SNAPSHOT_ALLOWED_PIXEL_RATIO,
 });
+

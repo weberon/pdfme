@@ -1,4 +1,4 @@
-# Custom Fonts
+﻿# Custom Fonts
 
 pdfme uses the [Roboto Regular 400](https://fonts.google.com/specimen/Roboto) font by default, but you can use any font you like.
 
@@ -8,10 +8,10 @@ You can use this feature to solve those issues.
 
 ## About Font type
 
-You can import from `@pdfme/common` as below.
+You can import from `@weberon/common` as below.
 
 ```ts
-import type { Font } from '@pdfme/common';
+import type { Font } from '@weberon/common';
 ```
 
 The type of font is as follows.
@@ -50,8 +50,8 @@ Let's check out how to set font in the generator and ui packages.
 Set font as option in [generate](/docs/getting-started#generator) function
 
 ```ts
-import { Template, BLANK_PDF, Font } from '@pdfme/common';
-import { generate } from '@pdfme/generator';
+import { Template, BLANK_PDF, Font } from '@weberon/common';
+import { generate } from '@weberon/generator';
 
 const font: Font = {
   serif: {
@@ -115,7 +115,7 @@ The sample code is for [Designer](/docs/getting-started#designer), but the same 
 #### Setting font at instance initialization
 
 ```ts
-import { Designer } from '@pdfme/ui';
+import { Designer } from '@weberon/ui';
 
 const domContainer = document.getElementById('container');
 const template = {
@@ -148,3 +148,4 @@ const font = {
 };
 designer.updateOptions({ font });
 ```
+

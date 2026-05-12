@@ -1,13 +1,13 @@
-import React from 'react';
+﻿import React from 'react';
 import { render, act, fireEvent, waitFor } from '@testing-library/react';
 import Preview from '../../src/components/Preview';
 import { I18nContext, FontContext, OptionsContext, PluginsRegistry } from '../../src/contexts';
 import { i18n } from '../../src/i18n';
 import { SELECTABLE_CLASSNAME } from '../../src/constants';
-import { getDefaultFont, pluginRegistry } from '@pdfme/common';
+import { getDefaultFont, pluginRegistry } from '@weberon/common';
 import { normalizeElementIdsForSnapshot } from '../assets/normalizeSnapshot';
 import { setupUIMock, getSampleTemplate } from '../assets/helper';
-import { text, image } from '@pdfme/schemas';
+import { text, image } from '@weberon/schemas';
 
 const plugins = pluginRegistry({ text, image });
 
@@ -100,3 +100,4 @@ test('Preview keeps toolbar zoom interactive when options.zoomLevel is only an i
     expect(container).toHaveTextContent('125%');
   });
 });
+

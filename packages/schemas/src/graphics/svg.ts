@@ -1,4 +1,4 @@
-import { Plugin, Schema } from '@pdfme/common';
+﻿import { Plugin, Schema } from '@weberon/common';
 import {
   convertForPdfLayoutProps,
   isEditable,
@@ -119,3 +119,4 @@ const svgSchema: Plugin<SVGSchema> = {
 };
 
 export default svgSchema;
+

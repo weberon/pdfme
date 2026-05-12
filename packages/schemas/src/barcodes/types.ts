@@ -1,4 +1,4 @@
-import { Schema } from '@pdfme/common';
+﻿import { Schema } from '@weberon/common';
 import { BARCODE_TYPES } from './constants.js';
 
 export type BarcodeSchema = Schema & {
@@ -10,3 +10,4 @@ export type BarcodeSchema = Schema & {
 };
 
 export type BarcodeTypes = (typeof BARCODE_TYPES)[number];
+

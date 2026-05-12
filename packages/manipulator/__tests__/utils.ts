@@ -1,5 +1,5 @@
-import { PDFDocument } from '@pdfme/pdf-lib';
-import { pdf2img } from '@pdfme/converter';
+﻿import { PDFDocument } from '@weberon/pdf-lib';
+import { pdf2img } from '@weberon/converter';
 
 export const createTestPDF = async (pageCount: number): Promise<Uint8Array> => {
   const pdfDoc = await PDFDocument.create();
@@ -23,3 +23,4 @@ export const getPDFPageCount = async (pdf: ArrayBuffer | Uint8Array): Promise<nu
   const pdfDoc = await PDFDocument.load(pdf);
   return pdfDoc.getPageCount();
 };
+

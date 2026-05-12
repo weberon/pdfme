@@ -1,5 +1,5 @@
-import React from 'react';
-import { isBlankPdf, replacePlaceholders, Template } from '@pdfme/common';
+﻿import React from 'react';
+import { isBlankPdf, replacePlaceholders, Template } from '@weberon/common';
 import Renderer from './Renderer.js';
 import { uuid } from '../helper.js';
 
@@ -48,3 +48,4 @@ const StaticSchema = (props: {
 };
 
 export default StaticSchema;
+

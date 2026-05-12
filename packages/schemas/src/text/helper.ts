@@ -1,4 +1,4 @@
-import * as fontkit from 'fontkit';
+﻿import * as fontkit from 'fontkit';
 import type { Font as FontKitFont } from 'fontkit';
 import {
   b64toUint8Array,
@@ -10,7 +10,7 @@ import {
   getDefaultFont,
   DEFAULT_FONT_NAME,
   isUrlSafeToFetch,
-} from '@pdfme/common';
+} from '@weberon/common';
 import { Buffer } from 'buffer';
 import type { TextSchema, FontWidthCalcValues } from './types.js';
 import {
@@ -113,7 +113,7 @@ const getCacheKey = (fontName: string) => `getFontKitFont-${fontName}`;
 export const fetchRemoteFontData = async (url: string): Promise<ArrayBuffer> => {
   if (!isUrlSafeToFetch(url)) {
     throw Error(
-      '[@pdfme/schemas] Invalid or unsafe URL for font data. Only http: and https: URLs pointing to public hosts are allowed.',
+      '[@weberon/schemas] Invalid or unsafe URL for font data. Only http: and https: URLs pointing to public hosts are allowed.',
     );
   }
 
@@ -126,7 +126,7 @@ export const fetchRemoteFontData = async (url: string): Promise<ArrayBuffer> => 
     return await response.arrayBuffer();
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
-    throw Error(`[@pdfme/schemas] Failed to fetch remote font data from ${url}. ${reason}`);
+    throw Error(`[@weberon/schemas] Failed to fetch remote font data from ${url}. ${reason}`);
   }
 };
 
@@ -476,11 +476,11 @@ function containsJapanese(text: string): boolean {
   return /[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(text);
 }
 //
-// 日本語禁則処理
+// æ—¥æœ¬èªžç¦å‰‡å‡¦ç†
 //
 // https://www.morisawa.co.jp/blogs/MVP/8760
 //
-// 行頭禁則
+// è¡Œé ­ç¦å‰‡
 export const filterStartJP = (lines: string[]): string[] => {
   const filtered: string[] = [];
   let charToAppend: string | null = null;
@@ -527,7 +527,7 @@ export const filterStartJP = (lines: string[]): string[] => {
   }
 };
 
-// 行末禁則
+// è¡Œæœ«ç¦å‰‡
 export const filterEndJP = (lines: string[]): string[] => {
   const filtered: string[] = [];
   let charToPrepend: string | null = null;
@@ -571,3 +571,4 @@ export const filterEndJP = (lines: string[]): string[] => {
     return filtered;
   }
 };
+

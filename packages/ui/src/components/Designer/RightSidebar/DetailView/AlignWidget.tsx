@@ -1,6 +1,6 @@
-import { Space, Button, Form } from 'antd';
+﻿import { Space, Button, Form } from 'antd';
 import React from 'react';
-import type { PropPanelWidgetProps } from '@pdfme/common';
+import type { PropPanelWidgetProps } from '@weberon/common';
 import { DESIGNER_CLASSNAME } from '../../../../constants.js';
 import {
   AlignStartVertical,
@@ -226,3 +226,4 @@ const AlignWidget = (props: PropPanelWidgetProps) => {
 };
 
 export default AlignWidget;
+

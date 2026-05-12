@@ -1,7 +1,7 @@
-// @vitest-environment jsdom
+﻿// @vitest-environment jsdom
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { BLANK_PDF, Schema } from '@pdfme/common';
+import { BLANK_PDF, Schema } from '@weberon/common';
 import { image, signature } from '../src/index.js';
 
 const { SignaturePadMock } = vi.hoisted(() => {
@@ -124,3 +124,4 @@ describe('signature plugin', () => {
     expect(rootElement.textContent).not.toContain('Invalid saved signature data. Clear and sign again.');
   });
 });
+

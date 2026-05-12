@@ -1,4 +1,4 @@
-# pdfme Open Source Library
+﻿# pdfme Open Source Library
 > A lightweight, performant JavaScript/TypeScript library for PDF generation and manipulation, designed for developers who need complete control over PDF creation in web and Node.js applications.
 
 pdfme is built with a focus on performance, minimal dependencies, and ease of use. It supports complex layouts, custom fonts, images, and templates while maintaining a small bundle size. Perfect for generating invoices, reports, certificates, and any document that requires precise control over layout and styling.
@@ -27,12 +27,13 @@ pdfme is built with a focus on performance, minimal dependencies, and ease of us
 - [Changelog](https://github.com/pdfme/pdfme/releases): Version history and updates
 
 ## Package Ecosystem
-- [Generator Package](https://www.npmjs.com/package/@pdfme/generator): PDF generation from templates
-- [UI Package](https://www.npmjs.com/package/@pdfme/ui): Designer, Form, and Viewer components
-- [Schemas Package](https://www.npmjs.com/package/@pdfme/schemas): Built-in field types and schemas
-- [Manipulator Package](https://www.npmjs.com/package/@pdfme/manipulator): PDF manipulation utilities
+- [Generator Package](https://www.npmjs.com/package/@weberon/generator): PDF generation from templates
+- [UI Package](https://www.npmjs.com/package/@weberon/ui): Designer, Form, and Viewer components
+- [Schemas Package](https://www.npmjs.com/package/@weberon/schemas): Built-in field types and schemas
+- [Manipulator Package](https://www.npmjs.com/package/@weberon/manipulator): PDF manipulation utilities
 
 ## Optional
-- [Converter Package](https://www.npmjs.com/package/@pdfme/converter): PDF conversion utilities
-- [Common Package](https://www.npmjs.com/package/@pdfme/common): Shared utilities and types
+- [Converter Package](https://www.npmjs.com/package/@weberon/converter): PDF conversion utilities
+- [Common Package](https://www.npmjs.com/package/@weberon/common): Shared utilities and types
 - [Cloud Service](https://app.pdfme.com): Commercial hosted solution
+

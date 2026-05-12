@@ -1,4 +1,4 @@
-import { Schema, BasePdf, BlankPdf, CommonOptions, isBlankPdf } from '@pdfme/common';
+﻿import { Schema, BasePdf, BlankPdf, CommonOptions, isBlankPdf } from '@weberon/common';
 import { createSingleTable } from './tableHelper.js';
 import { getBodyWithRange, getBody } from './helper.js';
 import { TableSchema } from './types.js';
@@ -86,3 +86,4 @@ export const getDynamicHeightsForTable = async (
 
   return result;
 };
+

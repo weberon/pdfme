@@ -1,5 +1,5 @@
 {
-  "name": "@pdfme/converter",
+  "name": "@weberon/converter",
   "version": "0.0.0",
   "description": "TypeScript base PDF generator and React base UI. Open source, developed by the community, and completely free to use under the MIT license!",
   "keywords": [
@@ -38,7 +38,8 @@
     }
   },
   "publishConfig": {
-    "access": "public"
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "dev": "vite build --watch",
@@ -50,11 +51,11 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.97",
-    "@pdfme/common": "*",
-    "@pdfme/pdf-lib": "*",
+    "@weberon/common": "*",
+    "@weberon/pdf-lib": "*",
     "pdfjs-dist": "^5.5.207"
   },
   "devDependencies": {
-    "@pdfme/generator": "*"
+    "@weberon/generator": "*"
   }
 }

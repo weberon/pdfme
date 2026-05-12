@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { join, dirname, resolve } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync, existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { PDFDocument } from '@pdfme/pdf-lib';
+import { PDFDocument } from '@weberon/pdf-lib';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CLI = join(__dirname, '..', 'dist', 'index.js');
@@ -1404,7 +1404,7 @@ describe('generate command', () => {
             },
           ]],
         },
-        inputs: [{ title: 'こんにちは' }],
+        inputs: [{ title: 'ã“ã‚“ã«ã¡ã¯' }],
       }),
     );
 
@@ -1445,7 +1445,7 @@ describe('generate command', () => {
             },
           ]],
         },
-        inputs: [{ title: 'こんにちは' }],
+        inputs: [{ title: 'ã“ã‚“ã«ã¡ã¯' }],
       }),
     );
 
@@ -1508,3 +1508,4 @@ describe('generate command', () => {
     }
   });
 });
+

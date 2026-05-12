@@ -1,4 +1,4 @@
-import { PDFFont, PDFDocument } from '@pdfme/pdf-lib';
+﻿import { PDFFont, PDFDocument } from '@weberon/pdf-lib';
 import type { Font as FontKitFont } from 'fontkit';
 import type { TextSchema } from './types.js';
 import {
@@ -8,7 +8,7 @@ import {
   getDefaultFont,
   getFallbackFontName,
   mm2pt,
-} from '@pdfme/common';
+} from '@weberon/common';
 import {
   VERTICAL_ALIGN_TOP,
   VERTICAL_ALIGN_MIDDLE,
@@ -238,3 +238,4 @@ export const pdfRender = async (arg: PDFRenderProps<TextSchema>) => {
     });
   });
 };
+

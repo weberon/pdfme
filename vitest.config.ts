@@ -1,4 +1,4 @@
-import path from 'node:path';
+﻿import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
@@ -81,39 +81,39 @@ const pdfmeAliases = usePublishedPdfmeExports
   ? []
   : [
       {
-        find: '@pdfme/schemas/builtins',
+        find: '@weberon/schemas/builtins',
         replacement: path.resolve(repoRoot, 'packages/schemas/src/builtins.ts'),
       },
       {
-        find: '@pdfme/schemas/tables',
+        find: '@weberon/schemas/tables',
         replacement: path.resolve(repoRoot, 'packages/schemas/src/tables.ts'),
       },
       {
-        find: '@pdfme/schemas/utils',
+        find: '@weberon/schemas/utils',
         replacement: path.resolve(repoRoot, 'packages/schemas/src/utils.ts'),
       },
       {
-        find: '@pdfme/common',
+        find: '@weberon/common',
         replacement: path.resolve(repoRoot, 'packages/common/src/index.ts'),
       },
       {
-        find: '@pdfme/converter',
+        find: '@weberon/converter',
         replacement: converterReplacement,
       },
       {
-        find: '@pdfme/generator',
+        find: '@weberon/generator',
         replacement: path.resolve(repoRoot, 'packages/generator/src/index.ts'),
       },
       {
-        find: '@pdfme/manipulator',
+        find: '@weberon/manipulator',
         replacement: path.resolve(repoRoot, 'packages/manipulator/src/index.ts'),
       },
       {
-        find: '@pdfme/pdf-lib',
+        find: '@weberon/pdf-lib',
         replacement: path.resolve(repoRoot, 'packages/pdf-lib/src/index.ts'),
       },
       {
-        find: '@pdfme/schemas',
+        find: '@weberon/schemas',
         replacement: path.resolve(repoRoot, 'packages/schemas/src/index.ts'),
       },
     ];
@@ -163,3 +163,4 @@ export default defineConfig({
   },
   test: testConfig,
 });
+

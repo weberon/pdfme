@@ -1,5 +1,5 @@
-import { defineCommand } from 'citty';
-import { checkGenerateProps } from '@pdfme/common';
+﻿import { defineCommand } from 'citty';
+import { checkGenerateProps } from '@weberon/common';
 import { assertNoUnknownFlags, printJson, runWithContract } from '../contract.js';
 import {
   collectInputHints,
@@ -128,3 +128,4 @@ function describeValidationInput(file: string | undefined): string {
 
   return file;
 }
+

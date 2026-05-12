@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+﻿import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Template, checkTemplate, getInputFromTemplate, Lang } from '@pdfme/common';
-import { Form, Viewer } from '@pdfme/ui';
+import { Template, checkTemplate, getInputFromTemplate, Lang } from '@weberon/common';
+import { Form, Viewer } from '@weberon/ui';
 import {
   getFontsData,
   getTemplateById,
@@ -223,7 +223,7 @@ function FormAndViewerApp() {
             const startTimer = performance.now();
             await generatePDF(ui.current);
             const endTimer = performance.now();
-            toast.info(`Generated PDF in ${Math.round(endTimer - startTimer)}ms ⚡️`);
+            toast.info(`Generated PDF in ${Math.round(endTimer - startTimer)}ms âš¡ï¸`);
           }}
         >
           Generate PDF
@@ -248,3 +248,4 @@ function FormAndViewerApp() {
 }
 
 export default FormAndViewerApp;
+

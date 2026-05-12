@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync, chmodSync } from 'node:fs';
@@ -1070,7 +1070,7 @@ describe('doctor command', () => {
     );
     expect(parsed.issues).toEqual([]);
     expect(parsed.warnings).toContain(
-      'Font data URI for BrandBytes does not clearly advertise a .ttf format. @pdfme/cli currently guarantees only .ttf custom fonts.',
+      'Font data URI for BrandBytes does not clearly advertise a .ttf format. @weberon/cli currently guarantees only .ttf custom fonts.',
     );
   });
 
@@ -1126,7 +1126,7 @@ describe('doctor command', () => {
     );
     expect(parsed.issues).toEqual([]);
     expect(parsed.warnings).toContain(
-      'Font URL for BrandUrl does not clearly advertise a .ttf format. @pdfme/cli currently guarantees only .ttf custom fonts.',
+      'Font URL for BrandUrl does not clearly advertise a .ttf format. @weberon/cli currently guarantees only .ttf custom fonts.',
     );
   });
 
@@ -1151,7 +1151,7 @@ describe('doctor command', () => {
             },
           ]],
         },
-        inputs: [{ title: 'こんにちは' }],
+        inputs: [{ title: 'ã“ã‚“ã«ã¡ã¯' }],
       }),
     );
 
@@ -1614,3 +1614,4 @@ describe('doctor command', () => {
     expect(parsed.error.message).toContain('--imageFormat');
   });
 });
+

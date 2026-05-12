@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useCallback, useEffect, useLayoutEffect } from 'react';
+﻿import React, { useRef, useState, useContext, useCallback, useEffect, useLayoutEffect } from 'react';
 import {
   cloneDeep,
   ZOOM,
@@ -10,7 +10,7 @@ import {
   Size,
   isBlankPdf,
   px2mm,
-} from '@pdfme/common';
+} from '@weberon/common';
 import { DndContext } from '@dnd-kit/core';
 import RightSidebar from './RightSidebar/index.js';
 import LeftSidebar from './LeftSidebar.js';
@@ -398,3 +398,4 @@ const TemplateEditor = ({
 };
 
 export default TemplateEditor;
+

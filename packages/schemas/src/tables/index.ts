@@ -1,4 +1,4 @@
-import type { Plugin } from '@pdfme/common';
+﻿import type { Plugin } from '@weberon/common';
 import type { TableSchema } from './types.js';
 import { pdfRender } from './pdfRender.js';
 import { uiRender } from './uiRender.js';
@@ -13,3 +13,4 @@ const tableSchema: Plugin<TableSchema> = {
   icon: createSvgStr(Table),
 };
 export default tableSchema;
+

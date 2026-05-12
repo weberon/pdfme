@@ -1,20 +1,20 @@
-# カスタムフォント
+﻿# ã‚«ã‚¹ã‚¿ãƒ ãƒ•ã‚©ãƒ³ãƒˆ
 
-pdfmeはデフォルトで[Roboto Regular 400](https://fonts.google.com/specimen/Roboto)フォントを使用していますが、お好きなフォントを使用することができます。
+pdfmeã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§[Roboto Regular 400](https://fonts.google.com/specimen/Roboto)ãƒ•ã‚©ãƒ³ãƒˆã‚’ä½¿ç”¨ã—ã¦ã„ã¾ã™ãŒã€ãŠå¥½ããªãƒ•ã‚©ãƒ³ãƒˆã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-デザインを優先する場合は、お気に入りのフォントを使用できます。また、日本語や中国語などのデフォルトのRobotoフォントに含まれていない文字を使用している場合、PDFでは[豆腐（Tofu）](https://fonts.google.com/knowledge/glossary/tofu)として表示されます。
+ãƒ‡ã‚¶ã‚¤ãƒ³ã‚’å„ªå…ˆã™ã‚‹å ´åˆã¯ã€ãŠæ°—ã«å…¥ã‚Šã®ãƒ•ã‚©ãƒ³ãƒˆã‚’ä½¿ç”¨ã§ãã¾ã™ã€‚ã¾ãŸã€æ—¥æœ¬èªžã‚„ä¸­å›½èªžãªã©ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®Robotoãƒ•ã‚©ãƒ³ãƒˆã«å«ã¾ã‚Œã¦ã„ãªã„æ–‡å­—ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã€PDFã§ã¯[è±†è…ï¼ˆTofuï¼‰](https://fonts.google.com/knowledge/glossary/tofu)ã¨ã—ã¦è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚
 
-この機能を使用して、これらの問題を解決することができます。
+ã“ã®æ©Ÿèƒ½ã‚’ä½¿ç”¨ã—ã¦ã€ã“ã‚Œã‚‰ã®å•é¡Œã‚’è§£æ±ºã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-## フォントタイプについて
+## ãƒ•ã‚©ãƒ³ãƒˆã‚¿ã‚¤ãƒ—ã«ã¤ã„ã¦
 
-以下のように`@pdfme/common`からインポートできます。
+ä»¥ä¸‹ã®ã‚ˆã†ã«`@weberon/common`ã‹ã‚‰ã‚¤ãƒ³ãƒãƒ¼ãƒˆã§ãã¾ã™ã€‚
 
 ```ts
-import type { Font } from '@pdfme/common';
+import type { Font } from '@weberon/common';
 ```
 
-フォントの型は以下の通りです。
+ãƒ•ã‚©ãƒ³ãƒˆã®åž‹ã¯ä»¥ä¸‹ã®é€šã‚Šã§ã™ã€‚
 
 ```ts
 type Font = {
@@ -25,9 +25,9 @@ type Font = {
   };
 };
 ```
-- `data`: `http`で始まる`string`を登録すると、自動的にフェッチされます。または、`Uint8Array | ArrayBuffer`のようなバイナリデータを直接設定します。
-- \*`fallback`: trueに設定すると、`fontName`が設定されていない場合に使用するフォントになります。**フォントオブジェクトのうち1つだけをtrueに設定する必要があります。**
-- \*`subset`: デフォルトはtrueですが、フォント埋め込みをサブセットにしないようにfalseに設定できます。（この設定は、特定のフォントをサブセットで埋め込む際のfontkitのバグに対応するためのものです。）
+- `data`: `http`ã§å§‹ã¾ã‚‹`string`ã‚’ç™»éŒ²ã™ã‚‹ã¨ã€è‡ªå‹•çš„ã«ãƒ•ã‚§ãƒƒãƒã•ã‚Œã¾ã™ã€‚ã¾ãŸã¯ã€`Uint8Array | ArrayBuffer`ã®ã‚ˆã†ãªãƒã‚¤ãƒŠãƒªãƒ‡ãƒ¼ã‚¿ã‚’ç›´æŽ¥è¨­å®šã—ã¾ã™ã€‚
+- \*`fallback`: trueã«è¨­å®šã™ã‚‹ã¨ã€`fontName`ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã«ä½¿ç”¨ã™ã‚‹ãƒ•ã‚©ãƒ³ãƒˆã«ãªã‚Šã¾ã™ã€‚**ãƒ•ã‚©ãƒ³ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã†ã¡1ã¤ã ã‘ã‚’trueã«è¨­å®šã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚**
+- \*`subset`: ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯trueã§ã™ãŒã€ãƒ•ã‚©ãƒ³ãƒˆåŸ‹ã‚è¾¼ã¿ã‚’ã‚µãƒ–ã‚»ãƒƒãƒˆã«ã—ãªã„ã‚ˆã†ã«falseã«è¨­å®šã§ãã¾ã™ã€‚ï¼ˆã“ã®è¨­å®šã¯ã€ç‰¹å®šã®ãƒ•ã‚©ãƒ³ãƒˆã‚’ã‚µãƒ–ã‚»ãƒƒãƒˆã§åŸ‹ã‚è¾¼ã‚€éš›ã®fontkitã®ãƒã‚°ã«å¯¾å¿œã™ã‚‹ãŸã‚ã®ã‚‚ã®ã§ã™ã€‚ï¼‰
 
 ```ts
 const font: Font = {
@@ -41,17 +41,17 @@ const font: Font = {
 };
 ```
 
-## フォントの設定方法
+## ãƒ•ã‚©ãƒ³ãƒˆã®è¨­å®šæ–¹æ³•
 
-ジェネレーターとUIパッケージでフォントを設定する方法を見てみましょう。
+ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ãƒ¼ã¨UIãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã§ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®šã™ã‚‹æ–¹æ³•ã‚’è¦‹ã¦ã¿ã¾ã—ã‚‡ã†ã€‚
 
-### ジェネレーター
+### ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ãƒ¼
 
-[generate](/docs/getting-started#generator)関数のオプションとしてフォントを設定します。
+[generate](/docs/getting-started#generator)é–¢æ•°ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¨ã—ã¦ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®šã—ã¾ã™ã€‚
 
 ```ts
-import { Template, BLANK_PDF, Font } from '@pdfme/common';
-import { generate } from '@pdfme/generator';
+import { Template, BLANK_PDF, Font } from '@weberon/common';
+import { generate } from '@weberon/generator';
 
 const font: Font = {
   serif: {
@@ -83,7 +83,7 @@ const template: Template = {
         height: 10,
       },
       {
-        // <- フォールバックフォントを使用（serif）
+        // <- ãƒ•ã‚©ãƒ¼ãƒ«ãƒãƒƒã‚¯ãƒ•ã‚©ãƒ³ãƒˆã‚’ä½¿ç”¨ï¼ˆserifï¼‰
         name: 'c',
         type: 'text',
         position: { x: 20, y: 20 },
@@ -98,7 +98,7 @@ const inputs = [{ a: 'a1', b: 'b1', c: 'c1' }];
 generate({ template, inputs, options: { font } }).then((pdf) => {
   console.log(pdf);
 
-  // ブラウザ
+  // ãƒ–ãƒ©ã‚¦ã‚¶
   // const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
   // window.open(URL.createObjectURL(blob));
 
@@ -109,17 +109,17 @@ generate({ template, inputs, options: { font } }).then((pdf) => {
 
 ### UI
 
-UIでフォントを設定する方法は2つあります。インスタンス初期化時と、メソッドを通じての設定です。  
-サンプルコードは[デザイナー](/docs/getting-started#designer)用ですが、同じ方法で[フォーム](/docs/getting-started#form)と[ビューワー](/docs/getting-started#viewer)にも使用できます。
+UIã§ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®šã™ã‚‹æ–¹æ³•ã¯2ã¤ã‚ã‚Šã¾ã™ã€‚ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åˆæœŸåŒ–æ™‚ã¨ã€ãƒ¡ã‚½ãƒƒãƒ‰ã‚’é€šã˜ã¦ã®è¨­å®šã§ã™ã€‚  
+ã‚µãƒ³ãƒ—ãƒ«ã‚³ãƒ¼ãƒ‰ã¯[ãƒ‡ã‚¶ã‚¤ãƒŠãƒ¼](/docs/getting-started#designer)ç”¨ã§ã™ãŒã€åŒã˜æ–¹æ³•ã§[ãƒ•ã‚©ãƒ¼ãƒ ](/docs/getting-started#form)ã¨[ãƒ“ãƒ¥ãƒ¼ãƒ¯ãƒ¼](/docs/getting-started#viewer)ã«ã‚‚ä½¿ç”¨ã§ãã¾ã™ã€‚
 
-#### インスタンス初期化時にフォントを設定
+#### ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åˆæœŸåŒ–æ™‚ã«ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®š
 
 ```ts
-import { Designer } from '@pdfme/ui';
+import { Designer } from '@weberon/ui';
 
 const domContainer = document.getElementById('container');
 const template = {
-  // 省略...
+  // çœç•¥...
 };
 const font = {
   serif: {
@@ -134,7 +134,7 @@ const font = {
 const designer = new Designer({ domContainer, template, options: { font } });
 ```
 
-#### `updateOptions`でフォントを更新
+#### `updateOptions`ã§ãƒ•ã‚©ãƒ³ãƒˆã‚’æ›´æ–°
 
 ```ts
 const font = {
@@ -148,3 +148,4 @@ const font = {
 };
 designer.updateOptions({ font });
 ```
+

@@ -1,4 +1,4 @@
-import type { Schema } from '@pdfme/common';
+﻿import type { Schema } from '@weberon/common';
 import type { Font as FontKitFont } from 'fontkit';
 
 export type ALIGNMENT = 'left' | 'center' | 'right' | 'justify';
@@ -28,3 +28,4 @@ export type TextSchema = Schema & {
   fontColor: string;
   backgroundColor: string;
 };
+

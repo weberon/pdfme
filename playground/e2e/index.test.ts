@@ -1,7 +1,7 @@
-import puppeteer, { Browser, Page } from 'puppeteer';
-import { pdf2img } from '@pdfme/converter';
-import { Template, Schema, cloneDeep } from '@pdfme/common';
-import { text, table, image, barcodes, select, checkbox, radioGroup } from '@pdfme/schemas';
+﻿import puppeteer, { Browser, Page } from 'puppeteer';
+import { pdf2img } from '@weberon/converter';
+import { Template, Schema, cloneDeep } from '@weberon/common';
+import { text, table, image, barcodes, select, checkbox, radioGroup } from '@weberon/schemas';
 import { ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import { stripVTControlCharacters } from 'node:util';
 import type { MatchImageOptions } from 'vitest-image-snapshot';
@@ -502,3 +502,4 @@ describe('Playground E2E Tests', () => {
     await generateAndComparePDF(page, browser, 'final-form');
   });
 });
+

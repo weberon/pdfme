@@ -1,5 +1,5 @@
-import type { Plugin, Plugins } from '@pdfme/common';
-import * as schemas from '@pdfme/schemas';
+﻿import type { Plugin, Plugins } from '@weberon/common';
+import * as schemas from '@weberon/schemas';
 
 function isPlugin(value: unknown): value is Plugin {
   if (!value || typeof value !== 'object') {
@@ -56,3 +56,4 @@ function buildSchemaPlugins(): Plugins {
 
 export const schemaPlugins = buildSchemaPlugins();
 export const schemaTypes = new Set(Object.keys(schemaPlugins));
+

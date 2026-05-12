@@ -1,4 +1,4 @@
-# Supported Features
+﻿# Supported Features
 
 In pdfme, the following elements can be rendered.  
 For elements that are not supported, you can add your own rendering process using the [plugin mechanism](/docs/custom-schemas).
@@ -8,7 +8,7 @@ For elements that are not supported, you can add your own rendering process usin
 :::info
 
 For using schemas other than the Text schema, please refer to the following documentation.  
-[Using Schemas from @pdfme/schemas](/docs/custom-schemas#using-schemas-from-pdfmeschemas)
+[Using Schemas from @weberon/schemas](/docs/custom-schemas#using-schemas-from-pdfmeschemas)
 
 :::
 
@@ -146,3 +146,4 @@ Details: [Tables with Dynamic Data](/docs/tables)
 While pdfme is an open-source project released under the MIT License, we are open to considering custom feature additions for a fee.  
 **If you are willing to pay, we can evaluate and implement your requested features.**  
 Please note that any additional functionality will always be released as open source. If this approach works for you, please [contact us](https://app.pdfme.com/contact).
+

@@ -1,9 +1,9 @@
-import generate from '../src/generate.js';
+﻿import generate from '../src/generate.js';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { Template } from '@pdfme/common';
-import { getInputFromTemplate } from '@pdfme/common';
+import { Template } from '@weberon/common';
+import { getInputFromTemplate } from '@weberon/common';
 import {
   text,
   image,
@@ -15,7 +15,7 @@ import {
   barcodes,
   table,
   multiVariableText,
-} from '@pdfme/schemas';
+} from '@weberon/schemas';
 import { getFont, getImageSnapshotOptions, pdfToImages } from './utils.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -122,3 +122,4 @@ describe('generate integration test(playground)', () => {
     }
   });
 });
+

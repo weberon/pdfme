@@ -1,7 +1,7 @@
-import React from 'react';
+﻿import React from 'react';
 import { render } from '@testing-library/react';
 import PluginIcon from '../../src/components/Designer/PluginIcon';
-import { Plugin, Schema } from '@pdfme/common';
+import { Plugin, Schema } from '@weberon/common';
 import { OptionsContext } from '../../src/contexts';
 
 // Mock Ant Design theme
@@ -219,3 +219,4 @@ describe('PluginIcon Security Tests', () => {
     expect(svgDiv?.innerHTML).toContain('fill="blue"');
   });
 });
+

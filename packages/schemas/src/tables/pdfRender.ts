@@ -1,5 +1,5 @@
-import type { TableSchema } from './types.js';
-import type { PDFRenderProps, Schema, BasePdf, CommonOptions } from '@pdfme/common';
+﻿import type { TableSchema } from './types.js';
+import type { PDFRenderProps, Schema, BasePdf, CommonOptions } from '@weberon/common';
 import { Cell, Table, Row, Column } from './classes.js';
 import { rectangle } from '../shapes/rectAndEllipse.js';
 import cell from './cell.js';
@@ -142,3 +142,4 @@ export const pdfRender = async (arg: PDFRenderProps<TableSchema>) => {
   // which is the same type as our arg parameter
   await drawTable(arg, table);
 };
+

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, ReactNode, useRef, useMemo } from 'react';
+﻿import React, { useEffect, useContext, ReactNode, useRef, useMemo } from 'react';
 import {
   Mode,
   ZOOM,
@@ -9,7 +9,7 @@ import {
   Plugin,
   UIOptions,
   cloneDeep,
-} from '@pdfme/common';
+} from '@weberon/common';
 import { theme as antdTheme } from 'antd';
 import { SELECTABLE_CLASSNAME } from '../constants.js';
 import { PluginsRegistry, OptionsContext, I18nContext, CacheContext } from '../contexts.js';
@@ -197,7 +197,7 @@ const Renderer = (props: RendererProps) => {
   }, [renderKey, schema.type]);
 
   if (!plugin) {
-    console.error(`[@pdfme/ui] Renderer for type ${schema.type} not found. 
+    console.error(`[@weberon/ui] Renderer for type ${schema.type} not found. 
 Check this document: https://pdfme.com/docs/custom-schemas`);
     return <></>;
   }
@@ -209,3 +209,4 @@ Check this document: https://pdfme.com/docs/custom-schemas`);
   );
 };
 export default Renderer;
+

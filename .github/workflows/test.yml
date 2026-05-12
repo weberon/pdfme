@@ -1,4 +1,4 @@
-name: Testing
+﻿name: Testing
 
 on: [pull_request]
 
@@ -21,7 +21,7 @@ jobs:
             playground/package-lock.json
       - run: npm ci
       - run: npm run typecheck
-      - run: ./node_modules/.bin/vp run --filter '@pdfme/*' lint
+      - run: ./node_modules/.bin/vp run --filter '@weberon/*' lint
       - run: npm run build
       - run: npm run test
         env:
@@ -53,3 +53,4 @@ jobs:
           npm --prefix playground run test
         env:
           CI: true
+

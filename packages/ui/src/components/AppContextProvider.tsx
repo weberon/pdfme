@@ -1,9 +1,9 @@
-import React from 'react';
+﻿import React from 'react';
 import { ConfigProvider as ThemeConfigProvider } from 'antd';
 import { I18nContext, FontContext, PluginsRegistry, OptionsContext } from '../contexts.js';
 import { i18n, getDict } from '../i18n.js';
 import { defaultTheme } from '../theme.js';
-import type { Dict, Font, Lang, UIOptions, PluginRegistry } from '@pdfme/common';
+import type { Dict, Font, Lang, UIOptions, PluginRegistry } from '@weberon/common';
 
 type Props = {
   children: React.ReactNode;
@@ -76,3 +76,4 @@ const AppContextProvider = ({ children, lang, font, plugins, options }: Props) =
 };
 
 export default AppContextProvider;
+

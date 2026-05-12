@@ -1,6 +1,6 @@
-import { SchemaForUI, Schema, Template, BLANK_PDF, BasePdf, pluginRegistry } from '@pdfme/common';
+﻿import { SchemaForUI, Schema, Template, BLANK_PDF, BasePdf, pluginRegistry } from '@weberon/common';
 import { uuid, getUniqueSchemaName, schemasList2template, changeSchemas, setFontNameRecursively } from '../src/helper';
-import { text, image } from '@pdfme/schemas';
+import { text, image } from '@weberon/schemas';
 
 const getSchema = (): Schema => ({
   name: 'a',
@@ -585,3 +585,4 @@ describe('setFontNameRecursively', () => {
     expect(() => setFontNameRecursively(undefined as any, 'Arial')).not.toThrow();
   });
 });
+

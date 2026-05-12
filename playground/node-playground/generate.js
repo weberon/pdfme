@@ -1,8 +1,8 @@
-import fs from 'node:fs';
+﻿import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BLANK_PDF } from '@pdfme/common';
-import { generate } from '@pdfme/generator';
+import { BLANK_PDF } from '@weberon/common';
+import { generate } from '@weberon/generator';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,3 +41,4 @@ const inputs = [{ a: 'a1', b: 'b1', c: 'c1' }];
 const pdf = await generate({ template, inputs });
 console.log(pdf);
 fs.writeFileSync(path.join(__dirname, 'test-generate.pdf'), pdf);
+

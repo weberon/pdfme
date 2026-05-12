@@ -1,6 +1,6 @@
-import * as pdfLib from '@pdfme/pdf-lib';
+﻿import * as pdfLib from '@weberon/pdf-lib';
 const randomUUID = () => globalThis.crypto.randomUUID();
-import type { GenerateProps, Schema, PDFRenderProps, Template } from '@pdfme/common';
+import type { GenerateProps, Schema, PDFRenderProps, Template } from '@weberon/common';
 import {
   checkGenerateProps,
   getDynamicTemplate,
@@ -8,8 +8,8 @@ import {
   replacePlaceholders,
   pt2mm,
   cloneDeep,
-} from '@pdfme/common';
-import { getDynamicHeightsForTable } from '@pdfme/schemas/tables';
+} from '@weberon/common';
+import { getDynamicHeightsForTable } from '@weberon/schemas/tables';
 import {
   insertPage,
   preprocessing,
@@ -27,7 +27,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
 
   if (inputs.length === 0) {
     throw new Error(
-      '[@pdfme/generator] inputs should not be empty, pass at least an empty object in the array',
+      '[@weberon/generator] inputs should not be empty, pass at least an empty object in the array',
     );
   }
 
@@ -35,7 +35,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
 
   const { pdfDoc, renderObj } = await preprocessing({ template, userPlugins });
 
-  // PDF/VT-1 setup — only activates when template.pdfvtOptions is present.
+  // PDF/VT-1 setup â€” only activates when template.pdfvtOptions is present.
   // Templates without pdfvtOptions produce normal PDFs with no DPart/XMP/OutputIntent.
   let dpartRoot: pdfLib.PDFDPart | undefined;
   const pdfvtOptions = template.pdfvtOptions;
@@ -47,7 +47,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
   if (pdfvtOptions) {
     dpartRoot = pdfDoc.catalog.getOrCreateDPart();
 
-    // Stable document identity — required by PDF/X-4 XMP spec
+    // Stable document identity â€” required by PDF/X-4 XMP spec
     const docId = `uuid:${randomUUID()}`;
     const instanceId = `uuid:${randomUUID()}`;
     const title = vtTitle;
@@ -95,7 +95,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
   const _cache = new Map<string, unknown>();
 
   // For customPdf (non-blank), embed pages once and reuse across all records.
-  // This creates shared Form XObjects — each record's pages reference the same
+  // This creates shared Form XObjects â€” each record's pages reference the same
   // XObject, which is the prerequisite for GTS_PDFVTCached to be meaningful.
   // BlankPdf pages are mutable PDFPage objects and must be created per-record.
   let sharedBasePages: (pdfLib.PDFEmbeddedPage | pdfLib.PDFPage)[] | undefined;
@@ -206,7 +206,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
       // but the first within-page same-named schema. pdfme.generate's input
       // model already collapses by name (Set), so sharing a name across or
       // within pages is the documented way to bind one input row to many
-      // visible fields — render order must follow each page's own schemas.
+      // visible fields â€” render order must follow each page's own schemas.
       const schemaPage = schemas[j] || [];
       for (let l = 0; l < schemaPage.length; l += 1) {
         const schema = schemaPage[l];
@@ -296,7 +296,7 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
   if (pdfvtOptions) {
     // Re-apply PDF/X-4 required Info dict fields after postProcessing
     pdfDoc.setTitle(vtTitle);
-    // /Trapped /False — PDF/X-4 §4.2.1
+    // /Trapped /False â€” PDF/X-4 Â§4.2.1
     (pdfDoc as unknown as { getInfoDict(): pdfLib.PDFDict }).getInfoDict()
       .set(pdfLib.PDFName.of('Trapped'), pdfLib.PDFName.of('False'));
 
@@ -310,3 +310,4 @@ const generate = async (props: GenerateProps): Promise<Uint8Array<ArrayBuffer>> 
 };
 
 export default generate;
+

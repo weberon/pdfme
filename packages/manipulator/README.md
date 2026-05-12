@@ -1,4 +1,4 @@
-## @pdfme/manipulator
+﻿## @weberon/manipulator
 
 This library provides utility functions for merging, splitting, and manipulating PDF files.
 

@@ -1,4 +1,4 @@
-import { rotate } from '../src/index';
+﻿import { rotate } from '../src/index';
 import { createTestPDF, getPDFPageCount } from './test-helpers';
 
 describe('rotate', () => {
@@ -12,7 +12,7 @@ describe('rotate', () => {
     const pdf = await createTestPDF(2);
     // @ts-expect-error
     await expect(rotate(pdf, 45)).rejects.toThrow(
-      '[@pdfme/manipulator] Rotation degrees must be a multiple of 90'
+      '[@weberon/manipulator] Rotation degrees must be a multiple of 90'
     );
   });
 });

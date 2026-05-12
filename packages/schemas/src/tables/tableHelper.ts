@@ -1,4 +1,4 @@
-import {
+﻿import {
   Schema,
   isBlankPdf,
   BasePdf,
@@ -6,7 +6,7 @@ import {
   getDefaultFont,
   getFallbackFontName,
   cloneDeep,
-} from '@pdfme/common';
+} from '@weberon/common';
 import type { Font as FontKitFont } from 'fontkit';
 import type {
   TableSchema,
@@ -254,7 +254,7 @@ export function createSingleTable(body: string[][], args: CreateTableArgs) {
   const { options, _cache, basePdf } = args;
   if (!isBlankPdf(basePdf)) {
     console.warn(
-      '[@pdfme/schema/table]' +
+      '[@weberon/schema/table]' +
         'When specifying a custom PDF for basePdf, ' +
         'you cannot use features such as page breaks or re-layout of other elements.' +
         'To utilize these features, please define basePdf as follows:\n' +
@@ -287,3 +287,4 @@ export function createSingleTable(body: string[][], args: CreateTableArgs) {
     _cache: _cache as unknown as Map<string | number, FontKitFont>,
   });
 }
+

@@ -1,4 +1,4 @@
-import { merge } from '../src/index';
+﻿import { merge } from '../src/index';
 import { createTestPDF, getPDFPageCount } from './test-helpers';
 
 describe('merge', () => {
@@ -10,6 +10,6 @@ describe('merge', () => {
   });
 
   test('throws error when no PDFs provided', async () => {
-    await expect(merge([])).rejects.toThrow('[@pdfme/manipulator] At least one PDF is required');
+    await expect(merge([])).rejects.toThrow('[@weberon/manipulator] At least one PDF is required');
   });
 });

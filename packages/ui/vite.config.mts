@@ -1,4 +1,4 @@
-import { builtinModules } from 'node:module';
+﻿import { builtinModules } from 'node:module';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
     },
     optimizeDeps: {
       include: ['react', 'react-dom', 'pdfjs-dist', 'antd'],
-      exclude: ['@pdfme/common', '@pdfme/schemas', '@pdfme/converter'],
+      exclude: ['@weberon/common', '@weberon/schemas', '@weberon/converter'],
     },
     worker: {
       format: 'es',
@@ -61,3 +61,4 @@ export default defineConfig(({ mode }) => {
     },
   };
 });
+

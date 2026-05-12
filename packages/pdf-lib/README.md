@@ -1,4 +1,4 @@
-# @pdfme/pdf-lib
+﻿# @weberon/pdf-lib
 
 This version is forked from [Hopding/pdf-lib](https://github.com/Hopding/pdf-lib).  
 Incorporated several bug fixes and additional features into the original code.
@@ -22,7 +22,7 @@ To achieve [Add SVG Schema #29](https://github.com/pdfme/pdfme/issues/29) featur
 <details>
   <summary><a href="https://github.com/pdfme/pdfme/issues/162">2023/04/20 - Character corruption occurs when enabling subsets for some Japanese and Chinese fonts #162</a></summary>
 
-@pdfme/pdf-lib compatible with [foliojs/fontkit](https://github.com/foliojs/fontkit) v2
+@weberon/pdf-lib compatible with [foliojs/fontkit](https://github.com/foliojs/fontkit) v2
 
 ```js
 import { PDFDocument, rgb } from 'pdf-lib'
@@ -62,9 +62,9 @@ pdfDoc.registerFontkit(fontkit)
 
 <div align="center">
   <!-- NPM Version -->
-  <a href="https://www.npmjs.com/package/@pdfme/pdf-lib">
+  <a href="https://www.npmjs.com/package/@weberon/pdf-lib">
     <img
-      src="https://img.shields.io/npm/v/@pdfme/pdf-lib.svg?style=flat-square"
+      src="https://img.shields.io/npm/v/@weberon/pdf-lib.svg?style=flat-square"
       alt="NPM Version"
     />
   </a>
@@ -205,9 +205,9 @@ page.drawText('Creating PDFs in JavaScript is awesome!', {
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Modify Document
@@ -254,9 +254,9 @@ firstPage.drawText('This text was added with JavaScript!', {
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Create Form
@@ -352,9 +352,9 @@ page.drawText(`* Pluto should be a planet too!`, { x: 15, y: 15, size: 15 })
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Fill Form
@@ -421,17 +421,17 @@ characterImageField.setImage(marioImage)
 alliesField.setText(
   [
     `Allies:`,
-    `  • Princess Daisy`,
-    `  • Princess Peach`,
-    `  • Rosalina`,
-    `  • Geno`,
-    `  • Luigi`,
-    `  • Donkey Kong`,
-    `  • Yoshi`,
-    `  • Diddy Kong`,
+    `  â€¢ Princess Daisy`,
+    `  â€¢ Princess Peach`,
+    `  â€¢ Rosalina`,
+    `  â€¢ Geno`,
+    `  â€¢ Luigi`,
+    `  â€¢ Donkey Kong`,
+    `  â€¢ Yoshi`,
+    `  â€¢ Diddy Kong`,
     ``,
     `Organizations:`,
-    `  • Italian Plumbers Association`,
+    `  â€¢ Italian Plumbers Association`,
   ].join('\n'),
 )
 
@@ -450,22 +450,22 @@ backstoryField.setText(
 traitsField.setText(
   [
     `Mario can use three basic three power-ups:`,
-    `  • the Super Mushroom, which causes Mario to grow larger`,
-    `  • the Fire Flower, which allows Mario to throw fireballs`,
-    `  • the Starman, which gives Mario temporary invincibility`,
+    `  â€¢ the Super Mushroom, which causes Mario to grow larger`,
+    `  â€¢ the Fire Flower, which allows Mario to throw fireballs`,
+    `  â€¢ the Starman, which gives Mario temporary invincibility`,
   ].join('\n'),
 )
 
 // Fill in the treasure field
-treasureField.setText(['• Gold coins', '• Treasure chests'].join('\n'))
+treasureField.setText(['â€¢ Gold coins', 'â€¢ Treasure chests'].join('\n'))
 
 // Serialize the PDFDocument to bytes (a Uint8Array)
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Flatten Form
@@ -511,9 +511,9 @@ form.flatten();
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Copy Pages
@@ -556,9 +556,9 @@ pdfDoc.insertPage(0, secondDonorPage)
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Embed PNG and JPEG Images
@@ -614,9 +614,9 @@ page.drawImage(pngImage, {
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Embed PDF Pages
@@ -682,9 +682,9 @@ page.drawPage(preamble, {
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Embed Font and Measure Text
@@ -749,9 +749,9 @@ page.drawRectangle({
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Add Attachments
@@ -777,7 +777,7 @@ const pdfDoc = await PDFDocument.create()
 // Add the JPG attachment
 await pdfDoc.attach(jpgAttachmentBytes, 'cat_riding_unicorn.jpg', {
   mimeType: 'image/jpeg',
-  description: 'Cool cat riding a unicorn! 🦄🐈🕶️',
+  description: 'Cool cat riding a unicorn! ðŸ¦„ðŸˆðŸ•¶ï¸',
   creationDate: new Date('2019/12/01'),
   modificationDate: new Date('2020/04/19'),
 })
@@ -785,7 +785,7 @@ await pdfDoc.attach(jpgAttachmentBytes, 'cat_riding_unicorn.jpg', {
 // Add the PDF attachment
 await pdfDoc.attach(pdfAttachmentBytes, 'us_constitution.pdf', {
   mimeType: 'application/pdf',
-  description: 'Constitution of the United States 🇺🇸🦅',
+  description: 'Constitution of the United States ðŸ‡ºðŸ‡¸ðŸ¦…',
   creationDate: new Date('1787/09/17'),
   modificationDate: new Date('1992/05/07'),
 })
@@ -798,9 +798,9 @@ page.drawText('This PDF has two attachments', { x: 135, y: 415 })
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Set Document Metadata
@@ -827,11 +827,11 @@ page.drawText('An Epic Tale of Woe', { x: 125, y: 460, size: 25 })
 
 // Set all available metadata fields on the PDFDocument. Note that these fields
 // are visible in the "Document Properties" section of most PDF readers.
-pdfDoc.setTitle('🥚 The Life of an Egg 🍳')
+pdfDoc.setTitle('ðŸ¥š The Life of an Egg ðŸ³')
 pdfDoc.setAuthor('Humpty Dumpty')
-pdfDoc.setSubject('📘 An Epic Tale of Woe 📖')
+pdfDoc.setSubject('ðŸ“˜ An Epic Tale of Woe ðŸ“–')
 pdfDoc.setKeywords(['eggs', 'wall', 'fall', 'king', 'horses', 'men'])
-pdfDoc.setProducer('PDF App 9000 🤖')
+pdfDoc.setProducer('PDF App 9000 ðŸ¤–')
 pdfDoc.setCreator('pdf-lib (https://github.com/Hopding/pdf-lib)')
 pdfDoc.setCreationDate(new Date('2018-06-24T01:58:37.228Z'))
 pdfDoc.setModificationDate(new Date('2019-12-21T07:00:11.000Z'))
@@ -840,9 +840,9 @@ pdfDoc.setModificationDate(new Date('2019-12-21T07:00:11.000Z'))
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Read Document Metadata
@@ -950,9 +950,9 @@ viewerPrefs.setNumCopies(2)
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ### Read Viewer Preferences
@@ -1046,9 +1046,9 @@ page.drawSvgPath(svgPath, { scale: 0.5 })
 const pdfBytes = await pdfDoc.save()
 
 // For example, `pdfBytes` can be:
-//   • Written to a file in Node
-//   • Downloaded from the browser
-//   • Rendered in an <iframe>
+//   â€¢ Written to a file in Node
+//   â€¢ Downloaded from the browser
+//   â€¢ Rendered in an <iframe>
 ```
 
 ## Deno Usage
@@ -1295,15 +1295,15 @@ When working with PDFs, you will frequently come across the terms "character enc
   const ubuntuFont = await pdfDoc.embedFont(fontBytes)
 
   const page = pdfDoc.addPage()
-  page.drawText('Some fancy Unicode text in the ŪЬȕǹƚü font', {
+  page.drawText('Some fancy Unicode text in the ÅªÐ¬È•Ç¹ÆšÃ¼ font', {
     font: ubuntuFont,
   })
   ```
 
-Note that encoding errors will be thrown if you try to use a character with a font that does not support it. For example, `Ω` is not in the WinAnsi character set. So trying to draw it on a page with the standard Helvetica font will throw the following error:
+Note that encoding errors will be thrown if you try to use a character with a font that does not support it. For example, `Î©` is not in the WinAnsi character set. So trying to draw it on a page with the standard Helvetica font will throw the following error:
 
 ```
-Error: WinAnsi cannot encode "Ω" (0x03a9)
+Error: WinAnsi cannot encode "Î©" (0x03a9)
     at Encoding.encodeUnicodeCodePoint
 ```
 
@@ -1360,8 +1360,8 @@ const ageField = form.getTextField('Age');
 
 // Fill the text fields with some fancy Unicode characters (outside
 // the WinAnsi latin character set)
-nameField.setText('Ӎӑȑїõ');
-ageField.setText('24 ŷȇȁŗš');
+nameField.setText('ÓÓ‘È‘Ñ—Ãµ');
+ageField.setText('24 Å·È‡ÈÅ—Å¡');
 
 // **Key Step:** Update the field appearances with the Ubuntu font
 form.updateFieldAppearances(ubuntuFont);
@@ -1483,7 +1483,7 @@ Check out [MAINTAINERSHIP.md](docs/MAINTAINERSHIP.md) for details on how this re
 ## Tutorials and Cool Stuff
 
 - [labelmake](https://github.com/hand-dot/labelmake) - a library for declarative PDF generation created by @hand-dot
-- [Möbius Printing helper](https://shreevatsa.net/mobius-print/) - a tool created by @shreevatsa
+- [MÃ¶bius Printing helper](https://shreevatsa.net/mobius-print/) - a tool created by @shreevatsa
 - [Extract PDF pages](https://shreevatsa.net/pdf-pages/) - a tool created by @shreevatsa
 - [Travel certificate generator](https://github.com/LAB-MI/deplacement-covid-19) - a tool that creates travel certificates for French citizens under quarantine due to COVID-19
 - [How to use pdf-lib in AWS Lambdas](https://medium.com/swlh/create-pdf-using-pdf-lib-on-serverless-aws-lambda-e9506246dc88) - a tutorial written by Crespo Wang
@@ -1504,7 +1504,7 @@ Check out [MAINTAINERSHIP.md](docs/MAINTAINERSHIP.md) for details on how this re
 
 ## Git History Rewrite
 
-This repo used to contain a file called `pdf_specification.pdf` in the root directory. This was a copy of the [PDF 1.7 specification](https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf), which is made freely available by Adobe. On 8/30/2021, we received a DMCA complaint requiring us to remove the file from this repo. Simply removing the file via a new commit to `master` was insufficient to satisfy the complaint. The file needed to be completely removed from the repo's git history. Unfortunately, the file was added over two years ago, this meant we had to rewrite the repo's git history and force push to `master` 😔.
+This repo used to contain a file called `pdf_specification.pdf` in the root directory. This was a copy of the [PDF 1.7 specification](https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf), which is made freely available by Adobe. On 8/30/2021, we received a DMCA complaint requiring us to remove the file from this repo. Simply removing the file via a new commit to `master` was insufficient to satisfy the complaint. The file needed to be completely removed from the repo's git history. Unfortunately, the file was added over two years ago, this meant we had to rewrite the repo's git history and force push to `master` ðŸ˜”.
 
 ### Steps We Took
 
@@ -1522,7 +1522,7 @@ $ git push --force
 
 ### Why Should I Care?
 
-If you're a user of `pdf-lib`, you shouldn't care! Just keep on using `pdf-lib` like normal 😃 ✨!
+If you're a user of `pdf-lib`, you shouldn't care! Just keep on using `pdf-lib` like normal ðŸ˜ƒ âœ¨!
 
 If you are a `pdf-lib` developer (meaning you've forked `pdf-lib` and/or have an open PR) then this does impact you. If you forked or cloned the repo prior to 8/30/2021 then your fork's git history is out of sync with this repo's `master` branch. Unfortunately, this will likely be a headache for you to deal with. Sorry! We didn't want to rewrite the history, but there really was no alternative.
 
@@ -1540,3 +1540,4 @@ See this [StackOverflow answer](https://stackoverflow.com/a/48268766) for a grea
 ## License
 
 [MIT](LICENSE.md)
+

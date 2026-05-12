@@ -1,4 +1,4 @@
-import { PDFRenderProps } from '@pdfme/common';
+﻿import { PDFRenderProps } from '@weberon/common';
 import { MultiVariableTextSchema } from './types.js';
 import { pdfRender as parentPdfRender } from '../text/pdfRender.js';
 import { substituteVariables, validateVariables } from './helper.js';
@@ -19,3 +19,4 @@ export const pdfRender = async (arg: PDFRenderProps<MultiVariableTextSchema>) =>
 
   await parentPdfRender(renderArgs);
 };
+

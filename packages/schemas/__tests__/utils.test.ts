@@ -1,4 +1,4 @@
-import { Schema, mm2pt, pt2mm } from '@pdfme/common';
+﻿import { Schema, mm2pt, pt2mm } from '@weberon/common';
 import { convertForPdfLayoutProps, rotatePoint, hex2RgbColor, createSvgStr } from '../src/utils.js';
 import { SquareCheck, IconNode } from 'lucide';
 
@@ -257,3 +257,4 @@ describe('createSvgStr', () => {
     ).toThrow('Invalid SVG tag name: script');
   });
 });
+

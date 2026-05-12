@@ -1,4 +1,4 @@
-import React, { useState, useContext, ReactNode } from 'react';
+﻿import React, { useState, useContext, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import {
   closestCorners,
@@ -15,7 +15,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { SchemaForUI } from '@pdfme/common';
+import { SchemaForUI } from '@weberon/common';
 import type { SidebarProps } from '../../../../types.js';
 import { PluginsRegistry } from '../../../../contexts.js';
 import Item from './Item.js';
@@ -202,3 +202,4 @@ const SelectableSortableContainer = (
 };
 
 export default SelectableSortableContainer;
+

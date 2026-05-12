@@ -1,10 +1,10 @@
-import { afterEach, describe, expect, it } from 'vitest';
+﻿import { afterEach, describe, expect, it } from 'vitest';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import type { Dirent } from 'node:fs';
-import { PDFME_VERSION } from '@pdfme/common';
+import { PDFME_VERSION } from '@weberon/common';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CLI = join(__dirname, '..', 'dist', 'index.js');
@@ -307,3 +307,4 @@ describe('examples integration smoke', () => {
     180000,
   );
 });
+

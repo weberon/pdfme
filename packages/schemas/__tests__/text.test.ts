@@ -1,8 +1,8 @@
-import { readFileSync } from 'node:fs';
+﻿import { readFileSync } from 'node:fs';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Font as FontKitFont } from 'fontkit';
-import { Font, getDefaultFont } from '@pdfme/common';
+import { Font, getDefaultFont } from '@weberon/common';
 import {
   calculateDynamicFontSize,
   getBrowserVerticalFontAdjustments,
@@ -75,8 +75,8 @@ describe('getSplitPosition test with mocked font width calculations', () => {
   it('splits a line to the nearest previous breakable char', () => {
     expect(getSplittedLines('aaa bbb', mockCalcValues)).toEqual(['aaa', 'bbb']);
     expect(getSplittedLines('top-hat', mockCalcValues)).toEqual(['top-', 'hat']);
-    expect(getSplittedLines('top—hat', mockCalcValues)).toEqual(['top—', 'hat']); // em dash
-    expect(getSplittedLines('top–hat', mockCalcValues)).toEqual(['top–', 'hat']); // en dash
+    expect(getSplittedLines('topâ€”hat', mockCalcValues)).toEqual(['topâ€”', 'hat']); // em dash
+    expect(getSplittedLines('topâ€“hat', mockCalcValues)).toEqual(['topâ€“', 'hat']); // en dash
   });
 
   it('splits a line where the split point is on a breakable char', () => {
@@ -276,7 +276,7 @@ describe('calculateDynamicFontSize with Custom font', () => {
   it('should return smaller font size when dynamicFontSizeSetting is provided with horizontal fit', async () => {
     const textSchema = getTextSchema();
     textSchema.dynamicFontSize = { min: 10, max: 30, fit: 'horizontal' };
-    const value = 'あいうあいうあい';
+    const value = 'ã‚ã„ã†ã‚ã„ã†ã‚ã„';
     const result = calculateDynamicFontSize({ textSchema, fontKitFont, value });
 
     expect(result).toBe(16.75);
@@ -285,7 +285,7 @@ describe('calculateDynamicFontSize with Custom font', () => {
   it('should return smaller font size when dynamicFontSizeSetting is provided with vertical fit', async () => {
     const textSchema = getTextSchema();
     textSchema.dynamicFontSize = { min: 10, max: 30, fit: 'vertical' };
-    const value = 'あいうあいうあい';
+    const value = 'ã‚ã„ã†ã‚ã„ã†ã‚ã„';
     const result = calculateDynamicFontSize({ textSchema, fontKitFont, value });
 
     expect(result).toBe(26);
@@ -294,7 +294,7 @@ describe('calculateDynamicFontSize with Custom font', () => {
   it('should return min font size when content is too big to fit given constraints', async () => {
     const textSchema = getTextSchema();
     textSchema.dynamicFontSize = { min: 20, max: 30, fit: 'vertical' };
-    const value = 'あいうあいうあいうあいうあいうあいうあいうあいうあいう';
+    const value = 'ã‚ã„ã†ã‚ã„ã†ã‚ã„ã†ã‚ã„ã†ã‚ã„ã†ã‚ã„ã†ã‚ã„ã†ã‚ã„ã†ã‚ã„ã†';
     const result = await calculateDynamicFontSize({ textSchema, fontKitFont, value });
 
     expect(result).toBe(20);
@@ -303,7 +303,7 @@ describe('calculateDynamicFontSize with Custom font', () => {
   it('should return max font size when content is too small to fit given constraints', async () => {
     const textSchema = getTextSchema();
     textSchema.dynamicFontSize = { min: 10, max: 30, fit: 'vertical' };
-    const value = 'あ';
+    const value = 'ã‚';
     const result = await calculateDynamicFontSize({ textSchema, fontKitFont, value });
 
     expect(result).toBe(30);
@@ -312,7 +312,7 @@ describe('calculateDynamicFontSize with Custom font', () => {
   it('should return min font size when content is multi-line with too many lines for the container', async () => {
     const textSchema = getTextSchema();
     textSchema.dynamicFontSize = { min: 5, max: 20, fit: 'vertical' };
-    const value = 'あ\nいう\nあ\nいう\nあ\nいう\nあ\nいう\nあ\nいう\nあ\nいう';
+    const value = 'ã‚\nã„ã†\nã‚\nã„ã†\nã‚\nã„ã†\nã‚\nã„ã†\nã‚\nã„ã†\nã‚\nã„ã†';
     const result = await calculateDynamicFontSize({ textSchema, fontKitFont, value });
 
     expect(result).toBe(5);
@@ -372,97 +372,98 @@ describe('getBrowserVerticalFontAdjustments test', () => {
 });
 
 describe('filterStartJP', () => {
-  test('空の配列を渡すと空の配列を返す', () => {
+  test('ç©ºã®é…åˆ—ã‚’æ¸¡ã™ã¨ç©ºã®é…åˆ—ã‚’è¿”ã™', () => {
     expect(filterStartJP([])).toEqual([]);
   });
 
-  test('禁則文字を含まない行はそのまま返す', () => {
-    const input = ['これは', '普通の', '文章です。'];
+  test('ç¦å‰‡æ–‡å­—ã‚’å«ã¾ãªã„è¡Œã¯ãã®ã¾ã¾è¿”ã™', () => {
+    const input = ['ã“ã‚Œã¯', 'æ™®é€šã®', 'æ–‡ç« ã§ã™ã€‚'];
     expect(filterStartJP(input)).toEqual(input);
   });
 
-  test('行頭の禁則文字を前の行の末尾に移動する', () => {
-    const input = ['これは', '。文章', 'です'];
-    const expected = ['これは。', '文章', 'です'];
+  test('è¡Œé ­ã®ç¦å‰‡æ–‡å­—ã‚’å‰ã®è¡Œã®æœ«å°¾ã«ç§»å‹•ã™ã‚‹', () => {
+    const input = ['ã“ã‚Œã¯', 'ã€‚æ–‡ç« ', 'ã§ã™'];
+    const expected = ['ã“ã‚Œã¯ã€‚', 'æ–‡ç« ', 'ã§ã™'];
     expect(filterStartJP(input)).toEqual(expected);
   });
 
-  test('複数の禁則文字を正しく処理する', () => {
-    const input = ['これは', '。とても', '、長い', '」文章', 'です'];
-    const expected = ['これは。', 'とても、', '長い」', '文章', 'です'];
+  test('è¤‡æ•°ã®ç¦å‰‡æ–‡å­—ã‚’æ­£ã—ãå‡¦ç†ã™ã‚‹', () => {
+    const input = ['ã“ã‚Œã¯', 'ã€‚ã¨ã¦ã‚‚', 'ã€é•·ã„', 'ã€æ–‡ç« ', 'ã§ã™'];
+    const expected = ['ã“ã‚Œã¯ã€‚', 'ã¨ã¦ã‚‚ã€', 'é•·ã„ã€', 'æ–‡ç« ', 'ã§ã™'];
     expect(filterStartJP(input)).toEqual(expected);
   });
 
-  test('空の行を保持する', () => {
-    const input = ['これは', '', '。文章', 'です'];
-    const expected = ['これは。', '', '文章', 'です'];
+  test('ç©ºã®è¡Œã‚’ä¿æŒã™ã‚‹', () => {
+    const input = ['ã“ã‚Œã¯', '', 'ã€‚æ–‡ç« ', 'ã§ã™'];
+    const expected = ['ã“ã‚Œã¯ã€‚', '', 'æ–‡ç« ', 'ã§ã™'];
     expect(filterStartJP(input)).toEqual(expected);
   });
 
-  test('1文字の行（禁則文字のみ）はそのまま保持する', () => {
-    const input = ['これは', '。', '文章', 'です'];
-    // const expected = ['これは。', '文章', 'です'];
-    const expected = ['これは', '。', '文章', 'です'];
+  test('1æ–‡å­—ã®è¡Œï¼ˆç¦å‰‡æ–‡å­—ã®ã¿ï¼‰ã¯ãã®ã¾ã¾ä¿æŒã™ã‚‹', () => {
+    const input = ['ã“ã‚Œã¯', 'ã€‚', 'æ–‡ç« ', 'ã§ã™'];
+    // const expected = ['ã“ã‚Œã¯ã€‚', 'æ–‡ç« ', 'ã§ã™'];
+    const expected = ['ã“ã‚Œã¯', 'ã€‚', 'æ–‡ç« ', 'ã§ã™'];
     expect(filterStartJP(input)).toEqual(expected);
   });
 
-  test('すべての禁則文字を正しく処理する', () => {
-    const input = LINE_START_FORBIDDEN_CHARS.map((char: string) => ['この', char + '文字']).flat();
+  test('ã™ã¹ã¦ã®ç¦å‰‡æ–‡å­—ã‚’æ­£ã—ãå‡¦ç†ã™ã‚‹', () => {
+    const input = LINE_START_FORBIDDEN_CHARS.map((char: string) => ['ã“ã®', char + 'æ–‡å­—']).flat();
     const expected = LINE_START_FORBIDDEN_CHARS.map((char: string) => [
-      'この' + char,
-      '文字',
+      'ã“ã®' + char,
+      'æ–‡å­—',
     ]).flat();
     expect(filterStartJP(input)).toEqual(expected);
   });
 });
 
 describe('filterEndJP', () => {
-  test('空の配列を渡すと空の配列を返す', () => {
+  test('ç©ºã®é…åˆ—ã‚’æ¸¡ã™ã¨ç©ºã®é…åˆ—ã‚’è¿”ã™', () => {
     expect(filterEndJP([])).toEqual([]);
   });
 
-  test('禁則文字を含まない行はそのまま返す', () => {
-    const input = ['これは', '普通の', '文章です。'];
+  test('ç¦å‰‡æ–‡å­—ã‚’å«ã¾ãªã„è¡Œã¯ãã®ã¾ã¾è¿”ã™', () => {
+    const input = ['ã“ã‚Œã¯', 'æ™®é€šã®', 'æ–‡ç« ã§ã™ã€‚'];
     expect(filterEndJP(input)).toEqual(input);
   });
 
-  test('行末の禁則文字を次の行の先頭に移動する', () => {
-    const input = ['これは「', '文章', 'です。'];
-    const expected = ['これは', '「文章', 'です。'];
+  test('è¡Œæœ«ã®ç¦å‰‡æ–‡å­—ã‚’æ¬¡ã®è¡Œã®å…ˆé ­ã«ç§»å‹•ã™ã‚‹', () => {
+    const input = ['ã“ã‚Œã¯ã€Œ', 'æ–‡ç« ', 'ã§ã™ã€‚'];
+    const expected = ['ã“ã‚Œã¯', 'ã€Œæ–‡ç« ', 'ã§ã™ã€‚'];
     expect(filterEndJP(input)).toEqual(expected);
   });
 
-  test('複数の禁則文字を正しく処理する', () => {
-    const input = ['これは「', '長い『', '文章（', 'です。'];
-    const expected = ['これは', '「長い', '『文章', '（です。'];
+  test('è¤‡æ•°ã®ç¦å‰‡æ–‡å­—ã‚’æ­£ã—ãå‡¦ç†ã™ã‚‹', () => {
+    const input = ['ã“ã‚Œã¯ã€Œ', 'é•·ã„ã€Ž', 'æ–‡ç« ï¼ˆ', 'ã§ã™ã€‚'];
+    const expected = ['ã“ã‚Œã¯', 'ã€Œé•·ã„', 'ã€Žæ–‡ç« ', 'ï¼ˆã§ã™ã€‚'];
     expect(filterEndJP(input)).toEqual(expected);
   });
 
   // Cant understand purpose of this test...
-  // test('空の行を保持する', () => {
-  //   const input = ['これは「', '', '文章', 'です。'];
-  //   const expected = ['これは', '「', '', '文章', 'です。'];
+  // test('ç©ºã®è¡Œã‚’ä¿æŒã™ã‚‹', () => {
+  //   const input = ['ã“ã‚Œã¯ã€Œ', '', 'æ–‡ç« ', 'ã§ã™ã€‚'];
+  //   const expected = ['ã“ã‚Œã¯', 'ã€Œ', '', 'æ–‡ç« ', 'ã§ã™ã€‚'];
   //   expect(filterEndJP(input)).toEqual(expected);
   // });
 
-  test('1文字の行（禁則文字のみ）はそのまま保持する', () => {
-    const input = ['これは', '「', '文章', 'です。'];
-    const expected = ['これは', '「', '文章', 'です。'];
+  test('1æ–‡å­—ã®è¡Œï¼ˆç¦å‰‡æ–‡å­—ã®ã¿ï¼‰ã¯ãã®ã¾ã¾ä¿æŒã™ã‚‹', () => {
+    const input = ['ã“ã‚Œã¯', 'ã€Œ', 'æ–‡ç« ', 'ã§ã™ã€‚'];
+    const expected = ['ã“ã‚Œã¯', 'ã€Œ', 'æ–‡ç« ', 'ã§ã™ã€‚'];
     expect(filterEndJP(input)).toEqual(expected);
   });
 
-  test('すべての禁則文字を正しく処理する', () => {
-    const input = LINE_END_FORBIDDEN_CHARS.map((char: string) => ['これは' + char, '文章']).flat();
+  test('ã™ã¹ã¦ã®ç¦å‰‡æ–‡å­—ã‚’æ­£ã—ãå‡¦ç†ã™ã‚‹', () => {
+    const input = LINE_END_FORBIDDEN_CHARS.map((char: string) => ['ã“ã‚Œã¯' + char, 'æ–‡ç« ']).flat();
     const expected = LINE_END_FORBIDDEN_CHARS.map((char: string) => [
-      'これは',
-      char + '文章',
+      'ã“ã‚Œã¯',
+      char + 'æ–‡ç« ',
     ]).flat();
     expect(filterEndJP(input)).toEqual(expected);
   });
 
-  test('最後の行の禁則文字は移動しない', () => {
-    const input = ['これは「', '文章「', 'です「'];
-    const expected = ['これは', '「文章', '「です「'];
+  test('æœ€å¾Œã®è¡Œã®ç¦å‰‡æ–‡å­—ã¯ç§»å‹•ã—ãªã„', () => {
+    const input = ['ã“ã‚Œã¯ã€Œ', 'æ–‡ç« ã€Œ', 'ã§ã™ã€Œ'];
+    const expected = ['ã“ã‚Œã¯', 'ã€Œæ–‡ç« ', 'ã€Œã§ã™ã€Œ'];
     expect(filterEndJP(input)).toEqual(expected);
   });
 });
+

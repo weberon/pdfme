@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Size } from '@pdfme/common';
+﻿import React, { useContext } from 'react';
+import { Size } from '@weberon/common';
 import { I18nContext } from '../contexts.js';
 import { BACKGROUND_COLOR } from '../constants.js';
 import { theme, Result } from 'antd';
@@ -31,3 +31,4 @@ const ErrorScreen = ({ size, error }: { size: Size; error: Error }) => {
 };
 
 export default ErrorScreen;
+

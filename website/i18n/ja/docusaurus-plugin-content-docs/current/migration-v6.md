@@ -1,42 +1,42 @@
-# Migration Guide v6
+﻿# Migration Guide v6
 
-このドキュメントは、次のメジャーリリースで予定している破壊的変更と、アプリケーション、サンプル、ローカル開発環境で必要になる最小限の移行作業をまとめたものです。
+ã“ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã¯ã€æ¬¡ã®ãƒ¡ã‚¸ãƒ£ãƒ¼ãƒªãƒªãƒ¼ã‚¹ã§äºˆå®šã—ã¦ã„ã‚‹ç ´å£Šçš„å¤‰æ›´ã¨ã€ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã€ã‚µãƒ³ãƒ—ãƒ«ã€ãƒ­ãƒ¼ã‚«ãƒ«é–‹ç™ºç’°å¢ƒã§å¿…è¦ã«ãªã‚‹æœ€å°é™ã®ç§»è¡Œä½œæ¥­ã‚’ã¾ã¨ã‚ãŸã‚‚ã®ã§ã™ã€‚
 
-## 破壊的変更
+## ç ´å£Šçš„å¤‰æ›´
 
-| 変更                        | 影響を受けるユーザー                                                         | 必要な対応                               |
+| å¤‰æ›´                        | å½±éŸ¿ã‚’å—ã‘ã‚‹ãƒ¦ãƒ¼ã‚¶ãƒ¼                                                         | å¿…è¦ãªå¯¾å¿œ                               |
 | --------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------- |
-| `ESM-only` パッケージ       | `require('@pdfme/...')` を使っているユーザー                                 | `import` / `export` 構文へ移行           |
-| `Node 20+` 最低要件         | Node 16 / 18 ユーザー                                                        | Node 20 LTS 以降へ更新                   |
-| 内部 `dist/*` import 廃止   | `@pdfme/*/dist/...` や `@pdfme/*/cjs/src/...` を直接 import しているユーザー | package root の public export のみを使用 |
+| `ESM-only` ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸       | `require('@weberon/...')` ã‚’ä½¿ã£ã¦ã„ã‚‹ãƒ¦ãƒ¼ã‚¶ãƒ¼                                 | `import` / `export` æ§‹æ–‡ã¸ç§»è¡Œ           |
+| `Node 20+` æœ€ä½Žè¦ä»¶         | Node 16 / 18 ãƒ¦ãƒ¼ã‚¶ãƒ¼                                                        | Node 20 LTS ä»¥é™ã¸æ›´æ–°                   |
+| å†…éƒ¨ `dist/*` import å»ƒæ­¢   | `@weberon/*/dist/...` ã‚„ `@weberon/*/cjs/src/...` ã‚’ç›´æŽ¥ import ã—ã¦ã„ã‚‹ãƒ¦ãƒ¼ã‚¶ãƒ¼ | package root ã® public export ã®ã¿ã‚’ä½¿ç”¨ |
 
-## サポートポリシー
+## ã‚µãƒãƒ¼ãƒˆãƒãƒªã‚·ãƒ¼
 
-| 項目                   | 方針       |
+| é …ç›®                   | æ–¹é‡       |
 | ---------------------- | ---------- |
-| ランタイム             | Node 20+   |
-| ブラウザ向けターゲット | `es2020`   |
-| モジュール形式         | `ESM-only` |
+| ãƒ©ãƒ³ã‚¿ã‚¤ãƒ              | Node 20+   |
+| ãƒ–ãƒ©ã‚¦ã‚¶å‘ã‘ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ | `es2020`   |
+| ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å½¢å¼         | `ESM-only` |
 
-## 移行方法
+## ç§»è¡Œæ–¹æ³•
 
-### CommonJS から ESM へ
+### CommonJS ã‹ã‚‰ ESM ã¸
 
-変更前:
+å¤‰æ›´å‰:
 
 ```js
-const { BLANK_PDF } = require('@pdfme/common');
-const { generate } = require('@pdfme/generator');
+const { BLANK_PDF } = require('@weberon/common');
+const { generate } = require('@weberon/generator');
 ```
 
-変更後:
+å¤‰æ›´å¾Œ:
 
 ```ts
-import { BLANK_PDF } from '@pdfme/common';
-import { generate } from '@pdfme/generator';
+import { BLANK_PDF } from '@weberon/common';
+import { generate } from '@weberon/generator';
 ```
 
-Node.js で ESM からファイルを書き出す場合は、`__dirname` の代わりに `fileURLToPath(import.meta.url)` を使います。
+Node.js ã§ ESM ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãå‡ºã™å ´åˆã¯ã€`__dirname` ã®ä»£ã‚ã‚Šã« `fileURLToPath(import.meta.url)` ã‚’ä½¿ã„ã¾ã™ã€‚
 
 ```ts
 import fs from 'node:fs';
@@ -47,29 +47,30 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 ```
 
-### パッケージ内部パスの廃止
+### ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸å†…éƒ¨ãƒ‘ã‚¹ã®å»ƒæ­¢
 
-変更前:
+å¤‰æ›´å‰:
 
 ```ts
-import { generate } from '@pdfme/generator/cjs/src/index.js';
-import { pdf2img } from '@pdfme/converter/cjs/src/index.node.js';
+import { generate } from '@weberon/generator/cjs/src/index.js';
+import { pdf2img } from '@weberon/converter/cjs/src/index.node.js';
 ```
 
-変更後:
+å¤‰æ›´å¾Œ:
 
 ```ts
-import { generate } from '@pdfme/generator';
-import { pdf2img } from '@pdfme/converter';
+import { generate } from '@weberon/generator';
+import { pdf2img } from '@weberon/converter';
 ```
 
 ### Node 20+
 
-次のメジャーリリースを採用する前に、ローカル開発環境と CI を Node 20 LTS 以降へ更新してください。
+æ¬¡ã®ãƒ¡ã‚¸ãƒ£ãƒ¼ãƒªãƒªãƒ¼ã‚¹ã‚’æŽ¡ç”¨ã™ã‚‹å‰ã«ã€ãƒ­ãƒ¼ã‚«ãƒ«é–‹ç™ºç’°å¢ƒã¨ CI ã‚’ Node 20 LTS ä»¥é™ã¸æ›´æ–°ã—ã¦ãã ã•ã„ã€‚
 
-## メンテナー向けチェックリスト
+## ãƒ¡ãƒ³ãƒ†ãƒŠãƒ¼å‘ã‘ãƒã‚§ãƒƒã‚¯ãƒªã‚¹ãƒˆ
 
-- リリース前に GitHub Discussions または Issue で方針を告知する。
-- examples、docs、playground を public export のみ使う形に更新する。
-- Node 向けサンプルから `require()` を段階的に除去する。
-- ドキュメントに内部 `dist/*` import が残っていないことを確認する。
+- ãƒªãƒªãƒ¼ã‚¹å‰ã« GitHub Discussions ã¾ãŸã¯ Issue ã§æ–¹é‡ã‚’å‘ŠçŸ¥ã™ã‚‹ã€‚
+- examplesã€docsã€playground ã‚’ public export ã®ã¿ä½¿ã†å½¢ã«æ›´æ–°ã™ã‚‹ã€‚
+- Node å‘ã‘ã‚µãƒ³ãƒ—ãƒ«ã‹ã‚‰ `require()` ã‚’æ®µéšŽçš„ã«é™¤åŽ»ã™ã‚‹ã€‚
+- ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã«å†…éƒ¨ `dist/*` import ãŒæ®‹ã£ã¦ã„ãªã„ã“ã¨ã‚’ç¢ºèªã™ã‚‹ã€‚
+

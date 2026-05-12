@@ -1,4 +1,4 @@
-# Getting Started
+﻿# Getting Started
 
 :::tip Interactive Documentation
 You can interactively ask questions about pdfme's documentation and source code using [DeepWiki](https://deepwiki.com/pdfme/pdfme). This is helpful when you have questions about code usage or functionality.
@@ -20,30 +20,30 @@ There are two packages in pdfme, generator and UI.
 The package for generating PDF can be installed with the following command.
 
 ```
-npm i @pdfme/generator @pdfme/common
+npm i @weberon/generator @weberon/common
 ```
 
 The packages for using PDF designer, forms and viewers can be installed with the following commands.
 
 ```
-npm i @pdfme/ui @pdfme/common
+npm i @weberon/ui @weberon/common
 ```
 
-`@pdfme/ui` ships as a standalone bundle, so you do not need to install `react` or `react-dom` separately just to use Designer, Form, or Viewer.
+`@weberon/ui` ships as a standalone bundle, so you do not need to install `react` or `react-dom` separately just to use Designer, Form, or Viewer.
 
-\*You must install `@pdfme/common` regardless of which package you use.
+\*You must install `@weberon/common` regardless of which package you use.
 
 The following type, function and classes are available in pdfme.
 
-`@pdfme/common`
+`@weberon/common`
 
 - [Template](/docs/getting-started#template)
 
-`@pdfme/generator`
+`@weberon/generator`
 
 - [generate](/docs/getting-started#generator)
 
-`@pdfme/ui`
+`@weberon/ui`
 
 - [Designer](/docs/getting-started#designer)
 - [Form](/docs/getting-started#form)
@@ -52,13 +52,13 @@ The following type, function and classes are available in pdfme.
 If your environment uses webpack, import the necessary items as shown below.
 
 ```ts
-import type { Template } from '@pdfme/common';
-import { generate } from '@pdfme/generator';
+import type { Template } from '@weberon/common';
+import { generate } from '@weberon/generator';
 ```
 
 ```ts
-import type { Template } from '@pdfme/common';
-import { Designer, Form, Viewer } from '@pdfme/ui';
+import type { Template } from '@weberon/common';
+import { Designer, Form, Viewer } from '@weberon/ui';
 ```
 
 **All objects use `Template`, which will be briefly explained in the next section.**
@@ -66,7 +66,7 @@ import { Designer, Form, Viewer } from '@pdfme/ui';
 ## Template
 
 The core of pdfme library are Templates.  
-Template Type can be imported by both `@pdfme/generator` or `@pdfme/ui`. Templates are used everywhere.
+Template Type can be imported by both `@weberon/generator` or `@weberon/ui`. Templates are used everywhere.
 
 A template can be divided into two parts: a fixed part and a variable part.  
 We call them basePdf and schema.
@@ -77,7 +77,7 @@ The following image is a good illustration of a template.
 - **basePdf**: PDF data for the fixed part of the PDF to be generated.
 - **schemas**: Definition data for the variable part of the PDF to be generated.
 
-The **basePdf** property accepts PDF data as a `string` (base64 encoded), an `ArrayBuffer`, or a `Uint8Array`. You can import a blank A4 PDF using `BLANK_PDF` to see how it works. Alternatively, you can define an empty PDF as shown below. When using schemas—such as tables that require page breaks—ensure you specify the PDF in the following format:
+The **basePdf** property accepts PDF data as a `string` (base64 encoded), an `ArrayBuffer`, or a `Uint8Array`. You can import a blank A4 PDF using `BLANK_PDF` to see how it works. Alternatively, you can define an empty PDF as shown below. When using schemasâ€”such as tables that require page breaksâ€”ensure you specify the PDF in the following format:
 
 ```json
 basePdf: { "width": 210, "height": 297, "padding": [10, 10, 10, 10] }
@@ -85,7 +85,7 @@ basePdf: { "width": 210, "height": 297, "padding": [10, 10, 10, 10] }
 
 
 **schemas** can only utilize text by default. The default plugin registry used by `generate`, `Designer`, `Form`, and `Viewer` intentionally includes only the `text` schema.  
-For images, signatures, tables, barcodes such as QR codes, or any other schema type, import those plugins explicitly from the `@pdfme/schemas` package and pass them through the `plugins` option.  
+For images, signatures, tables, barcodes such as QR codes, or any other schema type, import those plugins explicitly from the `@weberon/schemas` package and pass them through the `plugins` option.  
 Additionally, you can create your own schemas, allowing you to render types other than the ones mentioned above. Check detail about [Custom Schemas](/docs/custom-schemas) and the [v6 migration guide](/docs/migration-v6#text-only-default-plugin-registry) if you are upgrading existing code.
 
 Let's take a look at some specific data.  
@@ -94,7 +94,7 @@ Let's take a look at some specific data.
 ### Minimal Template
 
 ```ts
-import { Template, BLANK_PDF } from '@pdfme/common';
+import { Template, BLANK_PDF } from '@weberon/common';
 
 const template: Template = {
   basePdf: BLANK_PDF,
@@ -130,23 +130,23 @@ You can create a template from [Template Design page](/template-design?ui=design
 
 ### Using Plugins
 
-By default, examples often demonstrate the use of the `text` schema type. However, you can use other built-in schema types or even create your own custom schemas with the `@pdfme/schemas` package.
+By default, examples often demonstrate the use of the `text` schema type. However, you can use other built-in schema types or even create your own custom schemas with the `@weberon/schemas` package.
 
-#### Step 1: Install `@pdfme/schemas`
+#### Step 1: Install `@weberon/schemas`
 
 Install the necessary package to access additional schema types.
 
 ```bash
-npm install @pdfme/schemas
+npm install @weberon/schemas
 ```
 
 #### Step 2: Use Built-in and Custom Schema Types
 
-Here’s an example of a template using both built-in and custom schema types:
+Hereâ€™s an example of a template using both built-in and custom schema types:
 
 ```ts
-import { Template, BLANK_PDF } from '@pdfme/common';
-import { text, barcodes, image } from '@pdfme/schemas';
+import { Template, BLANK_PDF } from '@weberon/common';
+import { text, barcodes, image } from '@weberon/schemas';
 import myCustomPlugin from './custom-plugins';
 
 const template: Template = {
@@ -204,7 +204,7 @@ To view all supported built-in schema types, refer to the [Supported Features Do
 
 #### Creating Custom Schema Types
 
-If you need a schema type that isn’t built-in, you can define your own. Check out the [Custom Schemas Guide](/docs/custom-schemas#creating-your-own-schemas) for detailed instructions.
+If you need a schema type that isnâ€™t built-in, you can define your own. Check out the [Custom Schemas Guide](/docs/custom-schemas#creating-your-own-schemas) for detailed instructions.
 
 ## Generator
 
@@ -213,11 +213,11 @@ The PDF generator function, `generate`, takes 2 arguments of `template` and `inp
 The code to generate a PDF file using the [template created above](/docs/getting-started#minimal-template) is shown below.
 
 ```ts
-import type { Template } from '@pdfme/common';
-import { generate } from '@pdfme/generator';
+import type { Template } from '@weberon/common';
+import { generate } from '@weberon/generator';
 
 const template: Template = {
-  // skip...　Check the Template section.
+  // skip...ã€€Check the Template section.
 };
 const inputs = [{ a: 'a1', b: 'b1', c: 'c1' }];
 
@@ -252,12 +252,12 @@ You can design your own template from [Template Design page](/template-design?ui
 Let's integrate the designer using the template created above as the default template.
 
 ```ts
-import type { Template } from '@pdfme/common';
-import { Designer } from '@pdfme/ui';
+import type { Template } from '@weberon/common';
+import { Designer } from '@weberon/ui';
 
 const domContainer = document.getElementById('container');
 const template: Template = {
-  // skip...　Check the Template section.
+  // skip...ã€€Check the Template section.
 };
 
 // configure some or all of the UI state (optional, defaults shown below)
@@ -292,8 +292,8 @@ The Form creates a UI for the user to enter schemas based on the template.
 You can try out the form that uses the invoice template from [here](/template-design?ui=form-viewer&template=invoice).
 
 ```ts
-import type { Template } from '@pdfme/common';
-import { Form } from '@pdfme/ui';
+import type { Template } from '@weberon/common';
+import { Form } from '@weberon/ui';
 
 const domContainer = document.getElementById('container');
 const template: Template = {
@@ -327,8 +327,8 @@ The Viewer is a byproduct of the Form development process, but it allows you to 
 Using the Viewer is basically the same as using the Form, except that user cannot edit it.
 
 ```ts
-import type { Template } from '@pdfme/common';
-import { Viewer } from '@pdfme/ui';
+import type { Template } from '@weberon/common';
+import { Viewer } from '@weberon/ui';
 
 const domContainer = document.getElementById('container');
 const template: Template = {
@@ -372,3 +372,4 @@ pdfme Cloud provides all the features of the open-source library, plus:
 - Automatic updates and maintenance
 
 \*pdfme is and will always remain open-source. The cloud service is an optional offering for those who prefer a managed solution.
+

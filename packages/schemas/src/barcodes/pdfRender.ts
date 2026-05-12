@@ -1,8 +1,8 @@
-import { PDFRenderProps } from '@pdfme/common';
+﻿import { PDFRenderProps } from '@weberon/common';
 import { convertForPdfLayoutProps } from '../utils.js';
 import type { BarcodeSchema } from './types.js';
 import { createBarCode, validateBarcodeInput } from './helper.js';
-import { PDFImage } from '@pdfme/pdf-lib';
+import { PDFImage } from '@weberon/pdf-lib';
 
 const getBarcodeCacheKey = (schema: BarcodeSchema, value: string) => {
   return `${schema.type}${schema.backgroundColor}${schema.barColor}${schema.textColor}${value}${schema.includetext}`;
@@ -35,3 +35,4 @@ export const pdfRender = async (arg: PDFRenderProps<BarcodeSchema>) => {
 
   page.drawImage(image, { x, y, rotate, width, height, opacity });
 };
+

@@ -1,4 +1,4 @@
-// No imports needed from @pdfme/common
+﻿// No imports needed from @weberon/common
 import {
   TextAlignCenterIcon,
   TextAlignLeftIcon,
@@ -81,3 +81,4 @@ export function getExtraFormatterSchema(i18n: (key: string) => string): {
     span: 24,
   };
 }
+

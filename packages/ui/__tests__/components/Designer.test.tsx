@@ -1,13 +1,13 @@
-import React from 'react';
+﻿import React from 'react';
 import { render, act, fireEvent, waitFor } from '@testing-library/react';
 import Designer from '../../src/components/Designer/index.js';
 import { I18nContext, FontContext, OptionsContext, PluginsRegistry } from '../../src/contexts';
 import { i18n } from '../../src/i18n';
 import { DESIGNER_CLASSNAME, RIGHT_SIDEBAR_WIDTH, SELECTABLE_CLASSNAME } from '../../src/constants';
-import { getDefaultFont, pluginRegistry } from '@pdfme/common';
+import { getDefaultFont, pluginRegistry } from '@weberon/common';
 import { normalizeElementIdsForSnapshot } from '../assets/normalizeSnapshot';
 import { setupUIMock, getSampleTemplate } from '../assets/helper';
-import { text, image } from '@pdfme/schemas';
+import { text, image } from '@weberon/schemas';
 
 const plugins = { text, image };
 
@@ -103,3 +103,4 @@ test('Designer keeps sidebar toggle interactive when options.sidebarOpen is only
     expect(sidebar.style.width).toBe('0px');
   });
 });
+

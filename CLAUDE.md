@@ -1,4 +1,4 @@
-# CLAUDE.md
+﻿# CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -74,10 +74,10 @@ npm run fmt   # Format code with vp native fmt
 
 ### Building Individual Packages
 ```bash
-npm run build -w packages/common    # Build @pdfme/common
-npm run build -w packages/schemas   # Build @pdfme/schemas
-npm run build -w packages/generator # Build @pdfme/generator
-npm run build -w packages/ui        # Build @pdfme/ui
+npm run build -w packages/common    # Build @weberon/common
+npm run build -w packages/schemas   # Build @weberon/schemas
+npm run build -w packages/generator # Build @weberon/generator
+npm run build -w packages/ui        # Build @weberon/ui
 ```
 
 ## Architecture and Code Structure
@@ -138,7 +138,7 @@ Implementation: `packages/common/src/expression.ts`
 ### Important Implementation Details
 
 1. **Build Order**: Due to dependencies, packages must be built in order:
-   pdf-lib → common → converter → schemas → parallel(generator, ui, manipulator)
+   pdf-lib â†’ common â†’ converter â†’ schemas â†’ parallel(generator, ui, manipulator)
 
 2. **Font Management**: Custom fonts are loaded and cached in the UI components and embedded with subsetting in PDFs
 
@@ -246,7 +246,7 @@ npm install --legacy-peer-deps
 
 #### Missing Type Definitions
 - Check `packages/common/src/types.ts` for core type definitions
-- Ensure proper imports: `import type { Template } from '@pdfme/common'`
+- Ensure proper imports: `import type { Template } from '@weberon/common'`
 - Update type definitions when adding new features
 
 #### Import Resolution Problems
@@ -299,7 +299,7 @@ npm run dev
 - Verify font format compatibility (TTF, OTF)
 
 #### CJK Font Problems
-- Use the forked `@pdfme/pdf-lib` which includes CJK support
+- Use the forked `@weberon/pdf-lib` which includes CJK support
 - Ensure proper font subsetting for large character sets
 - Test with actual CJK content
 
@@ -310,7 +310,7 @@ npm run dev
 # Check for outdated packages
 npm outdated
 # Update specific packages
-npm update @pdfme/common @pdfme/generator
+npm update @weberon/common @weberon/generator
 ```
 
 #### Peer Dependency Issues
@@ -403,3 +403,4 @@ npm run test -w packages/ui -- -u
 - `packages/ui/src/components/Designer/index.tsx`: Designer implementation
 - `packages/schemas/src/text/index.ts`: Example of a complete plugin
 - `playground/public/template-assets/`: Template examples and definitions
+

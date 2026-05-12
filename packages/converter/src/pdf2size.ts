@@ -1,5 +1,5 @@
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { Size, pt2mm } from '@pdfme/common';
+﻿import type { PDFDocumentProxy } from 'pdfjs-dist';
+import { Size, pt2mm } from '@weberon/common';
 
 interface Environment {
   getDocument: (pdf: ArrayBuffer | Uint8Array) => Promise<PDFDocumentProxy>;
@@ -33,3 +33,4 @@ export async function pdf2size(
     await destroyDocument?.(pdfDoc);
   }
 }
+

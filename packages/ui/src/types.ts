@@ -1,4 +1,4 @@
-import type { SchemaForUI, Size, ChangeSchemas, BasePdf } from '@pdfme/common';
+﻿import type { SchemaForUI, Size, ChangeSchemas, BasePdf } from '@weberon/common';
 
 export type SidebarProps = {
   height: number;
@@ -18,3 +18,4 @@ export type SidebarProps = {
   sidebarOpen: boolean;
   setSidebarOpen: (sidebarOpen: boolean) => void;
 };
+

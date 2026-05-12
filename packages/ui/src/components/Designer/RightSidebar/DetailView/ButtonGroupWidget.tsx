@@ -1,6 +1,6 @@
-import { Space, Button, Form, theme } from 'antd';
+﻿import { Space, Button, Form, theme } from 'antd';
 import React from 'react';
-import type { PropPanelWidgetProps, SchemaForUI } from '@pdfme/common';
+import type { PropPanelWidgetProps, SchemaForUI } from '@weberon/common';
 interface ButtonConfig {
   key: string;
   icon: string;
@@ -77,3 +77,4 @@ const ButtonGroupWidget = (props: PropPanelWidgetProps) => {
 };
 
 export default ButtonGroupWidget;
+

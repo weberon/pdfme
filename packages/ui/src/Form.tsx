@@ -1,5 +1,5 @@
-import React from 'react';
-import { PreviewProps } from '@pdfme/common';
+﻿import React from 'react';
+import { PreviewProps } from '@weberon/common';
 import { PreviewUI } from './class.js';
 import { DESTROYED_ERR_MSG } from './constants.js';
 import AppContextProvider from './components/AppContextProvider.js';
@@ -98,3 +98,4 @@ class Form extends PreviewUI {
 }
 
 export default Form;
+

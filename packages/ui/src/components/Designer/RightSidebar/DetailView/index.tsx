@@ -1,4 +1,4 @@
-import { useForm } from 'form-render';
+﻿import { useForm } from 'form-render';
 import type { Schema as FormRenderSchema } from 'form-render';
 import React, { useRef, useContext, useEffect, useCallback, useMemo } from 'react';
 import type {
@@ -8,8 +8,8 @@ import type {
   PropPanelWidgetProps,
   PropPanelSchema,
   Schema,
-} from '@pdfme/common';
-import { isBlankPdf } from '@pdfme/common';
+} from '@weberon/common';
+import { isBlankPdf } from '@weberon/common';
 import type { SidebarProps } from '../../../../types.js';
 import { Menu } from 'lucide-react';
 import { I18nContext, PluginsRegistry, OptionsContext } from '../../../../contexts.js';
@@ -210,7 +210,7 @@ const DetailView = (props: DetailViewProps) => {
 
   const activePlugin = pluginsRegistry.findByType(activeSchema.type);
   if (!activePlugin) {
-    throw Error(`[@pdfme/ui] Failed to find plugin used for ${activeSchema.type}`);
+    throw Error(`[@weberon/ui] Failed to find plugin used for ${activeSchema.type}`);
   }
 
   const activePropPanelSchema = activePlugin.propPanel.schema;
@@ -466,3 +466,4 @@ const propsAreUnchanged = (prevProps: DetailViewProps, nextProps: DetailViewProp
 };
 
 export default React.memo(DetailView, propsAreUnchanged);
+

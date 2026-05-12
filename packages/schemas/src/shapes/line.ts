@@ -1,4 +1,4 @@
-import type { Schema, Plugin } from '@pdfme/common';
+﻿import type { Schema, Plugin } from '@weberon/common';
 import {
   rotatePoint,
   convertForPdfLayoutProps,
@@ -92,3 +92,4 @@ const lineSchema: Plugin<LineSchema> = {
   icon: createSvgStr(Minus),
 };
 export default lineSchema;
+

@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest';
+﻿import { describe, it, expect } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { PDFDocument } from '@pdfme/pdf-lib';
+import { PDFDocument } from '@weberon/pdf-lib';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CLI = join(__dirname, '..', 'dist', 'index.js');
@@ -126,3 +126,4 @@ describe('CLI offline local-input contract', () => {
     expect(pdf2sizeParsed.pages[0].pageNumber).toBe(1);
   });
 });
+

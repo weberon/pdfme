@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+﻿import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { cloneDeep, Template, checkTemplate, Lang, isBlankPdf } from '@pdfme/common';
-import { Designer } from '@pdfme/ui';
+import { cloneDeep, Template, checkTemplate, Lang, isBlankPdf } from '@weberon/common';
+import { Designer } from '@weberon/ui';
 import {
   getFontsData,
   getTemplateById,
@@ -54,7 +54,7 @@ function DesignerApp() {
           font: getFontsData(),
           lang: 'en',
           labels: {
-            'signature.clear': '🗑️',
+            'signature.clear': 'ðŸ—‘ï¸',
           },
           theme: {
             token: { colorPrimary: '#25c2a0' },
@@ -91,7 +91,7 @@ function DesignerApp() {
       downloadJsonFile(designer.current.getTemplate(), 'template');
       toast.success(
         <div>
-          <p>Can you share the template you created? ❤️</p>
+          <p>Can you share the template you created? â¤ï¸</p>
           <a
             className="text-blue-500 underline"
             target="_blank"
@@ -288,7 +288,7 @@ function DesignerApp() {
               const startTimer = performance.now();
               await generatePDF(designer.current);
               const endTimer = performance.now();
-              toast.info(`Generated PDF in ${Math.round(endTimer - startTimer)}ms ⚡️`);
+              toast.info(`Generated PDF in ${Math.round(endTimer - startTimer)}ms âš¡ï¸`);
             }}
           >
             Generate PDF
@@ -314,3 +314,4 @@ function DesignerApp() {
 }
 
 export default DesignerApp;
+

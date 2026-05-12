@@ -1,5 +1,5 @@
 {
-  "name": "@pdfme/schemas",
+  "name": "@weberon/schemas",
   "version": "0.0.0",
   "description": "TypeScript base PDF generator and React base UI. Open source, developed by the community, and completely free to use under the MIT license!",
   "keywords": [
@@ -52,7 +52,8 @@
     }
   },
   "publishConfig": {
-    "access": "public"
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "dev": "vite build --watch",
@@ -63,7 +64,7 @@
     "test": "vitest run --config ../../vitest.config.ts"
   },
   "dependencies": {
-    "@pdfme/pdf-lib": "*",
+    "@weberon/pdf-lib": "*",
     "air-datepicker": "^3.6.0",
     "bwip-js": "^4.9.0",
     "date-fns": "^4.1.0",
@@ -73,7 +74,7 @@
     "signature_pad": "^4.2.0"
   },
   "devDependencies": {
-    "@pdfme/common": "*",
+    "@weberon/common": "*",
     "@types/bwip-js": "^3.2.1",
     "@types/fontkit": "^2.0.9",
     "@types/pngjs": "^6.0.2",
@@ -82,6 +83,6 @@
     "pngjs": "^7.0.0"
   },
   "peerDependencies": {
-    "@pdfme/common": "latest"
+    "@weberon/common": "latest"
   }
 }

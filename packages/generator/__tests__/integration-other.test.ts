@@ -1,7 +1,7 @@
-import generate from '../src/generate.js';
+﻿import generate from '../src/generate.js';
 import { other } from './assets/templates/index.js';
-import { getInputFromTemplate } from '@pdfme/common';
-import { text, image, signature, svg, line, rectangle, ellipse, barcodes } from '@pdfme/schemas';
+import { getInputFromTemplate } from '@weberon/common';
+import { text, image, signature, svg, line, rectangle, ellipse, barcodes } from '@weberon/schemas';
 import { getFont, getImageSnapshotOptions, pdfToImages } from './utils.js';
 
 const PERFORMANCE_THRESHOLD = parseFloat(process.env.PERFORMANCE_THRESHOLD || '1.5');
@@ -57,3 +57,4 @@ describe('generate integration test(other)', () => {
     }
   });
 });
+

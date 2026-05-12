@@ -1,6 +1,6 @@
-# CLI
+﻿# CLI
 
-`@pdfme/cli` is the command-line interface for JSON-first pdfme workflows.
+`@weberon/cli` is the command-line interface for JSON-first pdfme workflows.
 
 It is intended for:
 
@@ -15,13 +15,13 @@ It is intended for:
 Node.js 20 or later is required.
 
 ```bash
-npm install -D @pdfme/cli
+npm install -D @weberon/cli
 ```
 
 You can also run it directly with `npx`:
 
 ```bash
-npx @pdfme/cli generate --help
+npx @weberon/cli generate --help
 ```
 
 ## Commands
@@ -380,3 +380,4 @@ pdfme pdf2size invoice.pdf --json
 pdfme doctor template.json -o out.pdf --image --json
 pdfme generate -t template.json -i inputs.json -o out.pdf --image --grid
 ```
+

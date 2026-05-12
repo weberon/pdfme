@@ -1,4 +1,4 @@
-import { Plugin, Schema } from '@pdfme/common';
+﻿import { Plugin, Schema } from '@weberon/common';
 import svg from '../graphics/svg.js';
 import { isEditable } from '../utils.js';
 import { HEX_COLOR_PATTERN } from '../constants.js';
@@ -68,3 +68,4 @@ const schema: Plugin<Checkbox> = {
 };
 
 export default schema;
+

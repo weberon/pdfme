@@ -1,6 +1,6 @@
-import type * as CSS from 'csstype';
+﻿import type * as CSS from 'csstype';
 import type { Font as FontKitFont } from 'fontkit';
-import { UIRenderProps, getDefaultFont } from '@pdfme/common';
+import { UIRenderProps, getDefaultFont } from '@weberon/common';
 import type { TextSchema } from './types.js';
 import {
   DEFAULT_FONT_SIZE,
@@ -49,7 +49,7 @@ const replaceUnsupportedChars = (text: string, fontKitFont: FontKitFont): string
             return char;
           }
 
-          return isCharSupported(char) ? char : '〿';
+          return isCharSupported(char) ? char : 'ã€¿';
         })
         .join('');
     })
@@ -290,3 +290,4 @@ const getBackgroundColor = (value: string, schema: { backgroundColor?: string })
   if (!value || !schema.backgroundColor) return 'transparent';
   return schema.backgroundColor;
 };
+

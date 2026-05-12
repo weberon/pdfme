@@ -1,5 +1,5 @@
-import type { ALIGNMENT, VERTICAL_ALIGNMENT } from '../text/types.js';
-import type { Schema } from '@pdfme/common';
+﻿import type { ALIGNMENT, VERTICAL_ALIGNMENT } from '../text/types.js';
+import type { Schema } from '@weberon/common';
 
 export type Spacing = { top: number; right: number; bottom: number; left: number };
 type BorderInsets = Spacing;
@@ -85,3 +85,4 @@ export interface StylesProps {
 }
 
 export type Section = 'head' | 'body';
+

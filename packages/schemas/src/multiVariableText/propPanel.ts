@@ -1,5 +1,5 @@
-import { propPanel as parentPropPanel } from '../text/propPanel.js';
-import { PropPanel, PropPanelWidgetProps } from '@pdfme/common';
+﻿import { propPanel as parentPropPanel } from '../text/propPanel.js';
+import { PropPanel, PropPanelWidgetProps } from '@weberon/common';
 import { MultiVariableTextSchema } from './types.js';
 import { getVariableNames } from './variables.js';
 
@@ -15,7 +15,7 @@ const mapDynamicVariables = (props: PropPanelWidgetProps) => {
       variables = parsed as Record<string, string>;
     }
   } catch {
-    // content is not valid JSON (e.g. a plain string value) — start fresh
+    // content is not valid JSON (e.g. a plain string value) â€” start fresh
   }
   const variablesChanged = updateVariablesFromText(text, variables);
   const varNames = Object.keys(variables);
@@ -167,3 +167,4 @@ const updateVariablesFromText = (text: string, variables: Record<string, string>
 
   return changed;
 };
+

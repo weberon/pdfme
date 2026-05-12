@@ -1,8 +1,8 @@
-import fs from 'node:fs';
+﻿import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PDFDocument } from '@pdfme/pdf-lib';
-import { pdf2img } from '@pdfme/converter';
+import { PDFDocument } from '@weberon/pdf-lib';
+import { pdf2img } from '@weberon/converter';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -38,3 +38,4 @@ export function toArrayBuffer(buf: Buffer): Uint8Array {
 export const loadTestPDF = (fileName: string): Uint8Array => {
   return toArrayBuffer(fs.readFileSync(assetPath(fileName)));
 };
+

@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+﻿import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -7,15 +7,15 @@ const __dirname = path.dirname(__filename);
 const playgroundRoot = path.resolve(__dirname, '..');
 
 const trackedSpecifiers = [
-  '@pdfme/common',
-  '@pdfme/converter',
-  '@pdfme/generator',
-  '@pdfme/manipulator',
-  '@pdfme/schemas',
-  '@pdfme/schemas/builtins',
-  '@pdfme/schemas/tables',
-  '@pdfme/schemas/utils',
-  '@pdfme/ui',
+  '@weberon/common',
+  '@weberon/converter',
+  '@weberon/generator',
+  '@weberon/manipulator',
+  '@weberon/schemas',
+  '@weberon/schemas/builtins',
+  '@weberon/schemas/tables',
+  '@weberon/schemas/utils',
+  '@weberon/ui',
 ];
 
 const trackedDirs = ['src', 'scripts', 'e2e', 'node-playground'];
@@ -75,3 +75,4 @@ for (const specifier of trackedSpecifiers) {
 }
 
 console.log('Verified playground @pdfme imports and package exports.');
+

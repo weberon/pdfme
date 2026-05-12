@@ -1,7 +1,7 @@
-import generate from '../src/generate.js';
+﻿import generate from '../src/generate.js';
 import { segmenter } from './assets/templates/index.js';
-import { getInputFromTemplate } from '@pdfme/common';
-import { text, multiVariableText, image, barcodes } from '@pdfme/schemas';
+import { getInputFromTemplate } from '@weberon/common';
+import { text, multiVariableText, image, barcodes } from '@weberon/schemas';
 import { getFont, getImageSnapshotOptions, pdfToImages } from './utils.js';
 
 const PERFORMANCE_THRESHOLD = parseFloat(process.env.PERFORMANCE_THRESHOLD || '2.5');
@@ -48,3 +48,4 @@ describe('generate integration test(segmenter)', () => {
     }
   });
 });
+

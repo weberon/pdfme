@@ -1,4 +1,4 @@
-## @pdfme/generator
+﻿## @weberon/generator
 
 This library provides the `generate` function for creating PDF files using templates and inputs.
 

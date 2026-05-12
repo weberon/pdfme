@@ -1,4 +1,4 @@
-import type { Plugin } from '@pdfme/common';
+﻿import type { Plugin } from '@weberon/common';
 import { pdfRender } from './pdfRender.js';
 import { propPanel } from './propPanel.js';
 import { uiRender } from './uiRender.js';
@@ -14,3 +14,4 @@ const schema: Plugin<MultiVariableTextSchema> = {
   uninterruptedEditMode: true,
 };
 export default schema;
+

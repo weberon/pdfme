@@ -1,5 +1,5 @@
-import { dirname, resolve } from 'node:path';
-import { checkTemplate } from '@pdfme/common';
+﻿import { dirname, resolve } from 'node:path';
+import { checkTemplate } from '@weberon/common';
 import { fail } from './contract.js';
 import { schemaTypes } from './schema-plugins.js';
 import { detectPaperSize, readJsonFile, readJsonFromStdin } from './utils.js';
@@ -1240,3 +1240,4 @@ export function summarizeBasePdf(
   }
   return { kind: 'missing' };
 }
+

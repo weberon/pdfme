@@ -1,4 +1,4 @@
-import { getDefaultFont, UIRenderProps } from '@pdfme/common';
+﻿import { getDefaultFont, UIRenderProps } from '@weberon/common';
 import { MultiVariableTextSchema } from './types.js';
 import {
   uiRender as parentUiRender,
@@ -77,7 +77,7 @@ const formUiRender = async (arg: UIRenderProps<MultiVariableTextSchema>) => {
         variables = parsed as Record<string, string>;
       }
     } catch {
-      // value is not valid JSON — use empty variables
+      // value is not valid JSON â€” use empty variables
     }
   }
   const variableIndices = getVariableIndices(rawText);
@@ -155,3 +155,4 @@ const keyPressShouldBeChecked = (event: KeyboardEvent) => {
 
   return true;
 };
+

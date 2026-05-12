@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   cloneDeep,
   Template,
@@ -6,7 +6,7 @@ import {
   checkDesignerProps,
   checkTemplate,
   PDFME_VERSION,
-} from '@pdfme/common';
+} from '@weberon/common';
 import { BaseUIClass } from './class.js';
 import { DESTROYED_ERR_MSG } from './constants.js';
 import DesignerComponent from './components/Designer/index.js';
@@ -103,3 +103,4 @@ class Designer extends BaseUIClass {
 }
 
 export default Designer;
+

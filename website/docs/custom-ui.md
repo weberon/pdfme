@@ -1,6 +1,6 @@
-# Custom UI
+﻿# Custom UI
 
-`@pdfme/ui` allows customization of themes and labels through options.  
+`@weberon/ui` allows customization of themes and labels through options.  
 This page explains how to customize these elements.
 
 _Sample code uses the [Designer](/docs/getting-started#designer), but [Form](/docs/getting-started#form) and [Viewer](/docs/getting-started#viewer) can be customized in the same way._
@@ -52,14 +52,14 @@ new Designer({
   options: {
     lang: 'ja',
     labels: {
-      fieldsList: '入力項目一覧ビュー', // override the label for the edit button
-      youCanCreateYourOwnLabel: '独自のラベルを作成できます', // add a new label for the custom plugin
+      fieldsList: 'å…¥åŠ›é …ç›®ä¸€è¦§ãƒ“ãƒ¥ãƒ¼', // override the label for the edit button
+      youCanCreateYourOwnLabel: 'ç‹¬è‡ªã®ãƒ©ãƒ™ãƒ«ã‚’ä½œæˆã§ãã¾ã™', // add a new label for the custom plugin
     },
   },
 });
 ```
 
-Create your own labels and use the i18n function from the plugin to retrieve the labels. Please refer to the official [Signature plugin](https://github.com/pdfme/pdfme/blob/main/packages/schemas/src/graphics/signature.ts) implementation in `@pdfme/schemas`.
+Create your own labels and use the i18n function from the plugin to retrieve the labels. Please refer to the official [Signature plugin](https://github.com/pdfme/pdfme/blob/main/packages/schemas/src/graphics/signature.ts) implementation in `@weberon/schemas`.
 
 ## UI Maximum Zoom Level
 
@@ -98,3 +98,4 @@ designer.updateOptions({
   sidebarOpen: true
 });
 ```
+

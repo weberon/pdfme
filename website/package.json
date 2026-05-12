@@ -1,5 +1,5 @@
-{
-  "name": "@pdfme/website",
+﻿{
+  "name": "@weberon/website",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -47,3 +47,4 @@
     ]
   }
 }
+

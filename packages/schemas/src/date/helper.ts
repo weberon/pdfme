@@ -1,4 +1,4 @@
-import type * as CSS from 'csstype';
+﻿import type * as CSS from 'csstype';
 
 import AirDatepicker from 'air-datepicker';
 import type { AirDatepickerLocale, AirDatepickerButton, AirDatepickerDate } from 'air-datepicker';
@@ -39,7 +39,7 @@ import localeZh from 'air-datepicker/locale/zh';
 import * as dateFns from 'date-fns/locale';
 import { format } from 'date-fns';
 
-import { Plugin, getFallbackFontName, DEFAULT_FONT_NAME, PropPanelSchema } from '@pdfme/common';
+import { Plugin, getFallbackFontName, DEFAULT_FONT_NAME, PropPanelSchema } from '@weberon/common';
 import text from '../text/index.js';
 import { DEFAULT_OPACITY, HEX_COLOR_PATTERN } from '../constants.js';
 import { mapVerticalAlignToFlex } from '../text/uiRender.js';
@@ -97,7 +97,7 @@ const LOCALE_MAP: Record<string, Locale> = {
   it: { label: 'Italian', adLocale: normalizeAdLocale(localeIt), formatLocale: dateFns.it },
   ja: { label: 'Japanese', adLocale: normalizeAdLocale(localeJa), formatLocale: dateFns.ja },
   ko: { label: 'Korean', adLocale: normalizeAdLocale(localeKo), formatLocale: dateFns.ko },
-  nb: { label: 'Norwegian Bokmål', adLocale: normalizeAdLocale(localeNb), formatLocale: dateFns.nb },
+  nb: { label: 'Norwegian BokmÃ¥l', adLocale: normalizeAdLocale(localeNb), formatLocale: dateFns.nb },
   nl: { label: 'Dutch', adLocale: normalizeAdLocale(localeNl), formatLocale: dateFns.nl },
   pl: { label: 'Polish', adLocale: normalizeAdLocale(localePl), formatLocale: dateFns.pl },
   'pt-Br': {
@@ -542,3 +542,4 @@ export const getPlugin = ({ type, icon }: { type: PickerType; icon: string }) =>
 
   return plugin;
 };
+

@@ -1,5 +1,5 @@
-import React, { useContext, forwardRef, ReactNode, Ref, useEffect } from 'react';
-import { Size } from '@pdfme/common';
+﻿import React, { useContext, forwardRef, ReactNode, Ref, useEffect } from 'react';
+import { Size } from '@weberon/common';
 import { FontContext } from '../contexts.js';
 import { BACKGROUND_COLOR, DESIGNER_CLASSNAME } from '../constants.js';
 import Spinner from './Spinner.js';
@@ -42,3 +42,4 @@ const Root = ({ size, scale, children }: Props, ref: Ref<HTMLDivElement>) => {
 };
 
 export default forwardRef<HTMLDivElement, Props>(Root);
+

@@ -1,11 +1,11 @@
-import crypto from 'node:crypto';
+﻿import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pLimit from 'p-limit';
-import { getDefaultFont, getInputFromTemplate } from '@pdfme/common';
-import { pdf2img } from '@pdfme/converter';
-import { generate } from '@pdfme/generator';
+import { getDefaultFont, getInputFromTemplate } from '@weberon/common';
+import { pdf2img } from '@weberon/converter';
+import { generate } from '@weberon/generator';
 import {
   multiVariableText,
   text,
@@ -23,7 +23,7 @@ import {
   select,
   checkbox,
   radioGroup,
-} from '@pdfme/schemas';
+} from '@weberon/schemas';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -150,3 +150,4 @@ main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
+

@@ -1,5 +1,5 @@
-import { createRequire } from 'node:module';
-import { Template } from '@pdfme/common';
+﻿import { createRequire } from 'node:module';
+import { Template } from '@weberon/common';
 
 const require = createRequire(import.meta.url);
 
@@ -51,3 +51,4 @@ export const segmenter = {
   segmenterEnglish,
   segmenterJapanese,
 };
+

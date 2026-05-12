@@ -1,4 +1,4 @@
-import { Plugin, Schema } from '@pdfme/common';
+﻿import { Plugin, Schema } from '@weberon/common';
 import { Circle, CircleDot } from 'lucide';
 import svg from '../graphics/svg.js';
 import { isEditable, createSvgStr } from '../utils.js';
@@ -113,3 +113,4 @@ const schema: Plugin<RadioGroup> = {
 };
 
 export default schema;
+

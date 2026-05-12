@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { PDFDocument } from '@pdfme/pdf-lib';
-import * as pdfLib from '@pdfme/pdf-lib';
-import { BLANK_PDF, type Schema, type PDFRenderProps } from '@pdfme/common';
+﻿import { describe, it, expect } from 'vitest';
+import { PDFDocument } from '@weberon/pdf-lib';
+import * as pdfLib from '@weberon/pdf-lib';
+import { BLANK_PDF, type Schema, type PDFRenderProps } from '@weberon/common';
 import { image } from '../src/index.js';
 
 describe('image plugin memory-safety', () => {
@@ -10,7 +10,7 @@ describe('image plugin memory-safety', () => {
     const page = pdfDoc.addPage();
     const _cache = new Map<string | number, unknown>();
 
-    // A valid 1×1 transparent PNG encoded in base64, padded to ~1 MB with
+    // A valid 1Ã—1 transparent PNG encoded in base64, padded to ~1 MB with
     // additional whitespace (which we then mutate into a valid-but-large
     // payload further below). We only need embedPng to succeed so the
     // render path reaches the cache; the cache key is formed regardless.
@@ -48,7 +48,7 @@ describe('image plugin memory-safety', () => {
     // Regression guard: the cache key MUST be a fingerprint, not the raw
     // input. Before the fix, the key was `${schema.type}${value}` and its
     // byte length matched the input byte length. A tight bound of 100
-    // chars catches any regression back to that behaviour — the current
+    // chars catches any regression back to that behaviour â€” the current
     // fingerprint format (`type:len:first16:last16`) stays well under 60
     // even for huge inputs.
     expect(keys[0].length).toBeLessThan(100);
@@ -56,7 +56,7 @@ describe('image plugin memory-safety', () => {
     // can't collide on the same shared cache Map.
     expect(keys[0].startsWith('image')).toBe(true);
     // Same input hitting the cache a second time must be a cache hit, not
-    // a new entry — proves the fingerprint is deterministic.
+    // a new entry â€” proves the fingerprint is deterministic.
     await image.pdf(arg);
     expect([...(_cache.keys() as Iterable<string>)].length).toBe(1);
   });
@@ -69,7 +69,7 @@ describe('image plugin memory-safety', () => {
     const pngA =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1J' +
       'REFUGFdj+P///38ACfsD/QVDRcoAAAAASUVORK5CYII=';
-    // Same size/header/trailer shape as pngA but different middle bytes —
+    // Same size/header/trailer shape as pngA but different middle bytes â€”
     // the fingerprint must still distinguish them (length is identical so
     // first16+last16 carries the signal; we'll also rely on the raw bytes
     // of the minimal PNG differing via embedPng's output).
@@ -105,3 +105,4 @@ describe('image plugin memory-safety', () => {
     expect([...(_cache.keys() as Iterable<string>)].length).toBe(2);
   });
 });
+

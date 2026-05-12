@@ -1,4 +1,4 @@
-import { b64toUint8Array } from '@pdfme/common';
+﻿import { b64toUint8Array } from '@weberon/common';
 import bwipjs, { RenderOptions } from 'bwip-js';
 import { Buffer } from 'buffer';
 import { BARCODE_TYPES, DEFAULT_BARCODE_INCLUDETEXT } from './constants.js';
@@ -62,7 +62,7 @@ export const validateBarcodeInput = (type: BarcodeTypes, input: string) => {
     // For Code128: Valid characters are all except Kanji, Hiragana, and Katakana.
     // https://qiita.com/graminume/items/2ac8dd9c32277fa9da64
     return !input.match(
-      /([\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]|[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝〜　])+/,
+      /([\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]|[ï¼¡-ï¼ºï½-ï½šï¼-ï¼™ï¼ï¼‚ï¼ƒï¼„ï¼…ï¼†ï¼‡ï¼ˆï¼‰ï¼Šï¼‹ï¼Œï¼ï¼Žï¼ï¼šï¼›ï¼œï¼ï¼žï¼Ÿï¼ ï¼»ï¼¼ï¼½ï¼¾ï¼¿ï½€ï½›ï½œï½ã€œã€€])+/,
     );
   }
   if (type === 'nw7') {
@@ -185,3 +185,4 @@ export const createBarCode = async (arg: {
 
   return res;
 };
+

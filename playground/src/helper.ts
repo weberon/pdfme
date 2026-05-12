@@ -1,6 +1,6 @@
-import { Template, Font, checkTemplate, getInputFromTemplate, getDefaultFont } from '@pdfme/common';
-import { Form, Viewer, Designer } from '@pdfme/ui';
-import { generate } from '@pdfme/generator';
+﻿import { Template, Font, checkTemplate, getInputFromTemplate, getDefaultFont } from '@weberon/common';
+import { Form, Viewer, Designer } from '@weberon/ui';
+import { generate } from '@weberon/generator';
 import { getPlugins } from './plugins';
 
 export function fromKebabCase(str: string): string {
@@ -156,3 +156,4 @@ export const getTemplateById = async (templateId: string): Promise<Template> => 
   checkTemplate(template);
   return template as Template;
 };
+

@@ -1,4 +1,4 @@
-import { substituteVariables, validateVariables } from '../src/multiVariableText/helper.js';
+﻿import { substituteVariables, validateVariables } from '../src/multiVariableText/helper.js';
 import { MultiVariableTextSchema } from '../src/multiVariableText/types.js';
 import {
   countUniqueVariableNames,
@@ -100,7 +100,7 @@ describe('validateVariables', () => {
   it('should throw an error for missing required variables', () => {
     const value = JSON.stringify({ var1: 'value1' });
     expect(() => validateVariables(value, schema)).toThrow(
-      '[@pdfme/generator] variable var2 is missing for field test'
+      '[@weberon/generator] variable var2 is missing for field test'
     );
   });
 
@@ -141,3 +141,4 @@ describe('validateVariables', () => {
     expect(validateVariables(value, readOnlyText)).toBe(false);
   });
 });
+

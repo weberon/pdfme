@@ -1,14 +1,14 @@
-import generate from '../src/generate.js';
-import { Template, BLANK_A4_PDF, Schema } from '@pdfme/common';
-import { PDFDocument, PDFName } from '@pdfme/pdf-lib';
-import { image } from '@pdfme/schemas';
+﻿import generate from '../src/generate.js';
+import { Template, BLANK_A4_PDF, Schema } from '@weberon/common';
+import { PDFDocument, PDFName } from '@weberon/pdf-lib';
+import { image } from '@weberon/schemas';
 
 const plugins = { image };
 
 // PNGs at distinct widths so the embedded XObject's IHDR-reported
-// width × height fingerprints which schema rendered it. Widths chosen to
+// width Ã— height fingerprints which schema rendered it. Widths chosen to
 // be far apart so the data URLs differ in length and in their last-16
-// bytes — the image plugin caches PDFImage by
+// bytes â€” the image plugin caches PDFImage by
 // `${type}:${value.length}:${value.slice(0,16)}:${value.slice(-16)}`,
 // which would collide on near-identical small PNGs.
 const PNG_10x1 =
@@ -63,7 +63,7 @@ const xObjectImageDimsPerPage = async (pdfBytes: Uint8Array): Promise<string[][]
 // Two regressions guarded by these tests:
 //
 //   1. Z-order on a page must follow that page's own schema array
-//      order — not the order in which names first appear across all
+//      order â€” not the order in which names first appear across all
 //      pages. A background rectangle declared *after* an image on
 //      page 2 must draw *after* (i.e. on top of) the image, even when
 //      the same names also appear on page 1 in the opposite order.
@@ -92,13 +92,13 @@ describe('per-page schema render order', () => {
     expect(dimsPerPage[0]).toEqual(['10x1', '50x1']);
     // Page 2 array order is [beta=100x1, alpha=500x1]. Bug: schemaNames
     // Set = ["alpha", "beta"] from page-1, so page-2 renders alpha
-    // (500x1) FIRST and beta (100x1) SECOND — flipped from intent.
+    // (500x1) FIRST and beta (100x1) SECOND â€” flipped from intent.
     expect(dimsPerPage[1]).toEqual(['100x1', '500x1']);
   });
 
   test('renders multiple same-named schemas on the same page', async () => {
     // Two image schemas on one page sharing a name. Bug: `.find()` returns
-    // the first match in the global name iteration → second image silently
+    // the first match in the global name iteration â†’ second image silently
     // dropped at render.
     const template: Template = {
       basePdf: BLANK_A4_PDF,
@@ -112,3 +112,4 @@ describe('per-page schema render order', () => {
     expect(dimsPerPage[0]).toEqual(['10x1', '50x1']);
   });
 });
+

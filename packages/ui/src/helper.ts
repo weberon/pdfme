@@ -1,4 +1,4 @@
-import hotkeysJs from 'hotkeys-js';
+﻿import hotkeysJs from 'hotkeys-js';
 import { useContext } from 'react';
 import {
   cloneDeep,
@@ -11,8 +11,8 @@ import {
   Size,
   isBlankPdf,
   PluginRegistry,
-} from '@pdfme/common';
-import { pdf2size } from '@pdfme/converter';
+} from '@weberon/common';
+import { pdf2size } from '@weberon/converter';
 import { DEFAULT_MAX_ZOOM, RULER_HEIGHT } from './constants.js';
 import { OptionsContext } from './contexts.js';
 
@@ -532,3 +532,4 @@ export const setFontNameRecursively = (
     }
   }
 };
+

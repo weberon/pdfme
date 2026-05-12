@@ -1,6 +1,6 @@
-import React from 'react';
+﻿import React from 'react';
 import { act, waitFor } from '@testing-library/react';
-import { BLANK_PDF, type Template, type UIProps } from '@pdfme/common';
+import { BLANK_PDF, type Template, type UIProps } from '@weberon/common';
 import { BaseUIClass } from '../src/class';
 
 class TestUI extends BaseUIClass {
@@ -53,3 +53,4 @@ test('BaseUIClass mount renders without forcing a synchronous flush', async () =
     globalThis.ResizeObserver = originalResizeObserver;
   }
 });
+

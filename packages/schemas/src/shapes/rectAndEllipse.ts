@@ -1,7 +1,7 @@
-import { Plugin, Schema, mm2pt } from '@pdfme/common';
+﻿import { Plugin, Schema, mm2pt } from '@weberon/common';
 import { HEX_COLOR_PATTERN } from '../constants.js';
 import { hex2PrintingColor, convertForPdfLayoutProps, createSvgStr } from '../utils.js';
-import { toRadians } from '@pdfme/pdf-lib';
+import { toRadians } from '@weberon/pdf-lib';
 import { Circle, Square } from 'lucide';
 
 interface ShapeSchema extends Schema {
@@ -150,3 +150,4 @@ export const ellipse: Plugin<ShapeSchema> = {
   propPanel: getPropPanelSchema('ellipse'),
   icon: createSvgStr(Circle),
 };
+

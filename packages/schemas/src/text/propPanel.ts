@@ -1,10 +1,10 @@
-import {
+﻿import {
   DEFAULT_FONT_NAME,
   PropPanel,
   PropPanelWidgetProps,
   PropPanelSchema,
   getFallbackFontName,
-} from '@pdfme/common';
+} from '@weberon/common';
 import type { TextSchema } from './types.js';
 import {
   DEFAULT_FONT_SIZE,
@@ -182,3 +182,4 @@ export const propPanel: PropPanel<TextSchema> = {
     underline: false,
   },
 };
+

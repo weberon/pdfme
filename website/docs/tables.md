@@ -1,4 +1,4 @@
-# Tables with Dynamic Data
+﻿# Tables with Dynamic Data
 
 [![Preview of Dynamic Tables](/img/table.png)](https://playground.pdfme.com/)
 
@@ -7,15 +7,15 @@ This schema allows you to add tables to PDFs and dynamically modify the table da
 
 ## Using the Table Schema
 
-The table schema is included in the `@pdfme/schemas` package and is exported as `table`.  
-You can add the table schema as a plugin to `@pdfme/ui` and `@pdfme/generator` using the code below.
+The table schema is included in the `@weberon/schemas` package and is exported as `table`.  
+You can add the table schema as a plugin to `@weberon/ui` and `@weberon/generator` using the code below.
 
 To support page breaks, ensure to set the `basePdf` property in the template to `{ width: number, height: number, padding: [number,number,number,number] }`.
 
 ```javascript
-import { table } from '@pdfme/schemas';
-import { Designer } from '@pdfme/ui';
-import { generate } from '@pdfme/generator';
+import { table } from '@weberon/schemas';
+import { Designer } from '@weberon/ui';
+import { generate } from '@weberon/generator';
 
 new Designer({
   domContainer,
@@ -195,3 +195,4 @@ If you have feedback or suggestions regarding the use of the table schema, pleas
 Your feedback contributes significantly to the development of pdfme.
 
 :::
+

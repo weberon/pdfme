@@ -1,5 +1,5 @@
-import { defineCommand } from 'citty';
-import { pdf2size } from '@pdfme/converter';
+﻿import { defineCommand } from 'citty';
+import { pdf2size } from '@weberon/converter';
 import { assertNoUnknownFlags, fail, printJson, runWithContract } from '../contract.js';
 import { detectPaperSize, readPdfFile } from '../utils.js';
 
@@ -52,3 +52,4 @@ export default defineCommand({
     });
   },
 });
+

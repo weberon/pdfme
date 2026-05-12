@@ -1,5 +1,5 @@
 {
-  "name": "@pdfme/cli",
+  "name": "@weberon/cli",
   "version": "0.0.0",
   "description": "CLI tool for pdfme - generate PDFs, convert images, validate templates",
   "keywords": [
@@ -37,7 +37,8 @@
     }
   },
   "publishConfig": {
-    "access": "public"
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "dev": "vite build --watch",
@@ -49,10 +50,10 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^0.1.97",
-    "@pdfme/common": "*",
-    "@pdfme/converter": "*",
-    "@pdfme/generator": "*",
-    "@pdfme/schemas": "*",
+    "@weberon/common": "*",
+    "@weberon/converter": "*",
+    "@weberon/generator": "*",
+    "@weberon/schemas": "*",
     "citty": "^0.2.1"
   },
   "engines": {

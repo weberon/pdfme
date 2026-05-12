@@ -1,8 +1,8 @@
-import type { PDFImage } from '@pdfme/pdf-lib';
-import type { Plugin } from '@pdfme/common';
-import type { Schema } from '@pdfme/common';
+﻿import type { PDFImage } from '@weberon/pdf-lib';
+import type { Plugin } from '@weberon/common';
+import type { Schema } from '@weberon/common';
 import type * as CSS from 'csstype';
-import { px2mm } from '@pdfme/common';
+import { px2mm } from '@weberon/common';
 import { Image } from 'lucide';
 import {
   convertForPdfLayoutProps,
@@ -17,11 +17,11 @@ import { getImageDimension } from './imagehelper.js';
 /**
  * Build a short fingerprint for a potentially-large base64 image string.
  * Previously `${schema.type}${input}` was used, pinning multi-MB base64
- * strings in the cache Map forever — every unique image input created a
+ * strings in the cache Map forever â€” every unique image input created a
  * permanent Map key whose byte length matched the image itself.
  *
- * The fingerprint samples three regions — first 16 chars, middle 16
- * chars, last 16 chars — plus the total byte length and the schema
+ * The fingerprint samples three regions â€” first 16 chars, middle 16
+ * chars, last 16 chars â€” plus the total byte length and the schema
  * type. Sampling only the first and last regions was not sufficient:
  * base64 PNGs of the same pixel size share identical `data:image/png;
  * base64,iVBORw0KGgo...` headers and identical `...ElFTkSuQmCC` IEND
@@ -219,3 +219,4 @@ const imageSchema: Plugin<ImageSchema> = {
 };
 
 export default imageSchema;
+

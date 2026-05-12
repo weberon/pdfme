@@ -1,4 +1,4 @@
-import type { Font } from '@pdfme/common';
+﻿import type { Font } from '@weberon/common';
 
 export const OFFICIAL_EXAMPLE_FONT_URLS = {
   NotoSansJP:
@@ -50,3 +50,4 @@ export function getOfficialExampleFonts(template: Record<string, unknown>): Font
 
   return Object.fromEntries(entries) as Font;
 }
+
